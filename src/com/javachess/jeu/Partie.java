@@ -60,7 +60,13 @@ public class Partie {
 		while (!isFinished()) {
 			System.out.println(plateau);
 			Coup coup = joueurCourant.jouer();
-			if (isCoupValide(coup) && plateau.jouerCoup(coup, isAttaque(coup))) {
+			Piece piece = plateau.getPiece(coup.getCaseSource());
+
+			if (isCoupValide(coup)
+					&& piece.deplacementPossible(coup, plateau, plateau
+							.isAttaque(coup.getCaseDestination(),
+									joueurCourant.getCouleur()))) {
+				plateau.jouerCoup(coup);
 				// etatPartie.verifierEtat();
 				joueurSuivant();
 			}
@@ -78,51 +84,22 @@ public class Partie {
 	 * @return
 	 */
 	public boolean isCoupValide(Coup coup) {
-		int indexSource = PositionConverter.convertCaseEnIndex(coup
-				.getCaseSource());
-		int indexDestination = PositionConverter.convertCaseEnIndex(coup
-				.getCaseDestination());
-
-		if (indexSource < 0 || indexSource >= plateau.getEchiquier().length)
+		if (!plateau.isCasesValides(coup.getCaseSource(),
+				coup.getCaseDestination()))
 			return false;
 
-		if (indexDestination < 0
-				|| indexDestination >= plateau.getEchiquier().length)
-			return false;
-
-		if (!plateau.getEchiquier()[indexSource].getColor().equals(
+		if (!plateau.isPieceDuJoueur(coup.getCaseSource(),
 				joueurCourant.getCouleur()))
 			return false;
 
-		if (plateau.getEchiquier()[indexDestination] != null
-				&& plateau.getEchiquier()[indexDestination].getColor().equals(
-						joueurCourant.getCouleur()))
+		if (!plateau.isDestOccupee(coup.getCaseDestination(),
+				joueurCourant.getCouleur()))
 			return false;
 
 		if (coup.getCaseDestination().equals(coup.getCaseSource()))
 			return false;
 
 		return true;
-	}
-
-	/**
-	 * Contrôle si l'action en cours est un mouvement d'attaque vers une case
-	 * contrôlée par l'adversaire
-	 * 
-	 * @param coup
-	 * @return True si la case cible est contrôlée par l'adversaire.
-	 */
-	public boolean isAttaque(Coup coup) {
-		int indexDestination = PositionConverter.convertCaseEnIndex(coup
-				.getCaseDestination());
-
-		Piece piece = plateau.getEchiquier()[indexDestination];
-
-		if (piece != null
-				&& !piece.getColor().equals(joueurCourant.getCouleur()))
-			return true;
-
-		return false;
 	}
 
 	public boolean isFinished() {

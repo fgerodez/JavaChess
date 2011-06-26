@@ -30,7 +30,7 @@ public abstract class Piece {
 	public abstract boolean attaquePossible(Coup coup, Echiquier echiquier);
 
 	/**
-	 * Vérifie si la pièce peut attaquer sur newPos.
+	 * Vérifie si la pièce peut attaquer la case du coup spécifié.
 	 * 
 	 * @param newPos
 	 * @return Vrai si la pièce peut attaquer (et prendre une pièce adverse)
@@ -38,12 +38,17 @@ public abstract class Piece {
 	public abstract boolean mouvementPossible(Coup coup, Echiquier echiquier);
 
 	/**
-	 * La pièce est-elle capable de sauter au dessus d'un autre ?
-	 * 
+	 * Indique si le déplacement indiquait par le coup est possible
+	 * @param coup
+	 * @param echiquier
+	 * @param isAttaque
 	 * @return
 	 */
-	public boolean canJumpOver() {
-		return false;
+	public boolean deplacementPossible(Coup coup, Echiquier echiquier, boolean isAttaque) {
+		if (isAttaque)
+			return this.attaquePossible(coup, echiquier);
+		else
+			return this.mouvementPossible(coup, echiquier);
 	}
 
 	public Couleur getColor() {

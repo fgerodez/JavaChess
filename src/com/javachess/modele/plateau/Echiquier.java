@@ -64,7 +64,7 @@ public class Echiquier {
 	 * @param coup
 	 * @throws GameException
 	 */
-	public boolean jouerCoup(Coup coup, boolean isAttack) throws GameException {
+	public boolean jouerCoup(Coup coup) throws GameException {
 		int indexSource = PositionConverter.convertCaseEnIndex(coup
 				.getCaseSource());
 		int indexDest = PositionConverter.convertCaseEnIndex(coup
@@ -74,12 +74,6 @@ public class Echiquier {
 
 		if (piece == null)
 			throw new GameException("Etat de l'échiquier incohérent");
-
-		if (isAttack && !piece.attaquePossible(coup, this))
-			return false;
-
-		if (!isAttack && !piece.mouvementPossible(coup, this))
-			return false;
 
 		this.getEchiquier()[indexSource] = null;
 		this.getEchiquier()[indexDest] = piece;
@@ -113,6 +107,12 @@ public class Echiquier {
 			return this.getEchiquier()[index].getColor();
 	}
 
+	public Piece getPiece(Case nCase) {
+		int index = PositionConverter.convertCaseEnIndex(nCase);
+
+		return this.getEchiquier()[index];
+	}
+
 	/**
 	 * Contrôle que toutes les cases d'une même colonne entre une case de départ
 	 * et une case d'arrivée sont vides
@@ -132,7 +132,7 @@ public class Echiquier {
 			caseInter.setLigne(caseInter.getLigne() + sens.getModifLigne());
 			caseInter.setColonne(caseInter.getColonne()
 					+ sens.getModifColonne());
-			
+
 			if (!caseInter.equals(caseDst)) {
 				if (!isCaseVide(caseInter))
 					return false;
@@ -142,6 +142,79 @@ public class Echiquier {
 		return true;
 	}
 
+	/**
+	 * Vérifie que les cases passées en paramètres sont valides pour l'échiquier
+	 * 
+	 * @param indexSource
+	 * @param indexDestination
+	 * @return
+	 */
+	public boolean isCasesValides(Case caseSrc, Case caseDest) {
+		int indexSource = PositionConverter.convertCaseEnIndex(caseSrc);
+		int indexDestination = PositionConverter.convertCaseEnIndex(caseDest);
+
+		if (indexSource < 0 || indexSource >= getEchiquier().length)
+			return false;
+
+		if (indexDestination < 0 || indexDestination >= getEchiquier().length)
+			return false;
+
+		return true;
+	}
+
+	/**
+	 * Vérifie que la case caseDest contient une pièce de la même
+	 * couleur que le paramètre joueurCouleur
+	 * 
+	 * @param indexDestination
+	 * @return
+	 */
+	public boolean isDestOccupee(Case caseDest, Couleur joueurCouleur) {
+		int indexDestination = PositionConverter.convertCaseEnIndex(caseDest);
+
+		if (getEchiquier()[indexDestination] != null
+				&& getEchiquier()[indexDestination].getColor().equals(
+						joueurCouleur))
+			return false;
+
+		return true;
+	}
+	
+	/**
+	 * Vérifie que la pièce sélectionné par le joueur lui appartient.
+	 * 
+	 * @param indexSource
+	 * @return
+	 */
+	public boolean isPieceDuJoueur(Case caseSrc, Couleur joueurCouleur) {
+		int indexSource = PositionConverter.convertCaseEnIndex(caseSrc);
+		
+		if (getEchiquier()[indexSource].getColor().equals(
+				joueurCouleur))
+			return true;
+
+		return false;
+	}
+
+	/**
+	 * Contrôle si l'action en cours est un mouvement d'attaque vers une case
+	 * contrôlée par l'adversaire
+	 * 
+	 * @param coup
+	 * @return True si la case cible est contrôlée par l'adversaire.
+	 */
+	public boolean isAttaque(Case caseDest, Couleur joueurCouleur) {
+		int indexDestination = PositionConverter.convertCaseEnIndex(caseDest);
+
+		Piece piece = getEchiquier()[indexDestination];
+
+		if (piece != null
+				&& !piece.getColor().equals(joueurCouleur))
+			return true;
+
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder echiquierRep = new StringBuilder("");
