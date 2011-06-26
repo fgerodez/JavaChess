@@ -90,22 +90,27 @@ public class PositionConverter {
 		return null;
 	}
 
-	public static Sens getSensPourDirection(Direction direction, Coup coup,
-			Couleur couleur) {
+	public static Sens getSensCoup(Coup coup) {
+		Case caseSource = coup.getCaseSource();
+		Case caseDest = coup.getCaseDestination();
+		
+		Direction direction = getDirection(caseSource, caseDest);
+		
 		switch (direction) {
-		case Colonne:
-			return getSensPourColonne(coup, couleur);
-		case Ligne:
-			return getSensPourLigne(coup, couleur);
-		case Diagonale:
-			break;
-		default:
-			assert (false);
+			case Colonne:
+				return getSensPourColonne(coup);
+			case Ligne:
+				return getSensPourLigne(coup);
+			case Diagonale:
+				return getSensPourDiagonale(coup);
+			default:
+				assert(false);
 		}
+		
 		return null;
 	}
 
-	private static Sens getSensPourLigne(Coup coup, Couleur couleur) {
+	private static Sens getSensPourLigne(Coup coup) {
 		Case caseSource = coup.getCaseSource();
 		Case caseDest = coup.getCaseDestination();
 
@@ -115,7 +120,7 @@ public class PositionConverter {
 			return Sens.Gauche;
 	}
 
-	private static Sens getSensPourColonne(Coup coup, Couleur couleur) {
+	private static Sens getSensPourColonne(Coup coup) {
 		Case caseSource = coup.getCaseSource();
 		Case caseDest = coup.getCaseDestination();
 
@@ -125,4 +130,7 @@ public class PositionConverter {
 			return Sens.Bas;
 	}
 
+	private static Sens getSensPourDiagonale(Coup coup) {
+		return null;
+	}
 }

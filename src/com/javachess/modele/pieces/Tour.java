@@ -2,7 +2,6 @@ package com.javachess.modele.pieces;
 
 import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
-import com.javachess.helpers.Direction;
 import com.javachess.helpers.PositionConverter;
 import com.javachess.helpers.Sens;
 import com.javachess.modele.plateau.Echiquier;
@@ -20,12 +19,11 @@ public class Tour extends Piece {
 
 	@Override
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
-		Direction direction = PositionConverter.getDirection(
-				coup.getCaseSource(), coup.getCaseDestination());
+		Sens sens = PositionConverter.getSensCoup(coup);
 
-		if (direction == Direction.Colonne) {
-			Sens sens = PositionConverter.getSensPourDirection(direction, coup,
-					getColor());
+		if (sens == Sens.Haut || sens == Sens.Bas || sens == Sens.Droite
+				|| sens == Sens.Gauche) {
+
 			return echiquier.caseLignesIntermVides(coup.getCaseSource(),
 					coup.getCaseDestination(), sens);
 		}
