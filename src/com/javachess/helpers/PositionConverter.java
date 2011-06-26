@@ -73,7 +73,7 @@ public class PositionConverter {
 		if (caseDestination.getLigne() != caseSource.getLigne())
 			colonne = true;
 
-		if (caseDestination.getColonne() != caseDestination.getColonne())
+		if (caseDestination.getColonne() != caseSource.getColonne())
 			ligne = true;
 
 		if (ligne && colonne)
@@ -93,20 +93,20 @@ public class PositionConverter {
 	public static Sens getSensCoup(Coup coup) {
 		Case caseSource = coup.getCaseSource();
 		Case caseDest = coup.getCaseDestination();
-		
+
 		Direction direction = getDirection(caseSource, caseDest);
-		
+
 		switch (direction) {
-			case Colonne:
-				return getSensPourColonne(coup);
-			case Ligne:
-				return getSensPourLigne(coup);
-			case Diagonale:
-				return getSensPourDiagonale(coup);
-			default:
-				assert(false);
+		case Colonne:
+			return getSensPourColonne(coup);
+		case Ligne:
+			return getSensPourLigne(coup);
+		case Diagonale:
+			return getSensPourDiagonale(coup);
+		default:
+			assert (false);
 		}
-		
+
 		return null;
 	}
 
@@ -131,6 +131,26 @@ public class PositionConverter {
 	}
 
 	private static Sens getSensPourDiagonale(Coup coup) {
+		Case caseSource = coup.getCaseSource();
+		Case caseDest = coup.getCaseDestination();
+
+		if ((caseDest.getLigne() - caseSource.getLigne() > 0)
+				&& (caseDest.getColonne() - caseSource.getColonne() > 0))
+			return Sens.DiagHautDroite;
+		
+		if ((caseDest.getLigne() - caseSource.getLigne() > 0)
+				&& (caseDest.getColonne() - caseSource.getColonne() < 0))
+			return Sens.DiagHautGauche;
+		
+		if ((caseDest.getLigne() - caseSource.getLigne() < 0)
+				&& (caseDest.getColonne() - caseSource.getColonne() > 0))
+			return Sens.DiagBasDroite;
+		
+		if ((caseDest.getLigne() - caseSource.getLigne() < 0)
+				&& (caseDest.getColonne() - caseSource.getColonne() < 0))
+			return Sens.DiagBasGauche;
+		
+		assert(false);
 		return null;
 	}
 }

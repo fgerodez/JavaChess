@@ -58,6 +58,7 @@ public class Partie {
 	 */
 	public void start() throws GameException {
 		while (!isFinished()) {
+			System.out.println(plateau);
 			Coup coup = joueurCourant.jouer();
 			if (isCoupValide(coup) && plateau.jouerCoup(coup, isAttaque(coup))) {
 				// etatPartie.verifierEtat();
