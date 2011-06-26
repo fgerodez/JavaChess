@@ -1,10 +1,12 @@
 package com.javachess.jeu;
 
 import com.javachess.exceptions.GameException;
+import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
 import com.javachess.joueurs.Joueur;
 import com.javachess.modele.pieces.Piece;
 import com.javachess.modele.pieces.Roi;
+import com.javachess.modele.plateau.Case;
 import com.javachess.modele.plateau.Echiquier;
 
 /**
@@ -20,6 +22,7 @@ public class Partie {
 	private Joueur joueur1;
 	private Joueur joueur2;
 	private Joueur joueurCourant;
+	private boolean finished = false;
 
 	/**
 	 * Initialisation de la partie
@@ -41,11 +44,10 @@ public class Partie {
 	 */
 	private Joueur joueurSuivant() {
 		Joueur joueurSuivant = null;
-		
+
 		if (joueurCourant == null) {
 			joueurSuivant = joueur1;
-		}
-		else {
+		} else {
 			if (joueurCourant == joueur1)
 				joueurSuivant = joueur2;
 			else
@@ -66,20 +68,20 @@ public class Partie {
 			Coup coup = joueurCourant.jouer();
 			Piece piece = plateau.getPiece(coup.getCaseSource());
 
-			if (isCoupValide(coup)
+			if (isCoupValide(coup, joueurCourant.getCouleur())
 					&& piece.deplacementPossible(coup, plateau, plateau
 							.isAttaque(coup.getCaseDestination(),
 									joueurCourant.getCouleur()))) {
-				
+
 				plateau.jouerCoup(coup);
-				
+
 				controlerEtat();
 				setJoueurCourant(joueurSuivant());
 			}
 		}
-	}
 
-	// TODO: Gestion de l'echec et mat
+		System.out.println("Fin de partie!!!!!");
+	}
 
 	/**
 	 * Vérifie que l'action en cours est valide : pas de déplacement sur une
@@ -89,17 +91,15 @@ public class Partie {
 	 * @param coup
 	 * @return
 	 */
-	public boolean isCoupValide(Coup coup) throws GameException {
+	public boolean isCoupValide(Coup coup, Couleur joueur) throws GameException {
 		if (!plateau.isCasesValides(coup.getCaseSource(),
 				coup.getCaseDestination()))
 			return false;
 
-		if (!plateau.isPieceDuJoueur(coup.getCaseSource(),
-				joueurCourant.getCouleur()))
+		if (!plateau.isPieceDuJoueur(coup.getCaseSource(), joueur))
 			return false;
 
-		if (!plateau.isDestOccupee(coup.getCaseDestination(),
-				joueurCourant.getCouleur()))
+		if (!plateau.isDestOccupee(coup.getCaseDestination(), joueur))
 			return false;
 
 		if (coup.getCaseDestination().equals(coup.getCaseSource()))
@@ -111,33 +111,73 @@ public class Partie {
 		return true;
 	}
 
+	/**
+	 * Contrôle la validité du coup en fonction d'un éventuel echec
+	 * 
+	 * @param coup
+	 * @return
+	 * @throws GameException
+	 */
 	public boolean verifierEchec(Coup coup) throws GameException {
 		Roi roi = (Roi) plateau.getRoi(joueurCourant.getCouleur());
 		boolean result = true;
 
 		plateau.jouerCoup(coup);
 		if (plateau
-				.caseMenacee(roi.getPosition(), joueurSuivant().getCouleur()))
+				.caseMenacee(roi.getPosition(), joueurSuivant().getCouleur())) {
+			System.out.println("Coup impossible : Echec");
 			result = false;
+		}
+
 		plateau.reculerUnCoup();
 
 		return result;
 	}
-	
-	public void controlerEtat() {
-		Roi roi = (Roi) plateau.getRoi(joueurCourant.getCouleur());
-		
+
+	/**
+	 * Vérifie l'état du jeu après le coup du joueur courant (notamment
+	 * l'évènement Echec et mat)
+	 * 
+	 */
+	public void controlerEtat() throws GameException {
+		Roi roi = (Roi) plateau.getRoi(joueurSuivant().getCouleur());
+
 		if (plateau
-				.caseMenacee(roi.getPosition(), joueurSuivant().getCouleur()))
+				.caseMenacee(roi.getPosition(), joueurSuivant().getCouleur())) {
 			roi.setEchec(true);
-		else
+			System.out.println("Echec");
+		} else
 			roi.setEchec(false);
-		
-		//TODO : if(!hasSolution) return echecEtMat!!
+
+		if (roi.isEchec() && isEchecEtMat())
+			setFinished(true);
+	}
+
+	public boolean isEchecEtMat() throws GameException {
+		Piece[] pieces = plateau.getPions(joueurSuivant().getCouleur());
+		Case[] cases = plateau.getCases();
+
+		for (int iPiece = 0; iPiece < pieces.length; iPiece++) {
+			for (int iCase = 0; iCase < cases.length; iCase++) {
+				Coup coup = new Coup(pieces[iPiece].getPosition(), cases[iCase]);
+				
+				if (isCoupValide(coup, joueurSuivant().getCouleur())
+						&& pieces[iPiece].deplacementPossible(coup, plateau,
+								plateau.isAttaque(coup.getCaseDestination(),
+										joueurSuivant().getCouleur())))
+					return false;
+			}
+		}
+
+		return true;
 	}
 
 	public boolean isFinished() {
-		return false;
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
 	}
 
 	public void setJoueurCourant(Joueur joueur) {

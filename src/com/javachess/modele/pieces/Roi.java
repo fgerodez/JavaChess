@@ -5,12 +5,13 @@ import com.javachess.helpers.Coup;
 import com.javachess.helpers.PositionConverter;
 import com.javachess.modele.plateau.Case;
 import com.javachess.modele.plateau.Echiquier;
-//TODO: le rock
-//TODO: ne pas pouvoir se déplacer si le roi ennemi est sur une case adjacente
+
+//TODO: le rock : le roi se déplace de deux cases en ligne vers la tour. Aucune case ne doit être menacée et ni la tour ni le roi ne doivent avoir bougés
+
 public class Roi extends Piece {
 
 	private boolean isEchec = false;
-	
+
 	public Roi(Couleur couleur, Case position) {
 		super(couleur, position);
 	}
@@ -24,14 +25,14 @@ public class Roi extends Piece {
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
 		Case caseSrc = coup.getCaseSource();
 		Case caseDest = coup.getCaseDestination();
-		
+
 		Case[] casesPossible = PositionConverter.getCasesAdjacentes(caseSrc);
-		
+
 		for (int index = 0; index < casesPossible.length; index++) {
 			if (casesPossible[index].equals(caseDest))
 				return true;
 		}
-		
+
 		return false;
 	}
 

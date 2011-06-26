@@ -106,13 +106,16 @@ public class PositionConverter {
 		boolean colonne = false;
 		boolean ligne = false;
 
+		int deltaY = Math.abs(caseDestination.getLigne() - caseSource.getLigne());
+		int deltaX = Math.abs(caseDestination.getColonne() - caseSource.getColonne());
+		
 		if (caseDestination.getLigne() != caseSource.getLigne())
 			colonne = true;
 
 		if (caseDestination.getColonne() != caseSource.getColonne())
 			ligne = true;
 
-		if (ligne && colonne)
+		if (ligne && colonne && (deltaX == deltaY))
 			return Direction.Diagonale;
 
 		if (ligne)
@@ -120,8 +123,6 @@ public class PositionConverter {
 
 		if (colonne)
 			return Direction.Colonne;
-
-		assert (false);
 
 		return null;
 	}
@@ -140,10 +141,8 @@ public class PositionConverter {
 		case Diagonale:
 			return getSensPourDiagonale(coup);
 		default:
-			assert (false);
+			return null;
 		}
-
-		return null;
 	}
 
 	private static Sens getSensPourLigne(Coup coup) {

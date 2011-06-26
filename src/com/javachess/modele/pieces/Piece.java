@@ -5,8 +5,6 @@ import com.javachess.helpers.Coup;
 import com.javachess.modele.plateau.Case;
 import com.javachess.modele.plateau.Echiquier;
 
-//TODO: une piece A un mode de déplacement ? Ca pourrait être plus pratique...
-
 /**
  * Cette classe représente le template d'une pièce d'échec. Chaque pièce est
  * représentée par une couleur et une position.

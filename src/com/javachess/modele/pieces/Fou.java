@@ -22,6 +22,9 @@ public class Fou extends Piece {
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
 		Sens sens = PositionConverter.getSensCoup(coup);
 
+		if (sens == null)
+			return false;
+		
 		if (sens == Sens.DiagBasDroite || sens == Sens.DiagBasGauche
 				|| sens == Sens.DiagHautDroite || sens == Sens.DiagHautGauche) {
 

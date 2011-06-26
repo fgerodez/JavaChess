@@ -1,5 +1,7 @@
 package com.javachess.modele.plateau;
 
+import java.util.ArrayList;
+
 import com.javachess.exceptions.GameException;
 import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
@@ -58,11 +60,11 @@ public class Echiquier {
 
 		Piece reineBlanche = new Reine(Couleur.WHITE,
 				PositionConverter.convertIndexEnCase(3));
-		echiquier[3] = reineBlanche;
+		echiquier[4] = reineBlanche;
 
 		Piece roiBlanc = new Roi(Couleur.WHITE,
 				PositionConverter.convertIndexEnCase(4));
-		echiquier[4] = roiBlanc;
+		echiquier[3] = roiBlanc;
 
 		for (int i = 8; i <= 15; i++) {
 			Piece pionBlanc = new Pion(Couleur.WHITE,
@@ -92,11 +94,11 @@ public class Echiquier {
 
 		Piece reine = new Reine(Couleur.BLACK,
 				PositionConverter.convertIndexEnCase(59));
-		echiquier[59] = reine;
+		echiquier[60] = reine;
 
 		Piece roi = new Roi(Couleur.BLACK,
 				PositionConverter.convertIndexEnCase(60));
-		echiquier[60] = roi;
+		echiquier[59] = roi;
 
 		for (int i = 48; i <= 55; i++) {
 			Piece pion = new Pion(Couleur.BLACK,
@@ -137,12 +139,21 @@ public class Echiquier {
 	 */
 	public void reculerUnCoup() {
 		if (dernierCoup != null) {
-			this.getEchiquier()[PositionConverter.convertCaseEnIndex(dernierCoup
-					.getCaseSource())] = dernierCoup.getPieceSource();
-			this.getEchiquier()[PositionConverter.convertCaseEnIndex(dernierCoup
-					.getCaseDestination())] = dernierCoup.getPieceDestination();
+			this.getEchiquier()[PositionConverter
+					.convertCaseEnIndex(dernierCoup.getCaseSource())] = dernierCoup
+					.getPieceSource();
+			this.getEchiquier()[PositionConverter
+					.convertCaseEnIndex(dernierCoup.getCaseDestination())] = dernierCoup
+					.getPieceDestination();
+
+			dernierCoup.getPieceSource().setPosition(
+					dernierCoup.getCaseSource());
 			
-			this.dernierCoup = null;
+			if (dernierCoup.getPieceDestination() != null)
+				dernierCoup.getPieceDestination().setPosition(
+						dernierCoup.getCaseDestination());
+
+			dernierCoup = null;
 		}
 	}
 
@@ -292,7 +303,7 @@ public class Echiquier {
 	public boolean caseMenacee(Case nCase, Couleur couleurAttaquant) {
 		for (int index = 0; index < echiquier.length; index++) {
 			Piece piece = echiquier[index];
-
+			Case test = PositionConverter.convertIndexEnCase(index);
 			if (piece != null && piece.getColor() == couleurAttaquant) {
 				if (piece.deplacementPossible(
 						new Coup(PositionConverter.convertIndexEnCase(index),
@@ -320,6 +331,41 @@ public class Echiquier {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Renvoie un tableau contenant l'ensemble des pions d'une couleur prŽsents
+	 * sur l'Žchiquier
+	 * 
+	 * @param couleur
+	 * @return
+	 */
+	public Piece[] getPions(Couleur couleur) {
+		ArrayList<Piece> pieces = new ArrayList<Piece>();
+
+		for (int index = 0; index < echiquier.length; index++) {
+			Piece piece = echiquier[index];
+
+			if (piece != null && piece.getColor() == couleur)
+				pieces.add(piece);
+		}
+
+		return pieces.toArray(new Piece[pieces.size()]);
+	}
+
+	/**
+	 * Renvoie toutes les cases de l'Žchiquier
+	 * 
+	 * @return
+	 */
+	public Case[] getCases() {
+		ArrayList<Case> cases = new ArrayList<Case>();
+
+		for (int index = 0; index < echiquier.length; index++) {
+			cases.add(PositionConverter.convertIndexEnCase(index));
+		}
+
+		return cases.toArray(new Case[cases.size()]);
 	}
 
 	@Override

@@ -22,6 +22,9 @@ public class Reine extends Piece {
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
 		Sens sens = PositionConverter.getSensCoup(coup);
 		
+		if (sens == null)
+			return false;
+		
 		return echiquier.caseIntermVides(coup.getCaseSource(),
 				coup.getCaseDestination(), sens);
 	}
