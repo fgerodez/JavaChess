@@ -22,6 +22,7 @@ import com.javachess.modele.pieces.Tour;
 public class Echiquier {
 
 	private Piece[] echiquier = new Piece[64];
+	private Coup dernierCoup = null;
 
 	public Echiquier() {
 		super();
@@ -32,32 +33,76 @@ public class Echiquier {
 	 * Crée les 64 cases du plateau
 	 */
 	public void initialisePlateau() {
-		Piece roiB = new Roi(Couleur.WHITE);
-		roiB.setPosition(new Case(4, 1));
-		Piece reineB = new Reine(Couleur.WHITE);
-		Piece fouB = new Fou(Couleur.WHITE);
-		Piece cavalierB = new Cavalier(Couleur.WHITE);
-		Piece tourB = new Tour(Couleur.WHITE);
-		Piece pionB = new Pion(Couleur.WHITE);
+		preparePionsBlancs();
+		preparePionsNoirs();
+	}
 
-		Piece roiN = new Roi(Couleur.BLACK);
-		roiN.setPosition(new Case(4, 8));
-		Piece reineN = new Reine(Couleur.BLACK);
-		Piece fouN = new Fou(Couleur.BLACK);
-		Piece cavalierN = new Cavalier(Couleur.BLACK);
-		Piece tourN = new Tour(Couleur.BLACK);
-		Piece pionN = new Pion(Couleur.BLACK);
+	private void preparePionsBlancs() {
+		for (int i = 0; i <= 7; i += 7) {
+			Piece tourBlanche = new Tour(Couleur.WHITE,
+					PositionConverter.convertIndexEnCase(i));
+			echiquier[i] = tourBlanche;
+		}
 
-		Piece[] plateau = { tourB, cavalierB, fouB, roiB, reineB, fouB,
-				cavalierB, tourB, pionB, pionB, pionB, pionB, pionB, pionB,
-				pionB, pionB, null, null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null, null, null, null,
-				null, null, null, null, null, null, null, null, null, null,
-				null, null, null, null, pionN, pionN, pionN, pionN, pionN,
-				pionN, pionN, pionN, tourN, cavalierN, fouN, roiN, reineN,
-				fouN, cavalierN, tourN };
+		for (int i = 1; i <= 6; i += 5) {
+			Piece cavalierBlanc = new Cavalier(Couleur.WHITE,
+					PositionConverter.convertIndexEnCase(i));
+			echiquier[i] = cavalierBlanc;
+		}
 
-		echiquier = plateau;
+		for (int i = 2; i <= 5; i += 3) {
+			Piece fouBlanc = new Fou(Couleur.WHITE,
+					PositionConverter.convertIndexEnCase(i));
+			echiquier[i] = fouBlanc;
+		}
+
+		Piece reineBlanche = new Reine(Couleur.WHITE,
+				PositionConverter.convertIndexEnCase(3));
+		echiquier[3] = reineBlanche;
+
+		Piece roiBlanc = new Roi(Couleur.WHITE,
+				PositionConverter.convertIndexEnCase(4));
+		echiquier[4] = roiBlanc;
+
+		for (int i = 8; i <= 15; i++) {
+			Piece pionBlanc = new Pion(Couleur.WHITE,
+					PositionConverter.convertIndexEnCase(i));
+			echiquier[i] = pionBlanc;
+		}
+	}
+
+	private void preparePionsNoirs() {
+		for (int i = 56; i <= 63; i += 7) {
+			Piece tour = new Tour(Couleur.BLACK,
+					PositionConverter.convertIndexEnCase(i));
+			echiquier[i] = tour;
+		}
+
+		for (int i = 57; i <= 62; i += 5) {
+			Piece cavalier = new Cavalier(Couleur.BLACK,
+					PositionConverter.convertIndexEnCase(i));
+			echiquier[i] = cavalier;
+		}
+
+		for (int i = 58; i <= 61; i += 3) {
+			Piece fou = new Fou(Couleur.BLACK,
+					PositionConverter.convertIndexEnCase(i));
+			echiquier[i] = fou;
+		}
+
+		Piece reine = new Reine(Couleur.BLACK,
+				PositionConverter.convertIndexEnCase(59));
+		echiquier[59] = reine;
+
+		Piece roi = new Roi(Couleur.BLACK,
+				PositionConverter.convertIndexEnCase(60));
+		echiquier[60] = roi;
+
+		for (int i = 48; i <= 55; i++) {
+			Piece pion = new Pion(Couleur.BLACK,
+					PositionConverter.convertIndexEnCase(i));
+			echiquier[i] = pion;
+		}
 	}
 
 	/**
@@ -77,10 +122,28 @@ public class Echiquier {
 		if (piece == null)
 			throw new GameException("Etat de l'échiquier incohérent");
 
+		coup.setPieceSource(this.getEchiquier()[indexSource]);
+		coup.setPieceDestination(this.getEchiquier()[indexDest]);
+
 		this.getEchiquier()[indexSource] = null;
 		this.getEchiquier()[indexDest] = piece;
+		this.setDernierCoup(coup);
 
 		piece.setPosition(coup.getCaseDestination());
+	}
+
+	/**
+	 * Annule le coup précédent
+	 */
+	public void reculerUnCoup() {
+		if (dernierCoup != null) {
+			this.getEchiquier()[PositionConverter.convertCaseEnIndex(dernierCoup
+					.getCaseSource())] = dernierCoup.getPieceSource();
+			this.getEchiquier()[PositionConverter.convertCaseEnIndex(dernierCoup
+					.getCaseDestination())] = dernierCoup.getPieceDestination();
+			
+			this.dernierCoup = null;
+		}
 	}
 
 	/**
@@ -193,7 +256,7 @@ public class Echiquier {
 
 		if (getEchiquier()[indexSource] == null)
 			return false;
-		
+
 		if (getEchiquier()[indexSource].getColor().equals(joueurCouleur))
 			return true;
 
@@ -243,6 +306,7 @@ public class Echiquier {
 
 	/**
 	 * Retourne le roi de la couleur spécifiée
+	 * 
 	 * @param couleur
 	 * @return
 	 */
@@ -294,5 +358,13 @@ public class Echiquier {
 
 	public void setEchiquier(Piece[] echiquier) {
 		this.echiquier = echiquier;
+	}
+
+	public Coup getDernierCoup() {
+		return dernierCoup;
+	}
+
+	public void setDernierCoup(Coup dernierCoup) {
+		this.dernierCoup = dernierCoup;
 	}
 }

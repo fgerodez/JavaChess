@@ -59,11 +59,33 @@ public class PositionConverter {
 		return new Case(nvlColonne, nvlLigne);
 	}
 
+	public static Case getCaseHaut(Case nCase, int nombre) {
+		Case caseRes = new Case(nCase.getColonne(), nCase.getLigne());
+
+		while (nombre != 0) {
+			caseRes = getCaseHaut(caseRes);
+			nombre--;
+		}
+
+		return caseRes;
+	}
+
 	public static Case getCaseBas(Case nCase) {
 		int nvlLigne = nCase.getLigne() - 1;
 		int nvlColonne = nCase.getColonne();
 
 		return new Case(nvlColonne, nvlLigne);
+	}
+	
+	public static Case getCaseBas(Case nCase, int nombre) {
+		Case caseRes = new Case(nCase.getColonne(), nCase.getLigne());
+
+		while (nombre != 0) {
+			caseRes = getCaseBas(caseRes);
+			nombre--;
+		}
+
+		return caseRes;
 	}
 
 	public static Case getCaseGauche(Case nCase) {

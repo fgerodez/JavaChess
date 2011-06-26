@@ -9,8 +9,8 @@ import com.javachess.modele.plateau.Echiquier;
 
 public class Cavalier extends Piece {
 
-	public Cavalier(Couleur couleur) {
-		super(couleur);
+	public Cavalier(Couleur couleur, Case position) {
+		super(couleur, position);
 	}
 
 	@Override

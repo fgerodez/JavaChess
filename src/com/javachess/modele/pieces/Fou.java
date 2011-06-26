@@ -4,12 +4,13 @@ import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
 import com.javachess.helpers.PositionConverter;
 import com.javachess.helpers.Sens;
+import com.javachess.modele.plateau.Case;
 import com.javachess.modele.plateau.Echiquier;
 
 public class Fou extends Piece {
 
-	public Fou(Couleur couleur) {
-		super(couleur);
+	public Fou(Couleur couleur, Case position) {
+		super(couleur, position);
 	}
 
 	@Override

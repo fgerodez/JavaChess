@@ -4,12 +4,13 @@ import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
 import com.javachess.helpers.PositionConverter;
 import com.javachess.helpers.Sens;
+import com.javachess.modele.plateau.Case;
 import com.javachess.modele.plateau.Echiquier;
 //TODO : le rock
 public class Tour extends Piece {
 
-	public Tour(Couleur couleur) {
-		super(couleur);
+	public Tour(Couleur couleur, Case position) {
+		super(couleur, position);
 	}
 
 	@Override

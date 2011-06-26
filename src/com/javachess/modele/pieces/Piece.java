@@ -16,9 +16,12 @@ import com.javachess.modele.plateau.Echiquier;
 public abstract class Piece {
 	private Couleur color;
 	private Case position;
+	private Case positionInitiale;
 	
-	public Piece(Couleur couleur) {
+	public Piece(Couleur couleur, Case position) {
 		this.color = couleur;
+		this.position = position;
+		this.positionInitiale = position;
 	}
 	
 	/**
@@ -67,5 +70,13 @@ public abstract class Piece {
 
 	public void setPosition(Case position) {
 		this.position = position;
+	}
+
+	public Case getPositionInitiale() {
+		return positionInitiale;
+	}
+
+	public void setPositionInitiale(Case positionInitiale) {
+		this.positionInitiale = positionInitiale;
 	}
 }

@@ -79,7 +79,7 @@ public class Partie {
 		}
 	}
 
-	// TODO: Gestion de l'echec, de l'echec et mat
+	// TODO: Gestion de l'echec et mat
 
 	/**
 	 * Vérifie que l'action en cours est valide : pas de déplacement sur une
@@ -119,9 +119,7 @@ public class Partie {
 		if (plateau
 				.caseMenacee(roi.getPosition(), joueurSuivant().getCouleur()))
 			result = false;
-		Coup coupInverse = new Coup(coup.getCaseDestination(),
-				coup.getCaseSource());
-		plateau.jouerCoup(coupInverse);
+		plateau.reculerUnCoup();
 
 		return result;
 	}

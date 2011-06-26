@@ -11,8 +11,8 @@ public class Roi extends Piece {
 
 	private boolean isEchec = false;
 	
-	public Roi(Couleur couleur) {
-		super(couleur);
+	public Roi(Couleur couleur, Case position) {
+		super(couleur, position);
 	}
 
 	@Override

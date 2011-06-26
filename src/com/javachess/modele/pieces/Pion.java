@@ -3,12 +3,13 @@ package com.javachess.modele.pieces;
 import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
 import com.javachess.helpers.PositionConverter;
+import com.javachess.modele.plateau.Case;
 import com.javachess.modele.plateau.Echiquier;
-// TODO: déplacement initial de 2 cases permis.
+
 public class Pion extends Piece {
 
-	public Pion(Couleur couleur) {
-		super(couleur);
+	public Pion(Couleur couleur, Case position) {
+		super(couleur, position);
 	}
 
 	@Override
@@ -35,9 +36,19 @@ public class Pion extends Piece {
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
 
 		if (this.getColor() == Couleur.WHITE) {
+			if (getPositionInitiale().equals(getPosition())) {
+				if (coup.getCaseDestination().equals(PositionConverter.getCaseHaut(coup.getCaseSource(), 2)))
+					return true;
+			}
+			
 			return coup.getCaseDestination().equals(
 					PositionConverter.getCaseHaut(coup.getCaseSource()));
 		} else {
+			if (getPositionInitiale().equals(getPosition())) {
+				if (coup.getCaseDestination().equals(PositionConverter.getCaseBas(coup.getCaseSource(), 2)))
+					return true;
+			}
+			
 			return coup.getCaseDestination().equals(
 					PositionConverter.getCaseBas(coup.getCaseSource()));
 		}
