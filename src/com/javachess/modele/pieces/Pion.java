@@ -34,9 +34,6 @@ public class Pion extends Piece {
 	@Override
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
 
-		if (!echiquier.isCaseVide(coup.getCaseDestination()))
-			return false;
-
 		if (this.getColor() == Couleur.WHITE) {
 			return coup.getCaseDestination().equals(
 					PositionConverter.getCaseHaut(coup.getCaseSource()));

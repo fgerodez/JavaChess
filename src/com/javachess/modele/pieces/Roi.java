@@ -6,7 +6,7 @@ import com.javachess.helpers.PositionConverter;
 import com.javachess.modele.plateau.Case;
 import com.javachess.modele.plateau.Echiquier;
 //TODO: le rock
-//TODO: ne pas pouvoir se déplace si le roi ennemi est sur une case adjacente
+//TODO: ne pas pouvoir se déplacer si le roi ennemi est sur une case adjacente
 public class Roi extends Piece {
 
 	public Roi(Couleur couleur) {
