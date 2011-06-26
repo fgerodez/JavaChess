@@ -4,7 +4,7 @@ import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
 import com.javachess.helpers.PositionConverter;
 import com.javachess.modele.plateau.Echiquier;
-
+// TODO: déplacement initial de 2 cases permis.
 public class Pion extends Piece {
 
 	public Pion(Couleur couleur) {

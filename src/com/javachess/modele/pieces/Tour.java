@@ -5,7 +5,7 @@ import com.javachess.helpers.Coup;
 import com.javachess.helpers.PositionConverter;
 import com.javachess.helpers.Sens;
 import com.javachess.modele.plateau.Echiquier;
-
+//TODO : le rock
 public class Tour extends Piece {
 
 	public Tour(Couleur couleur) {
@@ -24,7 +24,7 @@ public class Tour extends Piece {
 		if (sens == Sens.Haut || sens == Sens.Bas || sens == Sens.Droite
 				|| sens == Sens.Gauche) {
 
-			return echiquier.caseLignesIntermVides(coup.getCaseSource(),
+			return echiquier.caseIntermVides(coup.getCaseSource(),
 					coup.getCaseDestination(), sens);
 		}
 

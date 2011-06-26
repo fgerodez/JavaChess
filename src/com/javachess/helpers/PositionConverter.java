@@ -10,6 +10,18 @@ public class PositionConverter {
 				* lettres.length;
 	}
 
+	public static Case[] getCasesAdjacentes(Case nCase) {
+		return new Case[] { getCaseDiagHautGauche(nCase),
+							getCaseDiagHautDroite(nCase),
+							getCaseDiagBasGauche(nCase),
+							getCaseDiagBasDroite(nCase),
+							getCaseHaut(nCase),
+							getCaseBas(nCase),
+							getCaseDroite(nCase),
+							getCaseGauche(nCase)
+						  };
+	}
+
 	public static Case getCaseDiagHautGauche(Case nCase) {
 		int nvlLigne = nCase.getLigne() + 1;
 		int nvlColonne = nCase.getColonne() - 1;
@@ -137,20 +149,20 @@ public class PositionConverter {
 		if ((caseDest.getLigne() - caseSource.getLigne() > 0)
 				&& (caseDest.getColonne() - caseSource.getColonne() > 0))
 			return Sens.DiagHautDroite;
-		
+
 		if ((caseDest.getLigne() - caseSource.getLigne() > 0)
 				&& (caseDest.getColonne() - caseSource.getColonne() < 0))
 			return Sens.DiagHautGauche;
-		
+
 		if ((caseDest.getLigne() - caseSource.getLigne() < 0)
 				&& (caseDest.getColonne() - caseSource.getColonne() > 0))
 			return Sens.DiagBasDroite;
-		
+
 		if ((caseDest.getLigne() - caseSource.getLigne() < 0)
 				&& (caseDest.getColonne() - caseSource.getColonne() < 0))
 			return Sens.DiagBasGauche;
-		
-		assert(false);
+
+		assert (false);
 		return null;
 	}
 }

@@ -98,7 +98,7 @@ public class Partie {
 				&& plateau.getEchiquier()[indexDestination].getColor().equals(
 						joueurCourant.getCouleur()))
 			return false;
-		
+
 		if (coup.getCaseDestination().equals(coup.getCaseSource()))
 			return false;
 

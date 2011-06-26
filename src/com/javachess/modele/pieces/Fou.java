@@ -24,7 +24,7 @@ public class Fou extends Piece {
 		if (sens == Sens.DiagBasDroite || sens == Sens.DiagBasGauche
 				|| sens == Sens.DiagHautDroite || sens == Sens.DiagHautGauche) {
 
-			return echiquier.caseLignesIntermVides(coup.getCaseSource(),
+			return echiquier.caseIntermVides(coup.getCaseSource(),
 					coup.getCaseDestination(), sens);
 		}
 

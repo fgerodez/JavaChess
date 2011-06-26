@@ -2,26 +2,34 @@ package com.javachess.modele.pieces;
 
 import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
+import com.javachess.helpers.PositionConverter;
+import com.javachess.modele.plateau.Case;
 import com.javachess.modele.plateau.Echiquier;
-
+//TODO: le rock
+//TODO: ne pas pouvoir se déplace si le roi ennemi est sur une case adjacente
 public class Roi extends Piece {
 
 	public Roi(Couleur couleur) {
 		super(couleur);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean attaquePossible(Coup coup, Echiquier echiquier) {
-		// TODO Auto-generated method stub
-		return false;
+		return mouvementPossible(coup, echiquier);
 	}
 
 	@Override
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
-		// TODO Auto-generated method stub
+		Case caseSrc = coup.getCaseSource();
+		Case caseDest = coup.getCaseDestination();
+		
+		Case[] casesPossible = PositionConverter.getCasesAdjacentes(caseSrc);
+		
+		for (int index = 0; index < casesPossible.length; index++) {
+			if (casesPossible[index].equals(caseDest))
+				return true;
+		}
+		
 		return false;
 	}
-
-
 }

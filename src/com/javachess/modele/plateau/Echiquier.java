@@ -125,16 +125,18 @@ public class Echiquier {
 	 *            Le sens de dŽplacement
 	 * @return True si toutes les cases sont vides. False sinon
 	 */
-	public boolean caseLignesIntermVides(Case caseSrc, Case caseDst, Sens sens) {
+	public boolean caseIntermVides(Case caseSrc, Case caseDst, Sens sens) {
 		Case caseInter = new Case(caseSrc.getColonne(), caseSrc.getLigne());
 
-		while (caseInter.getLigne() != caseDst.getLigne()) {
+		while (!caseInter.equals(caseDst)) {
 			caseInter.setLigne(caseInter.getLigne() + sens.getModifLigne());
 			caseInter.setColonne(caseInter.getColonne()
 					+ sens.getModifColonne());
-
-			if (!isCaseVide(caseInter))
-				return false;
+			
+			if (!caseInter.equals(caseDst)) {
+				if (!isCaseVide(caseInter))
+					return false;
+			}
 		}
 
 		return true;
@@ -144,22 +146,23 @@ public class Echiquier {
 	public String toString() {
 		StringBuilder echiquierRep = new StringBuilder("");
 		int compteur = 0;
-		
+
 		for (int index = echiquier.length - 1; index >= 0; index--) {
-			
+
 			echiquierRep.append("|");
 
 			if (echiquier[index] != null) {
-				echiquierRep
-						.append(echiquier[index].getClass().getSimpleName().substring(0,2));
-				echiquierRep.append(echiquier[index].getColor().toString().substring(0,1));
+				echiquierRep.append(echiquier[index].getClass().getSimpleName()
+						.substring(0, 2));
+				echiquierRep.append(echiquier[index].getColor().toString()
+						.substring(0, 1));
 			} else
 				echiquierRep.append("---");
 
 			echiquierRep.append("|");
-			
+
 			compteur++;
-			
+
 			if (compteur == 8) {
 				echiquierRep.append("\n");
 				compteur = 0;
