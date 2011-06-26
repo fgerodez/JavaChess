@@ -9,6 +9,8 @@ import com.javachess.modele.plateau.Echiquier;
 //TODO: ne pas pouvoir se déplacer si le roi ennemi est sur une case adjacente
 public class Roi extends Piece {
 
+	private boolean isEchec = false;
+	
 	public Roi(Couleur couleur) {
 		super(couleur);
 	}
@@ -31,5 +33,13 @@ public class Roi extends Piece {
 		}
 		
 		return false;
+	}
+
+	public boolean isEchec() {
+		return isEchec;
+	}
+
+	public void setEchec(boolean isEchec) {
+		this.isEchec = isEchec;
 	}
 }

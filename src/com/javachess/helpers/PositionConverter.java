@@ -10,16 +10,18 @@ public class PositionConverter {
 				* lettres.length;
 	}
 
+	public static Case convertIndexEnCase(int index) {
+		int colonne = index - (lettres.length * (index / lettres.length)) + 1;
+		int ligne = index / lettres.length + 1;
+
+		return new Case(colonne, ligne);
+	}
+
 	public static Case[] getCasesAdjacentes(Case nCase) {
 		return new Case[] { getCaseDiagHautGauche(nCase),
-							getCaseDiagHautDroite(nCase),
-							getCaseDiagBasGauche(nCase),
-							getCaseDiagBasDroite(nCase),
-							getCaseHaut(nCase),
-							getCaseBas(nCase),
-							getCaseDroite(nCase),
-							getCaseGauche(nCase)
-						  };
+				getCaseDiagHautDroite(nCase), getCaseDiagBasGauche(nCase),
+				getCaseDiagBasDroite(nCase), getCaseHaut(nCase),
+				getCaseBas(nCase), getCaseDroite(nCase), getCaseGauche(nCase) };
 	}
 
 	public static Case getCaseDiagHautGauche(Case nCase) {

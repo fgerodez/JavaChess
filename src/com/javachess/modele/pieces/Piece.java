@@ -2,6 +2,7 @@ package com.javachess.modele.pieces;
 
 import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
+import com.javachess.modele.plateau.Case;
 import com.javachess.modele.plateau.Echiquier;
 
 //TODO: une piece A un mode de déplacement ? Ca pourrait être plus pratique...
@@ -14,6 +15,7 @@ import com.javachess.modele.plateau.Echiquier;
  */
 public abstract class Piece {
 	private Couleur color;
+	private Case position;
 	
 	public Piece(Couleur couleur) {
 		this.color = couleur;
@@ -57,5 +59,13 @@ public abstract class Piece {
 
 	public void setColor(Couleur color) {
 		this.color = color;
+	}
+
+	public Case getPosition() {
+		return position;
+	}
+
+	public void setPosition(Case position) {
+		this.position = position;
 	}
 }

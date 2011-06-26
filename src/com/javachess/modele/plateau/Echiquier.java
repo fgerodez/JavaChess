@@ -33,6 +33,7 @@ public class Echiquier {
 	 */
 	public void initialisePlateau() {
 		Piece roiB = new Roi(Couleur.WHITE);
+		roiB.setPosition(new Case(4, 1));
 		Piece reineB = new Reine(Couleur.WHITE);
 		Piece fouB = new Fou(Couleur.WHITE);
 		Piece cavalierB = new Cavalier(Couleur.WHITE);
@@ -40,6 +41,7 @@ public class Echiquier {
 		Piece pionB = new Pion(Couleur.WHITE);
 
 		Piece roiN = new Roi(Couleur.BLACK);
+		roiN.setPosition(new Case(4, 8));
 		Piece reineN = new Reine(Couleur.BLACK);
 		Piece fouN = new Fou(Couleur.BLACK);
 		Piece cavalierN = new Cavalier(Couleur.BLACK);
@@ -64,7 +66,7 @@ public class Echiquier {
 	 * @param coup
 	 * @throws GameException
 	 */
-	public boolean jouerCoup(Coup coup) throws GameException {
+	public void jouerCoup(Coup coup) throws GameException {
 		int indexSource = PositionConverter.convertCaseEnIndex(coup
 				.getCaseSource());
 		int indexDest = PositionConverter.convertCaseEnIndex(coup
@@ -78,7 +80,7 @@ public class Echiquier {
 		this.getEchiquier()[indexSource] = null;
 		this.getEchiquier()[indexDest] = piece;
 
-		return true;
+		piece.setPosition(coup.getCaseDestination());
 	}
 
 	/**
@@ -163,8 +165,8 @@ public class Echiquier {
 	}
 
 	/**
-	 * Vérifie que la case caseDest contient une pièce de la même
-	 * couleur que le paramètre joueurCouleur
+	 * Vérifie que la case caseDest contient une pièce de la même couleur que le
+	 * paramètre joueurCouleur
 	 * 
 	 * @param indexDestination
 	 * @return
@@ -179,7 +181,7 @@ public class Echiquier {
 
 		return true;
 	}
-	
+
 	/**
 	 * Vérifie que la pièce sélectionné par le joueur lui appartient.
 	 * 
@@ -188,9 +190,11 @@ public class Echiquier {
 	 */
 	public boolean isPieceDuJoueur(Case caseSrc, Couleur joueurCouleur) {
 		int indexSource = PositionConverter.convertCaseEnIndex(caseSrc);
+
+		if (getEchiquier()[indexSource] == null)
+			return false;
 		
-		if (getEchiquier()[indexSource].getColor().equals(
-				joueurCouleur))
+		if (getEchiquier()[indexSource].getColor().equals(joueurCouleur))
 			return true;
 
 		return false;
@@ -208,13 +212,52 @@ public class Echiquier {
 
 		Piece piece = getEchiquier()[indexDestination];
 
-		if (piece != null
-				&& !piece.getColor().equals(joueurCouleur))
+		if (piece != null && !piece.getColor().equals(joueurCouleur))
 			return true;
 
 		return false;
 	}
-	
+
+	/**
+	 * Renvoie vraie si la case ciblée peut-être attaquée au tour suivant par
+	 * l'adversaire
+	 * 
+	 * @param nCase
+	 * @param couleurAttaquant
+	 * @return
+	 */
+	public boolean caseMenacee(Case nCase, Couleur couleurAttaquant) {
+		for (int index = 0; index < echiquier.length; index++) {
+			Piece piece = echiquier[index];
+
+			if (piece != null && piece.getColor() == couleurAttaquant) {
+				if (piece.deplacementPossible(
+						new Coup(PositionConverter.convertIndexEnCase(index),
+								nCase), this, true))
+					return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Retourne le roi de la couleur spécifiée
+	 * @param couleur
+	 * @return
+	 */
+	public Piece getRoi(Couleur couleur) {
+		for (int index = 0; index < echiquier.length; index++) {
+			Piece piece = echiquier[index];
+
+			if (piece != null && piece instanceof Roi
+					&& piece.getColor() == couleur)
+				return piece;
+		}
+
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder echiquierRep = new StringBuilder("");

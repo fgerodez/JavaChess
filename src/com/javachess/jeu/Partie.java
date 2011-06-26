@@ -2,9 +2,9 @@ package com.javachess.jeu;
 
 import com.javachess.exceptions.GameException;
 import com.javachess.helpers.Coup;
-import com.javachess.helpers.PositionConverter;
 import com.javachess.joueurs.Joueur;
 import com.javachess.modele.pieces.Piece;
+import com.javachess.modele.pieces.Roi;
 import com.javachess.modele.plateau.Echiquier;
 
 /**
@@ -33,22 +33,26 @@ public class Partie {
 
 		this.plateau = new Echiquier();
 
-		joueurSuivant();
+		setJoueurCourant(joueurSuivant());
 	}
 
 	/**
 	 * SŽlectionne le joueur suivant
 	 */
-	private void joueurSuivant() {
+	private Joueur joueurSuivant() {
+		Joueur joueurSuivant = null;
+		
 		if (joueurCourant == null) {
-			joueurCourant = joueur1;
-			return;
+			joueurSuivant = joueur1;
+		}
+		else {
+			if (joueurCourant == joueur1)
+				joueurSuivant = joueur2;
+			else
+				joueurSuivant = joueur1;
 		}
 
-		if (joueurCourant == joueur1)
-			joueurCourant = joueur2;
-		else
-			joueurCourant = joueur1;
+		return joueurSuivant;
 	}
 
 	/**
@@ -66,9 +70,11 @@ public class Partie {
 					&& piece.deplacementPossible(coup, plateau, plateau
 							.isAttaque(coup.getCaseDestination(),
 									joueurCourant.getCouleur()))) {
+				
 				plateau.jouerCoup(coup);
-				// etatPartie.verifierEtat();
-				joueurSuivant();
+				
+				controlerEtat();
+				setJoueurCourant(joueurSuivant());
 			}
 		}
 	}
@@ -83,7 +89,7 @@ public class Partie {
 	 * @param coup
 	 * @return
 	 */
-	public boolean isCoupValide(Coup coup) {
+	public boolean isCoupValide(Coup coup) throws GameException {
 		if (!plateau.isCasesValides(coup.getCaseSource(),
 				coup.getCaseDestination()))
 			return false;
@@ -99,10 +105,44 @@ public class Partie {
 		if (coup.getCaseDestination().equals(coup.getCaseSource()))
 			return false;
 
+		if (!verifierEchec(coup))
+			return false;
+
 		return true;
+	}
+
+	public boolean verifierEchec(Coup coup) throws GameException {
+		Roi roi = (Roi) plateau.getRoi(joueurCourant.getCouleur());
+		boolean result = true;
+
+		plateau.jouerCoup(coup);
+		if (plateau
+				.caseMenacee(roi.getPosition(), joueurSuivant().getCouleur()))
+			result = false;
+		Coup coupInverse = new Coup(coup.getCaseDestination(),
+				coup.getCaseSource());
+		plateau.jouerCoup(coupInverse);
+
+		return result;
+	}
+	
+	public void controlerEtat() {
+		Roi roi = (Roi) plateau.getRoi(joueurCourant.getCouleur());
+		
+		if (plateau
+				.caseMenacee(roi.getPosition(), joueurSuivant().getCouleur()))
+			roi.setEchec(true);
+		else
+			roi.setEchec(false);
+		
+		//TODO : if(!hasSolution) return echecEtMat!!
 	}
 
 	public boolean isFinished() {
 		return false;
+	}
+
+	public void setJoueurCourant(Joueur joueur) {
+		this.joueurCourant = joueur;
 	}
 }
