@@ -1,0 +1,149 @@
+package com.javachess.modele.plateau;
+
+import com.javachess.exceptions.GameException;
+import com.javachess.helpers.Couleur;
+import com.javachess.helpers.Coup;
+import com.javachess.helpers.PositionConverter;
+import com.javachess.helpers.Sens;
+import com.javachess.modele.pieces.Cavalier;
+import com.javachess.modele.pieces.Fou;
+import com.javachess.modele.pieces.Piece;
+import com.javachess.modele.pieces.Pion;
+import com.javachess.modele.pieces.Reine;
+import com.javachess.modele.pieces.Roi;
+import com.javachess.modele.pieces.Tour;
+
+/**
+ * Classe qui modélise un plateau d'echec
+ * 
+ * @author Ouzned
+ * 
+ */
+public class Echiquier {
+
+	private Piece[] echiquier = new Piece[64];
+
+	public Echiquier() {
+		super();
+		initialisePlateau();
+	}
+
+	/**
+	 * Crée les 64 cases du plateau
+	 */
+	public void initialisePlateau() {
+		Piece roiB = new Roi(Couleur.WHITE);
+		Piece reineB = new Reine(Couleur.WHITE);
+		Piece fouB = new Fou(Couleur.WHITE);
+		Piece cavalierB = new Cavalier(Couleur.WHITE);
+		Piece tourB = new Tour(Couleur.WHITE);
+		Piece pionB = new Pion(Couleur.WHITE);
+
+		Piece roiN = new Roi(Couleur.BLACK);
+		Piece reineN = new Reine(Couleur.BLACK);
+		Piece fouN = new Fou(Couleur.BLACK);
+		Piece cavalierN = new Cavalier(Couleur.BLACK);
+		Piece tourN = new Tour(Couleur.BLACK);
+		Piece pionN = new Pion(Couleur.BLACK);
+
+		Piece[] plateau = { tourB, cavalierB, fouB, roiB, reineB, fouB,
+				cavalierB, tourB, pionB, pionB, pionB, pionB, pionB, pionB,
+				pionB, pionB, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, null, null, null, null, null, null,
+				null, null, null, null, pionN, pionN, pionN, pionN, pionN,
+				pionN, pionN, pionN, tourN, cavalierN, fouN, roiN, reineN,
+				fouN, cavalierN, tourN };
+
+		echiquier = plateau;
+	}
+
+	/**
+	 * Avance un pion sur l'échiquier
+	 * 
+	 * @param coup
+	 * @throws GameException
+	 */
+	public boolean jouerCoup(Coup coup, boolean isAttack) throws GameException {
+		int indexSource = PositionConverter.convertCaseEnIndex(coup
+				.getCaseSource());
+		int indexDest = PositionConverter.convertCaseEnIndex(coup
+				.getCaseDestination());
+
+		Piece piece = this.getEchiquier()[indexSource];
+
+		if (piece == null)
+			throw new GameException("Etat de l'échiquier incohérent");
+
+		if (isAttack && !piece.attaquePossible(coup, this))
+			return false;
+
+		if (!isAttack && !piece.mouvementPossible(coup, this))
+			return false;
+
+		this.getEchiquier()[indexSource] = null;
+		this.getEchiquier()[indexDest] = piece;
+
+		return true;
+	}
+
+	/**
+	 * Vérifie si la case passée en paramètre est vide ou non
+	 * 
+	 * @param nCase
+	 * @return true si la case est vide false sinon
+	 */
+	public boolean isCaseVide(Case nCase) {
+		int index = PositionConverter.convertCaseEnIndex(nCase);
+		return this.getEchiquier()[index] == null;
+	}
+
+	/**
+	 * Renvoie la couleur de la pièce se trouvant sur la case passé en paramètre
+	 * 
+	 * @param nCase
+	 * @return La couleur de la pièce, null si la case est vide
+	 */
+	public Couleur getCouleurPiece(Case nCase) {
+		int index = PositionConverter.convertCaseEnIndex(nCase);
+
+		if (this.getEchiquier()[index] == null)
+			return null;
+		else
+			return this.getEchiquier()[index].getColor();
+	}
+
+	/**
+	 * Contrôle que toutes les cases d'une même colonne entre une case de départ
+	 * et une case d'arrivée sont vides
+	 * 
+	 * @param caseSrc 
+	 * 			La case de départ
+	 * @param caseDst 
+	 * 			La case d'arrivée
+	 * @param sens 
+	 * 			Le sens de déplacement
+	 * @return True si toutes les cases sont vides. False sinon
+	 */
+	public boolean caseLignesIntermVides(Case caseSrc, Case caseDst, Sens sens) {
+		Case caseInter = new Case(caseSrc.getColonne(), caseSrc.getLigne());
+
+		while (caseInter.getLigne() != caseDst.getLigne()) {
+			caseInter.setLigne(caseInter.getLigne() + sens.getModifLigne());
+			caseInter.setColonne(caseInter.getColonne() + sens.getModifColonne());
+			
+			if (!isCaseVide(caseInter))
+				return false;
+		}
+
+		return true;
+	}
+
+	public Piece[] getEchiquier() {
+		return echiquier;
+	}
+
+	public void setEchiquier(Piece[] echiquier) {
+		this.echiquier = echiquier;
+	}
+}
