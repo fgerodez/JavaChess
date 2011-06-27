@@ -105,29 +105,28 @@ public class Partie {
 		if (coup.getCaseDestination().equals(coup.getCaseSource()))
 			return false;
 
-		if (!verifierEchec(coup))
+		if (!verifierEchec(coup, joueur))
 			return false;
 
 		return true;
 	}
 
 	/**
-	 * Contrôle la validité du coup en fonction d'un éventuel echec
+	 * Vérifie que le joueur qui joue un coup ne met pas en conséquence son roi
+	 * en echec
 	 * 
 	 * @param coup
 	 * @return
 	 * @throws GameException
 	 */
-	public boolean verifierEchec(Coup coup) throws GameException {
-		Roi roi = (Roi) plateau.getRoi(joueurCourant.getCouleur());
+	public boolean verifierEchec(Coup coup, Couleur couleurJoueur) throws GameException {
+		Roi roi = (Roi) plateau.getRoi(couleurJoueur);
 		boolean result = true;
 
 		plateau.jouerCoup(coup);
-		if (plateau
-				.caseMenacee(roi.getPosition(), joueurSuivant().getCouleur())) {
-			System.out.println("Coup impossible : Echec");
+
+		if (plateau.caseMenacee(roi.getPosition()))
 			result = false;
-		}
 
 		plateau.reculerUnCoup();
 
@@ -135,24 +134,31 @@ public class Partie {
 	}
 
 	/**
-	 * Vérifie l'état du jeu après le coup du joueur courant (notamment
-	 * l'évènement Echec et mat)
+	 * Après un coup du joueur1, vérifie si le joueur2 est en echec ou echec et
+	 * mat.
 	 * 
 	 */
 	public void controlerEtat() throws GameException {
 		Roi roi = (Roi) plateau.getRoi(joueurSuivant().getCouleur());
 
-		if (plateau
-				.caseMenacee(roi.getPosition(), joueurSuivant().getCouleur())) {
+		if (plateau.caseMenacee(roi.getPosition())) {
 			roi.setEchec(true);
 			System.out.println("Echec");
-		} else
+		} else {
 			roi.setEchec(false);
+		}
 
 		if (roi.isEchec() && isEchecEtMat())
 			setFinished(true);
 	}
 
+	/**
+	 * Vérifie s'il existe une solution pour laquelle le roi adverse n'est plus
+	 * en situation d'echec
+	 * 
+	 * @return
+	 * @throws GameException
+	 */
 	public boolean isEchecEtMat() throws GameException {
 		Piece[] pieces = plateau.getPions(joueurSuivant().getCouleur());
 		Case[] cases = plateau.getCases();
@@ -160,7 +166,7 @@ public class Partie {
 		for (int iPiece = 0; iPiece < pieces.length; iPiece++) {
 			for (int iCase = 0; iCase < cases.length; iCase++) {
 				Coup coup = new Coup(pieces[iPiece].getPosition(), cases[iCase]);
-				
+
 				if (isCoupValide(coup, joueurSuivant().getCouleur())
 						&& pieces[iPiece].deplacementPossible(coup, plateau,
 								plateau.isAttaque(coup.getCaseDestination(),

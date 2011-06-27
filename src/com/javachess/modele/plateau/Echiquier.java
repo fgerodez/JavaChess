@@ -59,11 +59,11 @@ public class Echiquier {
 		}
 
 		Piece reineBlanche = new Reine(Couleur.WHITE,
-				PositionConverter.convertIndexEnCase(3));
+				PositionConverter.convertIndexEnCase(4));
 		echiquier[4] = reineBlanche;
 
 		Piece roiBlanc = new Roi(Couleur.WHITE,
-				PositionConverter.convertIndexEnCase(4));
+				PositionConverter.convertIndexEnCase(3));
 		echiquier[3] = roiBlanc;
 
 		for (int i = 8; i <= 15; i++) {
@@ -93,11 +93,11 @@ public class Echiquier {
 		}
 
 		Piece reine = new Reine(Couleur.BLACK,
-				PositionConverter.convertIndexEnCase(59));
+				PositionConverter.convertIndexEnCase(60));
 		echiquier[60] = reine;
 
 		Piece roi = new Roi(Couleur.BLACK,
-				PositionConverter.convertIndexEnCase(60));
+				PositionConverter.convertIndexEnCase(59));
 		echiquier[59] = roi;
 
 		for (int i = 48; i <= 55; i++) {
@@ -148,7 +148,7 @@ public class Echiquier {
 
 			dernierCoup.getPieceSource().setPosition(
 					dernierCoup.getCaseSource());
-			
+
 			if (dernierCoup.getPieceDestination() != null)
 				dernierCoup.getPieceDestination().setPosition(
 						dernierCoup.getCaseDestination());
@@ -297,14 +297,13 @@ public class Echiquier {
 	 * l'adversaire
 	 * 
 	 * @param nCase
-	 * @param couleurAttaquant
 	 * @return
 	 */
-	public boolean caseMenacee(Case nCase, Couleur couleurAttaquant) {
+	public boolean caseMenacee(Case nCase) {
 		for (int index = 0; index < echiquier.length; index++) {
 			Piece piece = echiquier[index];
-			Case test = PositionConverter.convertIndexEnCase(index);
-			if (piece != null && piece.getColor() == couleurAttaquant) {
+
+			if (piece != null && piece.getColor() != getCouleurPiece(nCase)) {
 				if (piece.deplacementPossible(
 						new Coup(PositionConverter.convertIndexEnCase(index),
 								nCase), this, true))
