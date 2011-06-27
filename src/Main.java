@@ -11,8 +11,8 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Joueur joueur1 = new JoueurHumain("François", Couleur.WHITE);
-		Joueur joueur2 = new JoueurHumain("Player", Couleur.BLACK);
+		Joueur joueur1 = new JoueurHumain("François", Couleur.BLANC);
+		Joueur joueur2 = new JoueurHumain("Player", Couleur.NOIR);
 		Partie partie = new Partie(joueur1, joueur2);
 		
 		try {

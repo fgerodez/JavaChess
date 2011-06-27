@@ -15,7 +15,7 @@ public class Pion extends Piece {
 	@Override
 	public boolean attaquePossible(Coup coup, Echiquier echiquier) {
 
-		if (this.getColor() == Couleur.WHITE) {
+		if (this.getColor() == Couleur.BLANC) {
 			return coup.getCaseDestination().equals(
 					PositionConverter.getCaseDiagHautDroite(coup
 							.getCaseSource()))
@@ -35,7 +35,7 @@ public class Pion extends Piece {
 	@Override
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
 
-		if (this.getColor() == Couleur.WHITE) {
+		if (this.getColor() == Couleur.BLANC) {
 			if (getPositionInitiale().equals(getPosition())) {
 				if (coup.getCaseDestination().equals(PositionConverter.getCaseHaut(coup.getCaseSource(), 2)))
 					return true;

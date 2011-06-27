@@ -23,8 +23,8 @@ public class Tour extends Piece {
 				
 		Sens sens = PositionConverter.getSensCoup(coup);
 
-		if (sens == Sens.Haut || sens == Sens.Bas || sens == Sens.Droite
-				|| sens == Sens.Gauche) {
+		if (sens == Sens.HAUT || sens == Sens.BAS || sens == Sens.DROITE
+				|| sens == Sens.GAUCHE) {
 
 			return echiquier.caseIntermVides(coup.getCaseSource(),
 					coup.getCaseDestination(), sens);

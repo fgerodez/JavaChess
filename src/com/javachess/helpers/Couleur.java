@@ -7,5 +7,5 @@ package com.javachess.helpers;
  * @author Ouzned
  */
 public enum Couleur {
-	BLACK, WHITE
+	NOIR, BLANC
 }

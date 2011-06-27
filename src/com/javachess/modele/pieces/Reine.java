@@ -22,8 +22,7 @@ public class Reine extends Piece {
 	@Override
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
 		
-		if (PositionConverter.getDirection(coup.getCaseSource(),
-				coup.getCaseDestination()) == Direction.Autre)
+		if (PositionConverter.getDirection(coup) == Direction.AUTRE)
 			return false;
 		
 		Sens sens = PositionConverter.getSensCoup(coup);

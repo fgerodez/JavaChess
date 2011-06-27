@@ -41,33 +41,33 @@ public class Echiquier {
 
 	private void preparePionsBlancs() {
 		for (int i = 0; i <= 7; i += 7) {
-			Piece tourBlanche = new Tour(Couleur.WHITE,
+			Piece tourBlanche = new Tour(Couleur.BLANC,
 					PositionConverter.convertIndexEnCase(i));
 			echiquier[i] = tourBlanche;
 		}
 
 		for (int i = 1; i <= 6; i += 5) {
-			Piece cavalierBlanc = new Cavalier(Couleur.WHITE,
+			Piece cavalierBlanc = new Cavalier(Couleur.BLANC,
 					PositionConverter.convertIndexEnCase(i));
 			echiquier[i] = cavalierBlanc;
 		}
 
 		for (int i = 2; i <= 5; i += 3) {
-			Piece fouBlanc = new Fou(Couleur.WHITE,
+			Piece fouBlanc = new Fou(Couleur.BLANC,
 					PositionConverter.convertIndexEnCase(i));
 			echiquier[i] = fouBlanc;
 		}
 
-		Piece reineBlanche = new Reine(Couleur.WHITE,
+		Piece reineBlanche = new Reine(Couleur.BLANC,
 				PositionConverter.convertIndexEnCase(4));
 		echiquier[4] = reineBlanche;
 
-		Piece roiBlanc = new Roi(Couleur.WHITE,
+		Piece roiBlanc = new Roi(Couleur.BLANC,
 				PositionConverter.convertIndexEnCase(3));
 		echiquier[3] = roiBlanc;
 
 		for (int i = 8; i <= 15; i++) {
-			Piece pionBlanc = new Pion(Couleur.WHITE,
+			Piece pionBlanc = new Pion(Couleur.BLANC,
 					PositionConverter.convertIndexEnCase(i));
 			echiquier[i] = pionBlanc;
 		}
@@ -75,33 +75,33 @@ public class Echiquier {
 
 	private void preparePionsNoirs() {
 		for (int i = 56; i <= 63; i += 7) {
-			Piece tour = new Tour(Couleur.BLACK,
+			Piece tour = new Tour(Couleur.NOIR,
 					PositionConverter.convertIndexEnCase(i));
 			echiquier[i] = tour;
 		}
 
 		for (int i = 57; i <= 62; i += 5) {
-			Piece cavalier = new Cavalier(Couleur.BLACK,
+			Piece cavalier = new Cavalier(Couleur.NOIR,
 					PositionConverter.convertIndexEnCase(i));
 			echiquier[i] = cavalier;
 		}
 
 		for (int i = 58; i <= 61; i += 3) {
-			Piece fou = new Fou(Couleur.BLACK,
+			Piece fou = new Fou(Couleur.NOIR,
 					PositionConverter.convertIndexEnCase(i));
 			echiquier[i] = fou;
 		}
 
-		Piece reine = new Reine(Couleur.BLACK,
+		Piece reine = new Reine(Couleur.NOIR,
 				PositionConverter.convertIndexEnCase(60));
 		echiquier[60] = reine;
 
-		Piece roi = new Roi(Couleur.BLACK,
+		Piece roi = new Roi(Couleur.NOIR,
 				PositionConverter.convertIndexEnCase(59));
 		echiquier[59] = roi;
 
 		for (int i = 48; i <= 55; i++) {
-			Piece pion = new Pion(Couleur.BLACK,
+			Piece pion = new Pion(Couleur.NOIR,
 					PositionConverter.convertIndexEnCase(i));
 			echiquier[i] = pion;
 		}
@@ -139,9 +139,11 @@ public class Echiquier {
 	 */
 	public void reculerUnCoup() {
 		if (dernierCoup != null) {
+
 			this.getEchiquier()[PositionConverter
 					.convertCaseEnIndex(dernierCoup.getCaseSource())] = dernierCoup
 					.getPieceSource();
+
 			this.getEchiquier()[PositionConverter
 					.convertCaseEnIndex(dernierCoup.getCaseDestination())] = dernierCoup
 					.getPieceDestination();
@@ -164,8 +166,7 @@ public class Echiquier {
 	 * @return true si la case est vide false sinon
 	 */
 	public boolean isCaseVide(Case nCase) {
-		int index = PositionConverter.convertCaseEnIndex(nCase);
-		return this.getEchiquier()[index] == null;
+		return this.getPiece(nCase) == null ? true : false;
 	}
 
 	/**
@@ -183,6 +184,13 @@ public class Echiquier {
 			return this.getEchiquier()[index].getColor();
 	}
 
+	/**
+	 * Retourne la pice situŽ sur la case passŽe en paramtre
+	 * 
+	 * @param nCase
+	 *            La case ˆ vŽifier
+	 * @return La pice situŽe sur la case ou null si la case est vide
+	 */
 	public Piece getPiece(Case nCase) {
 		int index = PositionConverter.convertCaseEnIndex(nCase);
 
@@ -251,9 +259,9 @@ public class Echiquier {
 		if (getEchiquier()[indexDestination] != null
 				&& getEchiquier()[indexDestination].getColor().equals(
 						joueurCouleur))
-			return false;
+			return true;
 
-		return true;
+		return false;
 	}
 
 	/**

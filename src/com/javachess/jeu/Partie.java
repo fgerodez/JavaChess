@@ -79,7 +79,7 @@ public class Partie {
 				setJoueurCourant(joueurSuivant());
 			}
 		}
-		
+
 		System.out.println(plateau);
 		System.out.println("Fin de partie!!!!!");
 	}
@@ -100,34 +100,35 @@ public class Partie {
 		if (!plateau.isPieceDuJoueur(coup.getCaseSource(), joueur))
 			return false;
 
-		if (!plateau.isDestOccupee(coup.getCaseDestination(), joueur))
+		if (plateau.isDestOccupee(coup.getCaseDestination(), joueur))
 			return false;
 
 		if (coup.getCaseDestination().equals(coup.getCaseSource()))
 			return false;
 
-		if (!verifierEchec(coup, joueur))
+		if (coupMetEnEchec(coup, joueur))
 			return false;
 
 		return true;
 	}
 
 	/**
-	 * Vérifie que le joueur qui joue un coup ne met pas en conséquence son roi
-	 * en echec
+	 * Vérifie que le joueur qui joue un coup ne met pas son propre roi en
+	 * situation d'echec
 	 * 
 	 * @param coup
 	 * @return
 	 * @throws GameException
 	 */
-	public boolean verifierEchec(Coup coup, Couleur couleurJoueur) throws GameException {
+	public boolean coupMetEnEchec(Coup coup, Couleur couleurJoueur)
+			throws GameException {
 		Roi roi = (Roi) plateau.getRoi(couleurJoueur);
-		boolean result = true;
+		boolean result = false;
 
 		plateau.jouerCoup(coup);
 
 		if (plateau.caseMenacee(roi.getPosition()))
-			result = false;
+			result = true;
 
 		plateau.reculerUnCoup();
 

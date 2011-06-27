@@ -1,5 +1,11 @@
 package com.javachess.helpers;
 
+/**
+ * Direction d'un coup
+ *
+ * @author Ouzned
+ * 
+ */
 public enum Direction {
-	Ligne, Colonne, Diagonale, Autre
+	LIGNE, COLONNE, DIAGONALE, AUTRE
 }
