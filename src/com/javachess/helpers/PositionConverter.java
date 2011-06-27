@@ -117,14 +117,17 @@ public class PositionConverter {
 
 		if (ligne && colonne && (deltaX == deltaY))
 			return Direction.Diagonale;
-
+		
+		if (ligne && colonne)
+			return Direction.Autre;
+		
 		if (ligne)
 			return Direction.Ligne;
 
 		if (colonne)
 			return Direction.Colonne;
 
-		return null;
+		return Direction.Autre;
 	}
 
 	public static Sens getSensCoup(Coup coup) {

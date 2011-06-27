@@ -2,6 +2,7 @@ package com.javachess.modele.pieces;
 
 import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
+import com.javachess.helpers.Direction;
 import com.javachess.helpers.PositionConverter;
 import com.javachess.helpers.Sens;
 import com.javachess.modele.plateau.Case;
@@ -20,11 +21,13 @@ public class Fou extends Piece {
 
 	@Override
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
+
+		if (PositionConverter.getDirection(coup.getCaseSource(),
+				coup.getCaseDestination()) == Direction.Autre)
+			return false;
+
 		Sens sens = PositionConverter.getSensCoup(coup);
 
-		if (sens == null)
-			return false;
-		
 		if (sens == Sens.DiagBasDroite || sens == Sens.DiagBasGauche
 				|| sens == Sens.DiagHautDroite || sens == Sens.DiagHautGauche) {
 

@@ -20,6 +20,7 @@ public class Tour extends Piece {
 
 	@Override
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
+				
 		Sens sens = PositionConverter.getSensCoup(coup);
 
 		if (sens == Sens.Haut || sens == Sens.Bas || sens == Sens.Droite

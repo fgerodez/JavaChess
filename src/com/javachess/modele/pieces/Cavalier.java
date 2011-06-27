@@ -25,7 +25,7 @@ public class Cavalier extends Piece {
 
 		Direction direction = PositionConverter.getDirection(caseSrc, caseDest);
 		
-		if (direction == Direction.Diagonale) {
+		if (direction == Direction.Autre) {
 			int diffLigne = Math.abs(caseDest.getLigne() - caseSrc.getLigne());
 			int diffCol = Math.abs(caseDest.getColonne() - caseSrc.getColonne());
 			

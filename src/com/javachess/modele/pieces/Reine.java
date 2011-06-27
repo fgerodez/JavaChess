@@ -2,6 +2,7 @@ package com.javachess.modele.pieces;
 
 import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
+import com.javachess.helpers.Direction;
 import com.javachess.helpers.PositionConverter;
 import com.javachess.helpers.Sens;
 import com.javachess.modele.plateau.Case;
@@ -20,10 +21,12 @@ public class Reine extends Piece {
 
 	@Override
 	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
-		Sens sens = PositionConverter.getSensCoup(coup);
 		
-		if (sens == null)
+		if (PositionConverter.getDirection(coup.getCaseSource(),
+				coup.getCaseDestination()) == Direction.Autre)
 			return false;
+		
+		Sens sens = PositionConverter.getSensCoup(coup);
 		
 		return echiquier.caseIntermVides(coup.getCaseSource(),
 				coup.getCaseDestination(), sens);
