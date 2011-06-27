@@ -4,10 +4,8 @@ import com.javachess.exceptions.GameException;
 import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
 import com.javachess.joueurs.Joueur;
-import com.javachess.modele.pieces.Piece;
-import com.javachess.modele.pieces.Roi;
-import com.javachess.modele.plateau.Case;
-import com.javachess.modele.plateau.Echiquier;
+import com.javachess.pieces.Piece;
+import com.javachess.pieces.Roi;
 
 /**
  * Modélise une partie d'echec. Chaque partie correspond à un plateau et à deux
@@ -22,7 +20,7 @@ public class Partie {
 	private Joueur joueur1;
 	private Joueur joueur2;
 	private Joueur joueurCourant;
-	private boolean finished = false;
+	private boolean echecEtMat = false;
 
 	/**
 	 * Initialisation de la partie
@@ -36,7 +34,7 @@ public class Partie {
 
 		this.plateau = new Echiquier();
 
-		setJoueurCourant(joueurSuivant());
+		joueurCourant = joueurSuivant();
 	}
 
 	/**
@@ -58,33 +56,6 @@ public class Partie {
 	}
 
 	/**
-	 * Démarre la partie
-	 * 
-	 * @throws GameException
-	 */
-	public void start() throws GameException {
-		while (!isFinished()) {
-			System.out.println(plateau);
-			Coup coup = joueurCourant.jouer();
-			Piece piece = plateau.getPiece(coup.getCaseSource());
-
-			if (isCoupValide(coup, joueurCourant.getCouleur())
-					&& piece.deplacementPossible(coup, plateau, plateau
-							.isAttaque(coup.getCaseDestination(),
-									joueurCourant.getCouleur()))) {
-
-				plateau.jouerCoup(coup);
-
-				controlerEtat();
-				setJoueurCourant(joueurSuivant());
-			}
-		}
-
-		System.out.println(plateau);
-		System.out.println("Fin de partie!!!!!");
-	}
-
-	/**
 	 * Vérifie que l'action en cours est valide : pas de déplacement sur une
 	 * case contrôlée par le même joueur, déplacement sur une case existante,
 	 * déplacement d'une pièce de la même couleur que le joueur courant.
@@ -92,7 +63,8 @@ public class Partie {
 	 * @param coup
 	 * @return
 	 */
-	public boolean isCoupValide(Coup coup, Couleur joueur) throws GameException {
+	private boolean isCoupValide(Coup coup, Couleur joueur)
+			throws GameException {
 		if (!plateau.isCasesValides(coup.getCaseSource(),
 				coup.getCaseDestination()))
 			return false;
@@ -120,7 +92,7 @@ public class Partie {
 	 * @return
 	 * @throws GameException
 	 */
-	public boolean coupMetEnEchec(Coup coup, Couleur couleurJoueur)
+	private boolean coupMetEnEchec(Coup coup, Couleur couleurJoueur)
 			throws GameException {
 		Roi roi = (Roi) plateau.getRoi(couleurJoueur);
 		boolean result = false;
@@ -140,7 +112,7 @@ public class Partie {
 	 * mat.
 	 * 
 	 */
-	public void controlerEtat() throws GameException {
+	private void controlerEtat() throws GameException {
 		Roi roi = (Roi) plateau.getRoi(joueurSuivant().getCouleur());
 
 		if (plateau.caseMenacee(roi.getPosition())) {
@@ -150,8 +122,8 @@ public class Partie {
 			roi.setEchec(false);
 		}
 
-		if (roi.isEchec() && isEchecEtMat())
-			setFinished(true);
+		if (roi.isEchec() && echecEtMat())
+			echecEtMat = true;
 	}
 
 	/**
@@ -161,7 +133,7 @@ public class Partie {
 	 * @return
 	 * @throws GameException
 	 */
-	public boolean isEchecEtMat() throws GameException {
+	private boolean echecEtMat() throws GameException {
 		Piece[] pieces = plateau.getPions(joueurSuivant().getCouleur());
 		Case[] cases = plateau.getCases();
 
@@ -180,15 +152,54 @@ public class Partie {
 		return true;
 	}
 
-	public boolean isFinished() {
-		return finished;
+	/**
+	 * Joue un coup sur l'échiquier. Renvoie un objet de type Echiquier pour
+	 * renseigner sur le nouvel état de l'échiquier.
+	 * 
+	 * @throws GameException
+	 */
+	public Echiquier jouerCoup(Coup coup) throws GameException {
+
+		Piece piece = plateau.getPiece(coup.getCaseSource());
+
+		if (isCoupValide(coup, joueurCourant.getCouleur())
+				&& piece.deplacementPossible(coup, plateau, plateau.isAttaque(
+						coup.getCaseDestination(), joueurCourant.getCouleur()))) {
+
+			plateau.jouerCoup(coup);
+
+			controlerEtat();
+			joueurCourant = joueurSuivant();
+		}
+
+		return plateau;
 	}
 
-	public void setFinished(boolean finished) {
-		this.finished = finished;
+	/**
+	 * Renvoie le joueur courant
+	 * 
+	 * @return le joueur courant
+	 */
+	public Joueur getJoueurCourant() {
+		return this.joueurCourant;
 	}
 
-	public void setJoueurCourant(Joueur joueur) {
-		this.joueurCourant = joueur;
+	/**
+	 * Vérifie si la partie est en echec et mat
+	 * 
+	 * @return True si la partie est en echec et mat
+	 */
+	public boolean isEchecEtMat() {
+		return this.echecEtMat;
+	}
+
+	/**
+	 * Vérifie si le joueur suivant est en echec
+	 * 
+	 * @return True si le joueur suivant est en echec
+	 */
+	public boolean isEchec() {
+		Roi roi = (Roi) plateau.getRoi(joueurSuivant().getCouleur());
+		return roi.isEchec();
 	}
 }

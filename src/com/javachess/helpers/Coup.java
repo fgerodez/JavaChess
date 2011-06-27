@@ -1,7 +1,7 @@
 package com.javachess.helpers;
 
-import com.javachess.modele.pieces.Piece;
-import com.javachess.modele.plateau.Case;
+import com.javachess.jeu.Case;
+import com.javachess.pieces.Piece;
 
 /**
  * Modélisation d'un coup d'une case source vers une case cible

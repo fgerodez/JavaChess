@@ -6,13 +6,15 @@ import java.io.InputStreamReader;
 
 import com.javachess.helpers.Couleur;
 import com.javachess.helpers.Coup;
-import com.javachess.modele.plateau.Case;
-
-//TODO: Interface meilleure solution pour les joueurs?
+import com.javachess.jeu.Case;
 
 /**
  * Joueur en mode manuel (humain). Les déplacements sont récupérés directement
- * depuis la console (interface ultra basique)
+ * depuis la console (interface ultra basique).
+ * 
+ * Cette classe n'est pas censée faire partie du moteur. C'est au programme
+ * appelant d'instancier ses proposes joueurs en se basant sur l'interface
+ * Joueur.
  * 
  * @author Ouzned
  * 

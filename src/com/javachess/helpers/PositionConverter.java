@@ -1,6 +1,6 @@
 package com.javachess.helpers;
 
-import com.javachess.modele.plateau.Case;
+import com.javachess.jeu.Case;
 
 public class PositionConverter {
 	private static String[] LETTRES = { "A", "B", "C", "D", "E", "F", "G", "H" };
