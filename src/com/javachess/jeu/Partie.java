@@ -158,7 +158,7 @@ public class Partie {
 	 * 
 	 * @throws GameException
 	 */
-	public Echiquier jouerCoup(Coup coup) throws GameException {
+	public boolean jouerCoup(Coup coup) throws GameException {
 
 		Piece piece = plateau.getPiece(coup.getCaseSource());
 
@@ -170,9 +170,11 @@ public class Partie {
 
 			controlerEtat();
 			joueurCourant = joueurSuivant();
+
+			return true;
 		}
 
-		return plateau;
+		return false;
 	}
 
 	/**
@@ -194,12 +196,23 @@ public class Partie {
 	}
 
 	/**
-	 * VŽrifie si le joueur suivant est en echec
+	 * VŽrifie si le joueur est en echec
 	 * 
-	 * @return True si le joueur suivant est en echec
+	 * @param joueur
+	 *            Le joueur ˆ contr™ler
+	 * @return
 	 */
-	public boolean isEchec() {
-		Roi roi = (Roi) plateau.getRoi(joueurSuivant().getCouleur());
+	public boolean isEchec(Joueur joueur) {
+		Roi roi = (Roi) plateau.getRoi(joueur.getCouleur());
 		return roi.isEchec();
+	}
+
+	/**
+	 * Renvoie l'Žtat de l'Žchiquier
+	 * 
+	 * @return
+	 */
+	public Echiquier getEtat() {
+		return plateau;
 	}
 }
