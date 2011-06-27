@@ -79,7 +79,8 @@ public class Partie {
 				setJoueurCourant(joueurSuivant());
 			}
 		}
-
+		
+		System.out.println(plateau);
 		System.out.println("Fin de partie!!!!!");
 	}
 
