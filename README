@@ -1,0 +1,3 @@
+JavaChess is a portable chess engine written in Java. It is able to execute all the valid chess moves and inform the calling program of the state of the game.
+
+It can be easily integrated with a GUI frontend.
