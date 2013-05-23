@@ -4,15 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.javachess.helpers.Couleur;
-import com.javachess.helpers.Coup;
-import com.javachess.jeu.Case;
+import com.javachess.helpers.Color;
+import com.javachess.helpers.Move;
+import com.javachess.modele.plateau.Tile;
 
 /**
- * Joueur en mode manuel (humain). Les dŽplacements sont rŽcupŽrŽs directement
+ * Joueur en mode manuel (humain). Les dï¿½placements sont rï¿½cupï¿½rï¿½s directement
  * depuis la console (interface ultra basique).
  * 
- * Cette classe n'est pas censŽe faire partie du moteur. C'est au programme
+ * Cette classe n'est pas censï¿½e faire partie du moteur. C'est au programme
  * appelant d'instancier ses proposes joueurs en se basant sur l'interface
  * Joueur.
  * 
@@ -22,9 +22,9 @@ import com.javachess.jeu.Case;
 public class JoueurHumain implements Joueur {
 
 	private String nom;
-	private Couleur couleur;
+	private Color couleur;
 
-	public JoueurHumain(String nom, Couleur couleur) {
+	public JoueurHumain(String nom, Color couleur) {
 		this.nom = nom;
 		this.couleur = couleur;
 	}
@@ -33,7 +33,7 @@ public class JoueurHumain implements Joueur {
 	 * Demande au joueur quel coup effectuer
 	 */
 	@Override
-	public Coup jouer() {
+	public Move jouer() {
 
 		System.out.println(nom + ", colonne-ligne source :");
 		BufferedReader bufferedReader = new BufferedReader(
@@ -50,7 +50,7 @@ public class JoueurHumain implements Joueur {
 		int colonne = Integer.parseInt(caseInfo.substring(0, 1));
 		int ligne = Integer.parseInt(caseInfo.substring(2, 3));
 
-		Case caseSource = new Case(colonne, ligne);
+		Tile caseSource = new Tile(colonne, ligne);
 
 		System.out.println(nom + ", colonne-ligne destination :");
 
@@ -63,16 +63,16 @@ public class JoueurHumain implements Joueur {
 		colonne = Integer.parseInt(caseInfo.substring(0, 1));
 		ligne = Integer.parseInt(caseInfo.substring(2, 3));
 
-		Case caseDestination = new Case(colonne, ligne);
+		Tile caseDestination = new Tile(colonne, ligne);
 
-		return new Coup(caseSource, caseDestination);
+		return new Move(caseSource, caseDestination);
 	}
 
 	/**
 	 * Renvoie la couleur du joueur.
 	 */
 	@Override
-	public Couleur getCouleur() {
+	public Color getCouleur() {
 		return couleur;
 	}
 

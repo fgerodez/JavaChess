@@ -1,22 +1,23 @@
 package com.javachess.jeu;
 
 import com.javachess.exceptions.GameException;
-import com.javachess.helpers.Couleur;
-import com.javachess.helpers.Coup;
+import com.javachess.helpers.Color;
+import com.javachess.helpers.Move;
 import com.javachess.joueurs.Joueur;
-import com.javachess.pieces.Piece;
-import com.javachess.pieces.Roi;
+import com.javachess.modele.pieces.Piece;
+import com.javachess.modele.pieces.Roi;
+import com.javachess.modele.plateau.Tile;
 
 /**
- * Modlise une partie d'echec. Chaque partie correspond ˆ un plateau et ˆ deux
- * joueurs. Chaque joueur effectue un coup ˆ tour de r™le jusqu'ˆ ce que l'un
- * d'entre eux abandonne ou jusqu'ˆ l'echec et mat.
+ * Modï¿½lise une partie d'echec. Chaque partie correspond ï¿½ un plateau et ï¿½ deux
+ * joueurs. Chaque joueur effectue un coup ï¿½ tour de rï¿½le jusqu'ï¿½ ce que l'un
+ * d'entre eux abandonne ou jusqu'ï¿½ l'echec et mat.
  * 
  * @author Ouzned
  * 
  */
 public class Partie {
-	private Echiquier plateau;
+	private Board plateau;
 	private Joueur joueur1;
 	private Joueur joueur2;
 	private Joueur joueurCourant;
@@ -32,13 +33,13 @@ public class Partie {
 		this.joueur1 = joueur1;
 		this.joueur2 = joueur2;
 
-		this.plateau = new Echiquier();
+		this.plateau = new Board();
 
 		joueurCourant = joueurSuivant();
 	}
 
 	/**
-	 * Slectionne le joueur suivant
+	 * Sï¿½lectionne le joueur suivant
 	 */
 	private Joueur joueurSuivant() {
 		Joueur joueurSuivant = null;
@@ -56,14 +57,14 @@ public class Partie {
 	}
 
 	/**
-	 * Vrifie que l'action en cours est valide : pas de dplacement sur une
-	 * case contr™le par le mme joueur, dplacement sur une case existante,
-	 * dplacement d'une pice de la mme couleur que le joueur courant.
+	 * Vï¿½rifie que l'action en cours est valide : pas de dï¿½placement sur une
+	 * case contrï¿½lï¿½e par le mï¿½me joueur, dï¿½placement sur une case existante,
+	 * dï¿½placement d'une piï¿½ce de la mï¿½me couleur que le joueur courant.
 	 * 
 	 * @param coup
 	 * @return
 	 */
-	private boolean isCoupValide(Coup coup, Couleur joueur)
+	private boolean isCoupValide(Move coup, Color joueur)
 			throws GameException {
 		if (!plateau.isCasesValides(coup.getCaseSource(),
 				coup.getCaseDestination()))
@@ -85,14 +86,14 @@ public class Partie {
 	}
 
 	/**
-	 * Vrifie que le joueur qui joue un coup ne met pas son propre roi en
+	 * Vï¿½rifie que le joueur qui joue un coup ne met pas son propre roi en
 	 * situation d'echec
 	 * 
 	 * @param coup
 	 * @return
 	 * @throws GameException
 	 */
-	private boolean coupMetEnEchec(Coup coup, Couleur couleurJoueur)
+	private boolean coupMetEnEchec(Move coup, Color couleurJoueur)
 			throws GameException {
 		Roi roi = (Roi) plateau.getRoi(couleurJoueur);
 		boolean result = false;
@@ -108,7 +109,7 @@ public class Partie {
 	}
 
 	/**
-	 * Aprs un coup du joueur1, vrifie si le joueur2 est en echec ou echec et
+	 * Aprï¿½s un coup du joueur1, vï¿½rifie si le joueur2 est en echec ou echec et
 	 * mat.
 	 * 
 	 */
@@ -127,7 +128,7 @@ public class Partie {
 	}
 
 	/**
-	 * Vrifie s'il existe une solution pour laquelle le roi adverse n'est plus
+	 * Vï¿½rifie s'il existe une solution pour laquelle le roi adverse n'est plus
 	 * en situation d'echec
 	 * 
 	 * @return
@@ -135,11 +136,11 @@ public class Partie {
 	 */
 	private boolean echecEtMat() throws GameException {
 		Piece[] pieces = plateau.getPions(joueurSuivant().getCouleur());
-		Case[] cases = plateau.getCases();
+		Tile[] cases = plateau.getCases();
 
 		for (int iPiece = 0; iPiece < pieces.length; iPiece++) {
 			for (int iCase = 0; iCase < cases.length; iCase++) {
-				Coup coup = new Coup(pieces[iPiece].getPosition(), cases[iCase]);
+				Move coup = new Move(pieces[iPiece].getPosition(), cases[iCase]);
 
 				if (isCoupValide(coup, joueurSuivant().getCouleur())
 						&& pieces[iPiece].deplacementPossible(coup, plateau,
@@ -153,12 +154,12 @@ public class Partie {
 	}
 
 	/**
-	 * Joue un coup sur l'chiquier. Renvoie un objet de type Echiquier pour
-	 * renseigner sur le nouvel tat de l'chiquier.
+	 * Joue un coup sur l'ï¿½chiquier. Renvoie un objet de type Echiquier pour
+	 * renseigner sur le nouvel ï¿½tat de l'ï¿½chiquier.
 	 * 
 	 * @throws GameException
 	 */
-	public boolean jouerCoup(Coup coup) throws GameException {
+	public boolean jouerCoup(Move coup) throws GameException {
 
 		Piece piece = plateau.getPiece(coup.getCaseSource());
 
@@ -187,7 +188,7 @@ public class Partie {
 	}
 
 	/**
-	 * Vrifie si la partie est en echec et mat
+	 * Vï¿½rifie si la partie est en echec et mat
 	 * 
 	 * @return True si la partie est en echec et mat
 	 */
@@ -196,10 +197,10 @@ public class Partie {
 	}
 
 	/**
-	 * Vrifie si le joueur est en echec
+	 * Vï¿½rifie si le joueur est en echec
 	 * 
 	 * @param joueur
-	 *            Le joueur ˆ contr™ler
+	 *            Le joueur ï¿½ contrï¿½ler
 	 * @return
 	 */
 	public boolean isEchec(Joueur joueur) {
@@ -208,11 +209,11 @@ public class Partie {
 	}
 
 	/**
-	 * Renvoie l'tat de l'chiquier
+	 * Renvoie l'ï¿½tat de l'ï¿½chiquier
 	 * 
 	 * @return
 	 */
-	public Echiquier getEtat() {
+	public Board getEtat() {
 		return plateau;
 	}
 }

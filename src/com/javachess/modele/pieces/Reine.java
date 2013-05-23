@@ -1,26 +1,26 @@
 package com.javachess.modele.pieces;
 
-import com.javachess.helpers.Couleur;
-import com.javachess.helpers.Coup;
+import com.javachess.helpers.Color;
+import com.javachess.helpers.Move;
 import com.javachess.helpers.Direction;
 import com.javachess.helpers.PositionConverter;
 import com.javachess.helpers.Sens;
-import com.javachess.modele.plateau.Case;
-import com.javachess.modele.plateau.Echiquier;
+import com.javachess.jeu.Board;
+import com.javachess.modele.plateau.Tile;
 
 public class Reine extends Piece {
 	
-	public Reine(Couleur couleur, Case position) {
+	public Reine(Color couleur, Tile position) {
 		super(couleur, position);
 	}
 
 	@Override
-	public boolean attaquePossible(Coup coup, Echiquier echiquier) {
+	protected boolean attaquePossible(Move coup, Board echiquier) {
 		return mouvementPossible(coup, echiquier);
 	}
 
 	@Override
-	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
+	protected boolean mouvementPossible(Move coup, Board echiquier) {
 		
 		if (PositionConverter.getDirection(coup) == Direction.AUTRE)
 			return false;

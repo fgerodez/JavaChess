@@ -1,39 +1,33 @@
 package com.javachess.modele.pieces;
 
-import com.javachess.helpers.Couleur;
-import com.javachess.helpers.Coup;
-import com.javachess.helpers.Direction;
-import com.javachess.helpers.PositionConverter;
-import com.javachess.modele.plateau.Case;
-import com.javachess.modele.plateau.Echiquier;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.javachess.helpers.Color;
+import com.javachess.jeu.Board;
+import com.javachess.modele.plateau.Tile;
 
 public class Cavalier extends Piece {
 
-	public Cavalier(Couleur couleur, Case position) {
+	public Cavalier(Color couleur, Tile position) {
 		super(couleur, position);
 	}
 
 	@Override
-	public boolean attaquePossible(Coup coup, Echiquier echiquier) {
-		return mouvementPossible(coup, echiquier);
+	protected List<Tile> availableMoves(final Board board) {
+		List<Tile> availableMoves = new ArrayList<Tile>();
+		
+		availableMoves.add(board.getTileAtOffset(getPosition(), 1, 2));
+		availableMoves.add(board.getTileAtOffset(getPosition(), 1, -2));
+		availableMoves.add(board.getTileAtOffset(getPosition(), -1, 2));
+		availableMoves.add(board.getTileAtOffset(getPosition(), -1, -2));
+		availableMoves.add(board.getTileAtOffset(getPosition(), 2, 1));
+		availableMoves.add(board.getTileAtOffset(getPosition(), 2, -1));
+		availableMoves.add(board.getTileAtOffset(getPosition(), -2, 1));
+		availableMoves.add(board.getTileAtOffset(getPosition(), -2, -1));
+		
+		filterSameColorTiles(availableMoves, board);
+		
+		return availableMoves;
 	}
-
-	@Override
-	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
-		Case caseSrc = coup.getCaseSource();
-		Case caseDest = coup.getCaseDestination();
-
-		Direction direction = PositionConverter.getDirection(coup);
-
-		if (direction == Direction.AUTRE) {
-			int diffLigne = Math.abs(caseDest.getLigne() - caseSrc.getLigne());
-			int diffCol = Math
-					.abs(caseDest.getColonne() - caseSrc.getColonne());
-
-			return diffLigne + diffCol == 3;
-		}
-
-		return false;
-	}
-
 }

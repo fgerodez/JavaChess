@@ -1,32 +1,32 @@
 package com.javachess.modele.pieces;
 
-import com.javachess.helpers.Couleur;
-import com.javachess.helpers.Coup;
+import com.javachess.helpers.Color;
+import com.javachess.helpers.Move;
 import com.javachess.helpers.PositionConverter;
-import com.javachess.modele.plateau.Case;
-import com.javachess.modele.plateau.Echiquier;
+import com.javachess.jeu.Board;
+import com.javachess.modele.plateau.Tile;
 
-//TODO: le rock : le roi se déplace de deux cases en ligne vers la tour. Aucune case ne doit être menacée et ni la tour ni le roi ne doivent avoir bougés
+//TODO: le rock : le roi se dÔøΩplace de deux cases en ligne vers la tour. Aucune case ne doit ÔøΩtre menacÔøΩe et ni la tour ni le roi ne doivent avoir bougÔøΩs
 
 public class Roi extends Piece {
 
 	private boolean isEchec = false;
 
-	public Roi(Couleur couleur, Case position) {
+	public Roi(Color couleur, Tile position) {
 		super(couleur, position);
 	}
 
 	@Override
-	public boolean attaquePossible(Coup coup, Echiquier echiquier) {
+	protected boolean attaquePossible(Move coup, Board echiquier) {
 		return mouvementPossible(coup, echiquier);
 	}
 
 	@Override
-	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
-		Case caseSrc = coup.getCaseSource();
-		Case caseDest = coup.getCaseDestination();
+	protected boolean mouvementPossible(Move coup, Board echiquier) {
+		Tile caseSrc = coup.getCaseSource();
+		Tile caseDest = coup.getCaseDestination();
 
-		Case[] casesPossible = PositionConverter.getCasesAdjacentes(caseSrc);
+		Tile[] casesPossible = PositionConverter.getCasesAdjacentes(caseSrc);
 
 		for (int index = 0; index < casesPossible.length; index++) {
 			if (casesPossible[index].equals(caseDest))

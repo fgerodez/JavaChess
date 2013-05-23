@@ -1,21 +1,21 @@
 package com.javachess.modele.pieces;
 
-import com.javachess.helpers.Couleur;
-import com.javachess.helpers.Coup;
+import com.javachess.helpers.Color;
+import com.javachess.helpers.Move;
 import com.javachess.helpers.PositionConverter;
-import com.javachess.modele.plateau.Case;
-import com.javachess.modele.plateau.Echiquier;
+import com.javachess.jeu.Board;
+import com.javachess.modele.plateau.Tile;
 
 public class Pion extends Piece {
 
-	public Pion(Couleur couleur, Case position) {
+	public Pion(Color couleur, Tile position) {
 		super(couleur, position);
 	}
 
 	@Override
-	public boolean attaquePossible(Coup coup, Echiquier echiquier) {
+	protected boolean attaquePossible(Move coup, Board echiquier) {
 
-		if (this.getColor() == Couleur.BLANC) {
+		if (this.getColor() == Color.BLANC) {
 			return coup.getCaseDestination().equals(
 					PositionConverter.getCaseDiagHautDroite(coup
 							.getCaseSource()))
@@ -33,9 +33,9 @@ public class Pion extends Piece {
 	}
 
 	@Override
-	public boolean mouvementPossible(Coup coup, Echiquier echiquier) {
+	protected boolean mouvementPossible(Move coup, Board echiquier) {
 
-		if (this.getColor() == Couleur.BLANC) {
+		if (this.getColor() == Color.BLANC) {
 			if (getPositionInitiale().equals(getPosition())) {
 				if (coup.getCaseDestination().equals(PositionConverter.getCaseHaut(coup.getCaseSource(), 2)))
 					return true;

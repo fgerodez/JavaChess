@@ -1,18 +1,18 @@
 package com.javachess.joueurs;
 
-import com.javachess.helpers.Couleur;
-import com.javachess.helpers.Coup;
+import com.javachess.helpers.Color;
+import com.javachess.helpers.Move;
 
 public class JoueurCPU implements Joueur {
 
 	@Override
-	public Coup jouer() {
+	public Move jouer() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Couleur getCouleur() {
+	public Color getCouleur() {
 		// TODO Auto-generated method stub
 		return null;
 	}

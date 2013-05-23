@@ -1,80 +1,51 @@
 package com.javachess.modele.pieces;
 
-import com.javachess.helpers.Couleur;
-import com.javachess.helpers.Coup;
-import com.javachess.modele.plateau.Case;
-import com.javachess.modele.plateau.Echiquier;
+import java.util.List;
+
+import com.javachess.helpers.Color;
+import com.javachess.jeu.Board;
+import com.javachess.modele.plateau.Tile;
 
 /**
- * Cette classe représente le template d'une pièce d'échec. Chaque pièce est
- * représentée par une couleur et une position.
+ * Cette classe repr√©sente le template d'une pi√®ce d'√©chec. Chaque pi√®ce est
+ * repr√©sent√©e par une couleur et une position.
  * 
  * @author Ouzned
  */
 public abstract class Piece {
-	private Couleur color;
-	private Case position;
-	private Case positionInitiale;
+	private Tile position;
 	
-	public Piece(Couleur couleur, Case position) {
+	private final Color color;
+	private final Tile initialPosition;
+	
+	public Piece(Color couleur, Tile position) {
 		this.color = couleur;
 		this.position = position;
-		this.positionInitiale = position;
+		this.initialPosition = position;
 	}
 	
-	/**
-	 * Vérifie si la pièce peut se déplacer à newPos Cette méthode ne vérifie
-	 * pas les mouvements d'attaque d'une pièce (mouvement diagonal pour le pion
-	 * par exemple)
-	 * 
-	 * @param newPos
-	 * @return Vrai si la pièce peut se déplacer en newPos
-	 */
-	public abstract boolean attaquePossible(Coup coup, Echiquier echiquier);
-
-	/**
-	 * Vérifie si la pièce peut attaquer la case du coup spécifié.
-	 * 
-	 * @param newPos
-	 * @return Vrai si la pièce peut attaquer (et prendre une pièce adverse)
-	 */
-	public abstract boolean mouvementPossible(Coup coup, Echiquier echiquier);
-
-	/**
-	 * Indique si le déplacement indiquait par le coup est possible
-	 * @param coup
-	 * @param echiquier
-	 * @param isAttaque
-	 * @return
-	 */
-	public boolean deplacementPossible(Coup coup, Echiquier echiquier, boolean isAttaque) {
-		if (isAttaque)
-			return this.attaquePossible(coup, echiquier);
-		else
-			return this.mouvementPossible(coup, echiquier);
+	public boolean isSameColor(Piece piece) {
+		return color.equals(piece.color);
+	}
+	
+	protected abstract List<Tile> availableMoves(final Board board);
+	
+	protected void filterSameColorTiles(List<Tile> tiles, final Board board) {
+		for(Tile tile : tiles) {
+			if (isSameColor(board.getPiece(tile)))
+				tiles.remove(tile);
+		}
 	}
 
-	public Couleur getColor() {
-		return color;
-	}
-
-	public void setColor(Couleur color) {
-		this.color = color;
-	}
-
-	public Case getPosition() {
+	public Tile getPosition() {
 		return position;
 	}
 
-	public void setPosition(Case position) {
+	public void setPosition(Tile position) {
 		this.position = position;
 	}
 
-	public Case getPositionInitiale() {
-		return positionInitiale;
-	}
-
-	public void setPositionInitiale(Case positionInitiale) {
-		this.positionInitiale = positionInitiale;
+	public Tile getInitialPosition() {
+		return initialPosition;
 	}
 }

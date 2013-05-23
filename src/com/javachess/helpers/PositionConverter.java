@@ -1,88 +1,88 @@
 package com.javachess.helpers;
 
-import com.javachess.jeu.Case;
+import com.javachess.modele.plateau.Tile;
 
 public class PositionConverter {
 	private static String[] LETTRES = { "A", "B", "C", "D", "E", "F", "G", "H" };
 
 	/**
-	 * Calcule l'index interne qui reprŽsente une case
+	 * Calcule l'index interne qui reprï¿½sente une case
 	 * 
 	 * @param nCase
 	 *            La case pour laquelle calculer l'index
-	 * @return L'index qui reprŽsente la case
+	 * @return L'index qui reprï¿½sente la case
 	 */
-	public static int convertCaseEnIndex(Case nCase) {
+	public static int convertCaseEnIndex(Tile nCase) {
 		return (nCase.getColonne() - 1) + (nCase.getLigne() - 1)
 				* LETTRES.length;
 	}
 
 	/**
-	 * Calcule la case qui correspond ˆ l'index interne
+	 * Calcule la case qui correspond ï¿½ l'index interne
 	 * 
 	 * @param index
 	 *            L'index pour lequel calculer la case
-	 * @return La case reprŽsentŽe par l'index
+	 * @return La case reprï¿½sentï¿½e par l'index
 	 */
-	public static Case convertIndexEnCase(int index) {
+	public static Tile convertIndexEnCase(int index) {
 		int colonne = index - (LETTRES.length * (index / LETTRES.length)) + 1;
 		int ligne = index / LETTRES.length + 1;
 
-		return new Case(colonne, ligne);
+		return new Tile(colonne, ligne);
 	}
 
 	/**
-	 * Renvoie toutes les cases adjacentes d'une case. Ne fais aucun contr™le de
-	 * validitŽ
+	 * Renvoie toutes les cases adjacentes d'une case. Ne fais aucun contrï¿½le de
+	 * validitï¿½
 	 * 
 	 * @param nCase
 	 *            La case pour laquelle calculer les cases adjacentes
 	 * @return Le tableau des cases adjacentes
 	 */
-	public static Case[] getCasesAdjacentes(Case nCase) {
-		return new Case[] { getCaseDiagHautGauche(nCase),
+	public static Tile[] getCasesAdjacentes(Tile nCase) {
+		return new Tile[] { getCaseDiagHautGauche(nCase),
 				getCaseDiagHautDroite(nCase), getCaseDiagBasGauche(nCase),
 				getCaseDiagBasDroite(nCase), getCaseHaut(nCase),
 				getCaseBas(nCase), getCaseDroite(nCase), getCaseGauche(nCase) };
 	}
 
-	public static Case getCaseDiagHautGauche(Case nCase) {
+	public static Tile getCaseDiagHautGauche(Tile nCase) {
 		int nvlLigne = nCase.getLigne() + 1;
 		int nvlColonne = nCase.getColonne() - 1;
 
-		return new Case(nvlColonne, nvlLigne);
+		return new Tile(nvlColonne, nvlLigne);
 	}
 
-	public static Case getCaseDiagHautDroite(Case nCase) {
+	public static Tile getCaseDiagHautDroite(Tile nCase) {
 		int nvlLigne = nCase.getLigne() + 1;
 		int nvlColonne = nCase.getColonne() + 1;
 
-		return new Case(nvlColonne, nvlLigne);
+		return new Tile(nvlColonne, nvlLigne);
 	}
 
-	public static Case getCaseDiagBasGauche(Case nCase) {
+	public static Tile getCaseDiagBasGauche(Tile nCase) {
 		int nvlLigne = nCase.getLigne() - 1;
 		int nvlColonne = nCase.getColonne() - 1;
 
-		return new Case(nvlColonne, nvlLigne);
+		return new Tile(nvlColonne, nvlLigne);
 	}
 
-	public static Case getCaseDiagBasDroite(Case nCase) {
+	public static Tile getCaseDiagBasDroite(Tile nCase) {
 		int nvlLigne = nCase.getLigne() - 1;
 		int nvlColonne = nCase.getColonne() + 1;
 
-		return new Case(nvlColonne, nvlLigne);
+		return new Tile(nvlColonne, nvlLigne);
 	}
 
-	public static Case getCaseHaut(Case nCase) {
+	public static Tile getCaseHaut(Tile nCase) {
 		int nvlLigne = nCase.getLigne() + 1;
 		int nvlColonne = nCase.getColonne();
 
-		return new Case(nvlColonne, nvlLigne);
+		return new Tile(nvlColonne, nvlLigne);
 	}
 
-	public static Case getCaseHaut(Case nCase, int nombre) {
-		Case caseRes = new Case(nCase.getColonne(), nCase.getLigne());
+	public static Tile getCaseHaut(Tile nCase, int nombre) {
+		Tile caseRes = new Tile(nCase.getColonne(), nCase.getLigne());
 
 		while (nombre != 0) {
 			caseRes = getCaseHaut(caseRes);
@@ -92,15 +92,15 @@ public class PositionConverter {
 		return caseRes;
 	}
 
-	public static Case getCaseBas(Case nCase) {
+	public static Tile getCaseBas(Tile nCase) {
 		int nvlLigne = nCase.getLigne() - 1;
 		int nvlColonne = nCase.getColonne();
 
-		return new Case(nvlColonne, nvlLigne);
+		return new Tile(nvlColonne, nvlLigne);
 	}
 
-	public static Case getCaseBas(Case nCase, int nombre) {
-		Case caseRes = new Case(nCase.getColonne(), nCase.getLigne());
+	public static Tile getCaseBas(Tile nCase, int nombre) {
+		Tile caseRes = new Tile(nCase.getColonne(), nCase.getLigne());
 
 		while (nombre != 0) {
 			caseRes = getCaseBas(caseRes);
@@ -110,34 +110,34 @@ public class PositionConverter {
 		return caseRes;
 	}
 
-	public static Case getCaseGauche(Case nCase) {
+	public static Tile getCaseGauche(Tile nCase) {
 		int nvlLigne = nCase.getLigne();
 		int nvlColonne = nCase.getColonne() - 1;
 
-		return new Case(nvlColonne, nvlLigne);
+		return new Tile(nvlColonne, nvlLigne);
 	}
 
-	public static Case getCaseDroite(Case nCase) {
+	public static Tile getCaseDroite(Tile nCase) {
 		int nvlLigne = nCase.getLigne();
 		int nvlColonne = nCase.getColonne() + 1;
 
-		return new Case(nvlColonne, nvlLigne);
+		return new Tile(nvlColonne, nvlLigne);
 	}
 
 	/**
 	 * Calcule la direction d'un coup
 	 * 
 	 * @param coup
-	 *            Le coup ˆ Žtudier
+	 *            Le coup ï¿½ ï¿½tudier
 	 * 
 	 * @return La direction du coup
 	 */
-	public static Direction getDirection(Coup coup) {
+	public static Direction getDirection(Move coup) {
 		boolean colonne = false;
 		boolean ligne = false;
 
-		Case caseSource = coup.getCaseSource();
-		Case caseDestination = coup.getCaseDestination();
+		Tile caseSource = coup.getCaseSource();
+		Tile caseDestination = coup.getCaseDestination();
 
 		int deltaY = Math.abs(caseDestination.getLigne()
 				- caseSource.getLigne());
@@ -169,10 +169,10 @@ public class PositionConverter {
 	 * Calcule le sens d'un coup
 	 * 
 	 * @param coup
-	 *            Le coup ˆ Žtudier
+	 *            Le coup ï¿½ ï¿½tudier
 	 * @return Le sens du coup
 	 */
-	public static Sens getSensCoup(Coup coup) {
+	public static Sens getSensCoup(Move coup) {
 
 		Direction direction = getDirection(coup);
 
@@ -192,13 +192,13 @@ public class PositionConverter {
 	 * Calcule le sens pour la direction Ligne
 	 * 
 	 * @param coup
-	 *            Le coup ˆ Žtudier
+	 *            Le coup ï¿½ ï¿½tudier
 	 * 
 	 * @return Le sens du coup
 	 */
-	private static Sens getSensPourLigne(Coup coup) {
-		Case caseSource = coup.getCaseSource();
-		Case caseDest = coup.getCaseDestination();
+	private static Sens getSensPourLigne(Move coup) {
+		Tile caseSource = coup.getCaseSource();
+		Tile caseDest = coup.getCaseDestination();
 
 		if (caseDest.getColonne() - caseSource.getColonne() > 0)
 			return Sens.DROITE;
@@ -210,13 +210,13 @@ public class PositionConverter {
 	 * Calcule le sens pour la direction Colonne
 	 * 
 	 * @param coup
-	 *            Le coup ˆ Žtudier
+	 *            Le coup ï¿½ ï¿½tudier
 	 * 
 	 * @return Le sens du coup
 	 */
-	private static Sens getSensPourColonne(Coup coup) {
-		Case caseSource = coup.getCaseSource();
-		Case caseDest = coup.getCaseDestination();
+	private static Sens getSensPourColonne(Move coup) {
+		Tile caseSource = coup.getCaseSource();
+		Tile caseDest = coup.getCaseDestination();
 
 		if (caseDest.getLigne() - caseSource.getLigne() > 0)
 			return Sens.HAUT;
@@ -228,13 +228,13 @@ public class PositionConverter {
 	 * Calcule le sens pour la direction DIAGONALE
 	 * 
 	 * @param coup
-	 *            Le coup ˆ Žtudier
+	 *            Le coup ï¿½ ï¿½tudier
 	 * 
 	 * @return Le sens du coup
 	 */
-	private static Sens getSensPourDiagonale(Coup coup) {
-		Case caseSource = coup.getCaseSource();
-		Case caseDest = coup.getCaseDestination();
+	private static Sens getSensPourDiagonale(Move coup) {
+		Tile caseSource = coup.getCaseSource();
+		Tile caseDest = coup.getCaseDestination();
 
 		if ((caseDest.getLigne() - caseSource.getLigne() > 0)
 				&& (caseDest.getColonne() - caseSource.getColonne() > 0))
