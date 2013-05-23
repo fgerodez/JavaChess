@@ -3,8 +3,9 @@ package com.javachess.modele.pieces;
 import java.util.List;
 
 import com.javachess.helpers.Color;
-import com.javachess.jeu.Board;
-import com.javachess.modele.plateau.Tile;
+import com.javachess.helpers.Utils;
+import com.javachess.modele.plateau.Board;
+import com.javachess.modele.plateau.Square;
 
 /**
  * Cette classe représente le template d'une pièce d'échec. Chaque pièce est
@@ -13,39 +14,70 @@ import com.javachess.modele.plateau.Tile;
  * @author Ouzned
  */
 public abstract class Piece {
-	private Tile position;
-	
-	private final Color color;
-	private final Tile initialPosition;
-	
-	public Piece(Color couleur, Tile position) {
-		this.color = couleur;
+	protected Square position;
+
+	protected final Color color;
+	protected final Square initialPosition;
+
+	public Piece(Color color, Square position) {
+		assert color != null;
+		assert position != null;
+
+		this.color = color;
 		this.position = position;
 		this.initialPosition = position;
 	}
-	
-	public boolean isSameColor(Piece piece) {
-		return color.equals(piece.color);
-	}
-	
-	protected abstract List<Tile> availableMoves(final Board board);
-	
-	protected void filterSameColorTiles(List<Tile> tiles, final Board board) {
-		for(Tile tile : tiles) {
-			if (isSameColor(board.getPiece(tile)))
-				tiles.remove(tile);
+
+	protected void filterSameColorSquares(List<Square> squares,
+			final Board board) {
+		for (Square square : squares) {
+			if (this.isSameColor(board.getPiece(square)))
+				squares.remove(square);
 		}
 	}
 
-	public Tile getPosition() {
+	protected void iterateDirection(List<Square> availableMoves, int colOffset,
+			int rowOffset, Board board) {
+
+		for (int i = 1;; i++) {
+			Square square = board.getSquareAtOffset(position, colOffset * i,
+					rowOffset * i);
+			Piece piece = board.getPiece(square);
+
+			if (square != null && piece == null) {
+				Utils.nullSafeAdd(availableMoves, square);
+				continue;
+			}
+
+			if (!this.isSameColor(piece))
+				Utils.nullSafeAdd(availableMoves, square);
+
+			break;
+		}
+	}
+
+	public abstract List<Square> availableMoves(final Board board);
+
+	public boolean isSameColor(Piece piece) {
+		if (piece == null)
+			return false;
+
+		return color.equals(piece.color);
+	}
+
+	/*
+	 * Getters & Setters
+	 */
+
+	public Square getPosition() {
 		return position;
 	}
 
-	public void setPosition(Tile position) {
+	public void setPosition(Square position) {
 		this.position = position;
 	}
 
-	public Tile getInitialPosition() {
+	public Square getInitialPosition() {
 		return initialPosition;
 	}
 }

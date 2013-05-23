@@ -1,39 +1,45 @@
 package com.javachess.modele.pieces;
 
-import com.javachess.helpers.Color;
-import com.javachess.helpers.Move;
-import com.javachess.helpers.PositionConverter;
-import com.javachess.jeu.Board;
-import com.javachess.modele.plateau.Tile;
+import java.util.ArrayList;
+import java.util.List;
 
-//TODO: le rock : le roi se d�place de deux cases en ligne vers la tour. Aucune case ne doit �tre menac�e et ni la tour ni le roi ne doivent avoir boug�s
+import com.javachess.helpers.Color;
+import com.javachess.helpers.Utils;
+import com.javachess.modele.plateau.Board;
+import com.javachess.modele.plateau.Square;
 
 public class Roi extends Piece {
 
 	private boolean isEchec = false;
 
-	public Roi(Color couleur, Tile position) {
+	public Roi(Color couleur, Square position) {
 		super(couleur, position);
-	}
+	}	
 
 	@Override
-	protected boolean attaquePossible(Move coup, Board echiquier) {
-		return mouvementPossible(coup, echiquier);
-	}
+	public List<Square> availableMoves(Board board) {
+		List<Square> availableMoves = new ArrayList<Square>();
 
-	@Override
-	protected boolean mouvementPossible(Move coup, Board echiquier) {
-		Tile caseSrc = coup.getCaseSource();
-		Tile caseDest = coup.getCaseDestination();
+		Utils.nullSafeAdd(availableMoves,
+				board.getSquareAtOffset(position, 0, 1));
+		Utils.nullSafeAdd(availableMoves,
+				board.getSquareAtOffset(position, 0, -1));
+		Utils.nullSafeAdd(availableMoves,
+				board.getSquareAtOffset(position, 1, 0));
+		Utils.nullSafeAdd(availableMoves,
+				board.getSquareAtOffset(position, -1, 0));
+		Utils.nullSafeAdd(availableMoves,
+				board.getSquareAtOffset(position, -1, 1));
+		Utils.nullSafeAdd(availableMoves,
+				board.getSquareAtOffset(position, -1, -1));
+		Utils.nullSafeAdd(availableMoves,
+				board.getSquareAtOffset(position, 1, 1));
+		Utils.nullSafeAdd(availableMoves,
+				board.getSquareAtOffset(position, 1, -1));
 
-		Tile[] casesPossible = PositionConverter.getCasesAdjacentes(caseSrc);
+		filterSameColorSquares(availableMoves, board);
 
-		for (int index = 0; index < casesPossible.length; index++) {
-			if (casesPossible[index].equals(caseDest))
-				return true;
-		}
-
-		return false;
+		return availableMoves;
 	}
 
 	public boolean isEchec() {

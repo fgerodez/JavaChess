@@ -1,56 +1,58 @@
 package com.javachess.modele.pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.javachess.helpers.Color;
-import com.javachess.helpers.Move;
-import com.javachess.helpers.PositionConverter;
-import com.javachess.jeu.Board;
-import com.javachess.modele.plateau.Tile;
+import com.javachess.helpers.Utils;
+import com.javachess.modele.plateau.Board;
+import com.javachess.modele.plateau.Square;
 
 public class Pion extends Piece {
 
-	public Pion(Color couleur, Tile position) {
-		super(couleur, position);
+	public Pion(Color color, Square position) {
+		super(color, position);
 	}
 
 	@Override
-	protected boolean attaquePossible(Move coup, Board echiquier) {
+	public List<Square> availableMoves(Board board) {
+		List<Square> availableMoves = new ArrayList<Square>();
 
-		if (this.getColor() == Color.BLANC) {
-			return coup.getCaseDestination().equals(
-					PositionConverter.getCaseDiagHautDroite(coup
-							.getCaseSource()))
-					|| coup.getCaseDestination().equals(
-							PositionConverter.getCaseDiagHautGauche(coup
-									.getCaseSource()));
-		} else {
-			return coup.getCaseDestination()
-					.equals(PositionConverter.getCaseDiagBasDroite(coup
-							.getCaseSource()))
-					|| coup.getCaseDestination().equals(
-							PositionConverter.getCaseDiagBasGauche(coup
-									.getCaseSource()));
-		}
+		initialForwardMove(availableMoves, board);
+
+		forwardMove(board, availableMoves);
+
+		diagonalMoves(board, availableMoves);
+
+		filterSameColorSquares(availableMoves, board);
+
+		return availableMoves;
 	}
 
-	@Override
-	protected boolean mouvementPossible(Move coup, Board echiquier) {
+	private void diagonalMoves(Board board, List<Square> availableMoves) {
+		Square diagonalLeft = board.getSquareAtOffset(position, -1,
+				1 * color.getFwdModifier());
 
-		if (this.getColor() == Color.BLANC) {
-			if (getPositionInitiale().equals(getPosition())) {
-				if (coup.getCaseDestination().equals(PositionConverter.getCaseHaut(coup.getCaseSource(), 2)))
-					return true;
-			}
-			
-			return coup.getCaseDestination().equals(
-					PositionConverter.getCaseHaut(coup.getCaseSource()));
-		} else {
-			if (getPositionInitiale().equals(getPosition())) {
-				if (coup.getCaseDestination().equals(PositionConverter.getCaseBas(coup.getCaseSource(), 2)))
-					return true;
-			}
-			
-			return coup.getCaseDestination().equals(
-					PositionConverter.getCaseBas(coup.getCaseSource()));
-		}
+		Square diagonalRight = board.getSquareAtOffset(position, 1,
+				1 * color.getFwdModifier());
+
+		if (!this.isSameColor(board.getPiece(diagonalLeft)))
+			Utils.nullSafeAdd(availableMoves, diagonalLeft);
+
+		if (!this.isSameColor(board.getPiece(diagonalRight)))
+			Utils.nullSafeAdd(availableMoves, diagonalRight);
+	}
+
+	private void forwardMove(Board board, List<Square> availableMoves) {
+		Utils.nullSafeAdd(availableMoves,
+				board.getSquareAtOffset(position, 0, 1 * color.getFwdModifier()));
+	}
+
+	private void initialForwardMove(List<Square> availableMoves, Board board) {
+		if (position.equals(initialPosition))
+			Utils.nullSafeAdd(
+					availableMoves,
+					board.getSquareAtOffset(position, 0,
+							2 * color.getFwdModifier()));
 	}
 }

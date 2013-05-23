@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 import com.javachess.helpers.Color;
 import com.javachess.helpers.Move;
-import com.javachess.modele.plateau.Tile;
+import com.javachess.modele.plateau.Square;
 
 /**
  * Joueur en mode manuel (humain). Les d�placements sont r�cup�r�s directement
@@ -50,7 +50,7 @@ public class JoueurHumain implements Joueur {
 		int colonne = Integer.parseInt(caseInfo.substring(0, 1));
 		int ligne = Integer.parseInt(caseInfo.substring(2, 3));
 
-		Tile caseSource = new Tile(colonne, ligne);
+		Square caseSource = new Square(colonne, ligne);
 
 		System.out.println(nom + ", colonne-ligne destination :");
 
@@ -63,7 +63,7 @@ public class JoueurHumain implements Joueur {
 		colonne = Integer.parseInt(caseInfo.substring(0, 1));
 		ligne = Integer.parseInt(caseInfo.substring(2, 3));
 
-		Tile caseDestination = new Tile(colonne, ligne);
+		Square caseDestination = new Square(colonne, ligne);
 
 		return new Move(caseSource, caseDestination);
 	}

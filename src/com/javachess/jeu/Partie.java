@@ -6,7 +6,8 @@ import com.javachess.helpers.Move;
 import com.javachess.joueurs.Joueur;
 import com.javachess.modele.pieces.Piece;
 import com.javachess.modele.pieces.Roi;
-import com.javachess.modele.plateau.Tile;
+import com.javachess.modele.plateau.Board;
+import com.javachess.modele.plateau.Square;
 
 /**
  * Mod�lise une partie d'echec. Chaque partie correspond � un plateau et � deux
@@ -136,7 +137,7 @@ public class Partie {
 	 */
 	private boolean echecEtMat() throws GameException {
 		Piece[] pieces = plateau.getPions(joueurSuivant().getCouleur());
-		Tile[] cases = plateau.getCases();
+		Square[] cases = plateau.getCases();
 
 		for (int iPiece = 0; iPiece < pieces.length; iPiece++) {
 			for (int iCase = 0; iCase < cases.length; iCase++) {

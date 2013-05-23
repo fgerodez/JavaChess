@@ -1,36 +1,30 @@
 package com.javachess.modele.pieces;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.javachess.helpers.Color;
-import com.javachess.helpers.Move;
-import com.javachess.helpers.PositionConverter;
-import com.javachess.helpers.Sens;
-import com.javachess.jeu.Board;
-import com.javachess.modele.plateau.Tile;
-//TODO : le rock
+import com.javachess.modele.plateau.Board;
+import com.javachess.modele.plateau.Square;
+
 public class Tour extends Piece {
 
-	public Tour(Color couleur, Tile position) {
+	public Tour(Color couleur, Square position) {
 		super(couleur, position);
 	}
 
 	@Override
-	protected boolean attaquePossible(Move coup, Board echiquier) {
-		return mouvementPossible(coup, echiquier);
+	public List<Square> availableMoves(Board board) {
+		List<Square> availableMoves = new ArrayList<Square>();
+
+		//Vertical movements
+		iterateDirection(availableMoves, 0, 1, board);
+		iterateDirection(availableMoves, 0, -1, board);
+		
+		//Horizontal movements
+		iterateDirection(availableMoves, 1, 0, board);
+		iterateDirection(availableMoves, -1, 0, board);
+		
+		return availableMoves;
 	}
-
-	@Override
-	protected boolean mouvementPossible(Move coup, Board echiquier) {
-				
-		Sens sens = PositionConverter.getSensCoup(coup);
-
-		if (sens == Sens.HAUT || sens == Sens.BAS || sens == Sens.DROITE
-				|| sens == Sens.GAUCHE) {
-
-			return echiquier.caseIntermVides(coup.getCaseSource(),
-					coup.getCaseDestination(), sens);
-		}
-
-		return false;
-	}
-
 }

@@ -2,10 +2,20 @@ package com.javachess.helpers;
 
 
 /**
- * Enum�ration qui d�finit la couleur d'une pi�ce
+ * Enumération qui définit la couleur d'une pièce
  * 
  * @author Ouzned
  */
 public enum Color {
-	BLACK, WHITE
+	BLACK(1), WHITE(-1);
+	
+	private final int fwdDirection;
+	
+	private Color(int fwdDirection) {
+		this.fwdDirection = fwdDirection;
+	}
+	
+	public int getFwdModifier() {
+		return fwdDirection;
+	}
 }
