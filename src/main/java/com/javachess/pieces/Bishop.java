@@ -14,14 +14,14 @@ public class Bishop extends Piece {
 	}
 
 	@Override
-	public List<Square> availableMoves(Board board) {
+	public List<Square> availableMoves(Square src, Board board) {
 		List<Square> availableMoves = new ArrayList<Square>();
 
 		//Diagonal movements
-		iterateDirection(availableMoves, -1, -1, board);
-		iterateDirection(availableMoves, 1, -1, board);
-		iterateDirection(availableMoves, -1, 1, board);
-		iterateDirection(availableMoves, 1, 1, board);
+		availableMoves.addAll(iterateDirection(src, -1, -1, board));
+		availableMoves.addAll(iterateDirection(src, 1, -1, board));
+		availableMoves.addAll(iterateDirection(src, -1, 1, board));
+		availableMoves.addAll(iterateDirection(src, 1, 1, board));
 		
 		return availableMoves;
 	}

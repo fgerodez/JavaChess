@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.javachess.board.Board;
 import com.javachess.board.Square;
 import com.javachess.exceptions.ConversionException;
+import com.javachess.pieces.Piece;
 import com.javachess.pieces.Queen;
 import com.javachess.pieces.Tower;
 
@@ -35,5 +36,20 @@ public class BoardTests {
 		assertTrue(board.getPiece(toSquare("D1")) instanceof Queen);
 		assertTrue(board.getPiece(toSquare("E8")) instanceof Queen);
 		assertNull(board.getPiece(toSquare("E4")));
+	}
+	
+	@Test 
+	public void movePiece() throws ConversionException {
+		Board board = new Board();
+		
+		Piece pieceSrc = board.getPiece(toSquare("B1"));
+		
+		board.move(toSquare("B1"), toSquare("C3"));
+		
+		Piece pieceDst = board.getPiece(toSquare("C3"));
+		Piece empty = board.getPiece(toSquare("B1"));
+		
+		assertEquals(pieceSrc, pieceDst);
+		assertEquals(null, empty);
 	}
 }

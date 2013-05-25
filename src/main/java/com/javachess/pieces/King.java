@@ -11,33 +11,23 @@ import com.javachess.board.Square;
 
 public class King extends Piece {
 
-	private boolean isEchec = false;
-
 	public King(Color couleur, Square position) {
 		super(couleur, position);
 	}
 
 	@Override
-	public List<Square> availableMoves(Board board) {
+	public List<Square> availableMoves(final Square src, final Board board) {
 		List<Square> availableMoves = new ArrayList<Square>();
 
-		nullSafeAdd(availableMoves, board.atOffset(position, 0, 1));
-		nullSafeAdd(availableMoves, board.atOffset(position, 0, -1));
-		nullSafeAdd(availableMoves, board.atOffset(position, 1, 0));
-		nullSafeAdd(availableMoves, board.atOffset(position, -1, 0));
-		nullSafeAdd(availableMoves, board.atOffset(position, -1, 1));
-		nullSafeAdd(availableMoves, board.atOffset(position, -1, -1));
-		nullSafeAdd(availableMoves, board.atOffset(position, 1, 1));
-		nullSafeAdd(availableMoves, board.atOffset(position, 1, -1));
+		nullSafeAdd(availableMoves, board.atOffset(src, 0, 1));
+		nullSafeAdd(availableMoves, board.atOffset(src, 0, -1));
+		nullSafeAdd(availableMoves, board.atOffset(src, 1, 0));
+		nullSafeAdd(availableMoves, board.atOffset(src, -1, 0));
+		nullSafeAdd(availableMoves, board.atOffset(src, -1, 1));
+		nullSafeAdd(availableMoves, board.atOffset(src, -1, -1));
+		nullSafeAdd(availableMoves, board.atOffset(src, 1, 1));
+		nullSafeAdd(availableMoves, board.atOffset(src, 1, -1));
 
 		return filterSameColor(availableMoves, board);
-	}
-
-	public boolean isEchec() {
-		return isEchec;
-	}
-
-	public void setEchec(boolean isEchec) {
-		this.isEchec = isEchec;
 	}
 }

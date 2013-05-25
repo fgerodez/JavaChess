@@ -16,21 +16,20 @@ public class Pawn extends Piece {
 	}
 
 	@Override
-	public List<Square> availableMoves(Board board) {
+	public List<Square> availableMoves(Square src, final Board board) {
 		List<Square> availableMoves = new ArrayList<Square>();
 
-		initialForward(board, availableMoves);
-
-		forward(board, availableMoves);
-
-		diagonal(board, availableMoves);
+		availableMoves.addAll(forward(src, board));
+		availableMoves.addAll(diagonal(src, board));
 
 		return filterSameColor(availableMoves, board);
 	}
 
-	private void diagonal(Board board, List<Square> availableMoves) {
-		Square diagLeft = board.atOffset(position, -1, 1 * color.dir());
-		Square diagRight = board.atOffset(position, 1, 1 * color.dir());
+	private List<Square> diagonal(Square src, Board board) {
+		List<Square> availableMoves = new ArrayList<Square>();
+
+		Square diagLeft = board.atOffset(src, -1, 1 * color.dir());
+		Square diagRight = board.atOffset(src, 1, 1 * color.dir());
 
 		Piece diagLeftPiece = board.getPiece(diagLeft);
 		Piece diagRightPiece = board.getPiece(diagRight);
@@ -40,21 +39,23 @@ public class Pawn extends Piece {
 
 		if (diagRightPiece != null && !this.isSameColor(diagRightPiece))
 			nullSafeAdd(availableMoves, diagRight);
+
+		return availableMoves;
 	}
 
-	private void forward(Board board, List<Square> availableMoves) {
-		nullSafeAdd(availableMoves,
-				board.atOffset(position, 0, 1 * color.dir()));
-	}
-
-	private void initialForward(Board board, List<Square> availableMoves) {
-		Square fwdSquare = board.atOffset(position, 0, 1 * color.dir());
+	private List<Square> forward(Square src, final Board board) {
+		List<Square> availableMoves = new ArrayList<Square>();
+		Square fwdSquare = board.atOffset(src, 0, 1 * color.dir());
+		Square fwd2Square = board.atOffset(src, 0, 2 * color.dir());
 
 		if (board.getPiece(fwdSquare) != null)
-			return;
+			return availableMoves;
 
-		if (position.equals(initialPosition))
-			nullSafeAdd(availableMoves,
-					board.atOffset(position, 0, 2 * color.dir()));
+		nullSafeAdd(availableMoves, fwdSquare);
+
+		if (src.equals(initialPosition) && board.getPiece(fwd2Square) == null)
+			nullSafeAdd(availableMoves, fwd2Square);
+
+		return availableMoves;
 	}
 }

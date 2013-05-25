@@ -1,5 +1,6 @@
 package com.javachess.board;
 
+import com.javachess.exceptions.GameException;
 import com.javachess.pieces.Bishop;
 import com.javachess.pieces.King;
 import com.javachess.pieces.Knight;
@@ -59,23 +60,60 @@ public class Board {
 						new Knight(Color.BLACK, new Square(7, 8)),
 						new Tower(Color.BLACK, new Square(8, 8)) } };
 
-		this.board = board;
+		setBoard(board);
 	}
-
+	
 	public Square atOffset(Square square, int colOffset, int rowOffset) {
-		Square newSquare = new Square(square.getColumn() + colOffset, square.getRow()
-				+ rowOffset);
+		Square newSquare = new Square(square.getColumn() + colOffset,
+				square.getRow() + rowOffset);
 
 		if (newSquare.isValid())
 			return newSquare;
 
 		return null;
 	}
-	
+
 	public Piece getPiece(Square square) {
-		if (square == null)
+		if (square == null || !square.isValid())
 			return null;
+
+		return board[square.getRow() - 1][square.getColumn() - 1];
+	}
+	
+	public Square findKing(Color color) throws GameException {
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
+				if (board[row][col].isColor(color))
+					return new Square(col, row);
+			}
+		}
 		
-		return board[square.getRow()-1][square.getColumn()-1];
+		throw new GameException("Can't find king for color " + color);
+	}
+
+	public void move(Square src, Square dst) throws GameException {
+		checkSquare(src);
+		checkSquare(dst);
+		
+		Piece piece = getPiece(src);
+		
+		board[src.getRow() - 1][src.getColumn() - 1] = null;
+		board[dst.getRow() - 1][dst.getColumn() - 1] = piece;
+	}
+	
+	public Board copy() {
+		Board newBoard = new Board();
+		newBoard.setBoard(this.board.clone());
+		
+		return newBoard;
+	}
+	
+	private void checkSquare(Square square) throws GameException {
+		if (square == null || !square.isValid())
+			throw new GameException("Incorrect square provided : " + square);
+	}
+	
+	private void setBoard(Piece[][] board) {
+		this.board = board;
 	}
 }

@@ -16,17 +16,17 @@ public class Knight extends Piece {
 	}
 
 	@Override
-	public List<Square> availableMoves(final Board board) {
+	public List<Square> availableMoves(Square src, final Board board) {
 		List<Square> availableMoves = new ArrayList<Square>();
 
-		nullSafeAdd(availableMoves, board.atOffset(position, 1, 2));
-		nullSafeAdd(availableMoves, board.atOffset(position, 1, -2));
-		nullSafeAdd(availableMoves, board.atOffset(position, -1, 2));
-		nullSafeAdd(availableMoves, board.atOffset(position, -1, -2));
-		nullSafeAdd(availableMoves, board.atOffset(position, 2, 1));
-		nullSafeAdd(availableMoves, board.atOffset(position, 2, -1));
-		nullSafeAdd(availableMoves, board.atOffset(position, -2, 1));
-		nullSafeAdd(availableMoves, board.atOffset(position, -2, -1));
+		nullSafeAdd(availableMoves, board.atOffset(src, 1, 2));
+		nullSafeAdd(availableMoves, board.atOffset(src, 1, -2));
+		nullSafeAdd(availableMoves, board.atOffset(src, -1, 2));
+		nullSafeAdd(availableMoves, board.atOffset(src, -1, -2));
+		nullSafeAdd(availableMoves, board.atOffset(src, 2, 1));
+		nullSafeAdd(availableMoves, board.atOffset(src, 2, -1));
+		nullSafeAdd(availableMoves, board.atOffset(src, -2, 1));
+		nullSafeAdd(availableMoves, board.atOffset(src, -2, -1));
 
 		return filterSameColor(availableMoves, board);
 	}

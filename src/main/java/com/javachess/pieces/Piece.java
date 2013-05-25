@@ -16,20 +16,27 @@ import com.javachess.board.Square;
  * @author Ouzned
  */
 public abstract class Piece {
-	protected Square position;
 
 	protected final Color color;
 	protected final Square initialPosition;
 
-	public Piece(Color color, Square position) {
+	public Piece(final Color color, final Square position) {
 		assert color != null;
 		assert position != null;
 
 		this.color = color;
-		this.position = position;
 		this.initialPosition = position;
 	}
+	
+	public abstract List<Square> availableMoves(Square src, final Board board);
 
+	public boolean isSameColor(final Piece piece) {
+		if (piece == null)
+			return false;
+
+		return isColor(piece.color);
+	}
+	
 	protected List<Square> filterSameColor(List<Square> squares,
 			final Board board) {
 		List<Square> filteredSquares = new ArrayList<Square>();
@@ -44,12 +51,12 @@ public abstract class Piece {
 		return filteredSquares;
 	}
 
-	protected void iterateDirection(List<Square> availableMoves, int colOffset,
-			int rowOffset, Board board) {
+	protected List<Square> iterateDirection(final Square src, final int colOff,
+			final int rowOff, final Board board) {
+		List<Square> availableMoves = new ArrayList<Square>();
 
 		for (int i = 1;; i++) {
-			Square square = board.atOffset(position, colOffset * i, rowOffset
-					* i);
+			Square square = board.atOffset(src, colOff * i, rowOff * i);
 			Piece piece = board.getPiece(square);
 
 			if (square != null && piece == null) {
@@ -62,27 +69,16 @@ public abstract class Piece {
 
 			break;
 		}
-	}
 
-	public abstract List<Square> availableMoves(final Board board);
-
-	public boolean isSameColor(Piece piece) {
-		if (piece == null)
-			return false;
-
-		return color.equals(piece.color);
+		return availableMoves;
 	}
 
 	/*
 	 * Getters & Setters
 	 */
 
-	public Square getPosition() {
-		return position;
-	}
-
-	public void setPosition(Square position) {
-		this.position = position;
+	public boolean isColor(final Color color) {
+		return this.color.equals(color);
 	}
 
 	public Square getInitialPosition() {

@@ -1,11 +1,10 @@
 package com.javachess.board;
 
 public class Square {
-	private int column;
-	private int row;
+	private final int column;
+	private final int row;
 		
 	public Square(int column, int row) {
-		super();
 		this.column = column;
 		this.row = row;
 	}
@@ -43,15 +42,7 @@ public class Square {
 		return column;
 	}
 	
-	public void setColumn(int column) {
-		this.column = column;
-	}
-	
 	public int getRow() {
 		return row;
-	}
-	
-	public void setRow(int row) {
-		this.row = row;
 	}
 }

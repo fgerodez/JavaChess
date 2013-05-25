@@ -14,16 +14,16 @@ public class Tower extends Piece {
 	}
 
 	@Override
-	public List<Square> availableMoves(Board board) {
+	public List<Square> availableMoves(Square src, Board board) {
 		List<Square> availableMoves = new ArrayList<Square>();
 
 		//Vertical movements
-		iterateDirection(availableMoves, 0, 1, board);
-		iterateDirection(availableMoves, 0, -1, board);
+		availableMoves.addAll(iterateDirection(src, 0, -1, board));
+		availableMoves.addAll(iterateDirection(src, 0, -1, board));
 		
 		//Horizontal movements
-		iterateDirection(availableMoves, 1, 0, board);
-		iterateDirection(availableMoves, -1, 0, board);
+		availableMoves.addAll(iterateDirection(src, 1, 0, board));
+		availableMoves.addAll(iterateDirection(src, -1, 0, board));
 		
 		return availableMoves;
 	}
