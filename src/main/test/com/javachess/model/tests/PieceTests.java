@@ -12,6 +12,7 @@ import org.junit.Test;
 import com.javachess.board.Board;
 import com.javachess.board.Square;
 import com.javachess.exceptions.ConversionException;
+import com.javachess.exceptions.GameException;
 import com.javachess.pieces.Piece;
 
 public class PieceTests {
@@ -73,5 +74,27 @@ public class PieceTests {
 		availableMoves = piece.availableMoves(toSquare("E5"), board);
 
 		assertEquals(8, availableMoves.size());
+	}
+	
+	@Test
+	public void pawnAttack() throws GameException {
+		board.move(toSquare("D7"), toSquare("D3"));
+		
+		Piece piece;
+		List<Square> availableMoves;
+
+		// Pawn right attack
+		piece = board.getPiece(toSquare("C2"));
+		availableMoves = piece.availableMoves(toSquare("C2"), board);
+		
+		assertEquals(3, availableMoves.size());
+		assertTrue(availableMoves.contains(toSquare("D3")));
+		
+		// Pawn left attack
+		piece = board.getPiece(toSquare("E2"));
+		availableMoves = piece.availableMoves(toSquare("E2"), board);
+		
+		assertEquals(3, availableMoves.size());
+		assertTrue(availableMoves.contains(toSquare("D3")));
 	}
 }

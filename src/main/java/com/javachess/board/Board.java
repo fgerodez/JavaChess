@@ -62,7 +62,7 @@ public class Board {
 
 		setBoard(board);
 	}
-	
+
 	public Square atOffset(Square square, int colOffset, int rowOffset) {
 		Square newSquare = new Square(square.getColumn() + colOffset,
 				square.getRow() + rowOffset);
@@ -79,40 +79,40 @@ public class Board {
 
 		return board[square.getRow() - 1][square.getColumn() - 1];
 	}
-	
+
 	public Square findKing(Color color) throws GameException {
-		for (int row = 0; row < 9; row++) {
-			for (int col = 0; col < 9; col++) {
-				if (board[row][col].isColor(color))
+		for (int row = 0; row < 7; row++) {
+			for (int col = 0; col < 7; col++) {
+				if (board[row][col] != null && board[row][col].isColor(color))
 					return new Square(col, row);
 			}
 		}
-		
+
 		throw new GameException("Can't find king for color " + color);
 	}
 
 	public void move(Square src, Square dst) throws GameException {
 		checkSquare(src);
 		checkSquare(dst);
-		
+
 		Piece piece = getPiece(src);
-		
+
 		board[src.getRow() - 1][src.getColumn() - 1] = null;
 		board[dst.getRow() - 1][dst.getColumn() - 1] = piece;
 	}
-	
+
 	public Board copy() {
 		Board newBoard = new Board();
 		newBoard.setBoard(this.board.clone());
-		
+
 		return newBoard;
 	}
-	
+
 	private void checkSquare(Square square) throws GameException {
 		if (square == null || !square.isValid())
 			throw new GameException("Incorrect square provided : " + square);
 	}
-	
+
 	private void setBoard(Piece[][] board) {
 		this.board = board;
 	}
