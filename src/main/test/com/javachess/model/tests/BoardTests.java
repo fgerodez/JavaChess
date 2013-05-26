@@ -14,6 +14,7 @@ import com.javachess.board.Color;
 import com.javachess.board.Square;
 import com.javachess.exceptions.ConversionException;
 import com.javachess.exceptions.GameException;
+import com.javachess.helpers.BoardBuilder;
 import com.javachess.pieces.Piece;
 import com.javachess.pieces.Queen;
 import com.javachess.pieces.Tower;
@@ -47,7 +48,6 @@ public class BoardTests {
 		Board board = new Board();
 
 		Piece pieceSrc = board.getPiece(toSquare("B1"));
-
 		board.move(toSquare("B1"), toSquare("C3"));
 
 		Piece pieceDst = board.getPiece(toSquare("C3"));
@@ -63,15 +63,24 @@ public class BoardTests {
 
 		}
 	}
-	
+
 	@Test
 	public void findKing() throws GameException {
 		Board board = new Board();
-		
+
 		Square whiteKing = board.findKing(Color.WHITE);
 		Square blackKing = board.findKing(Color.BLACK);
-		
+
 		assertNotNull(whiteKing);
 		assertNotNull(blackKing);
+
+		board = new Board(BoardBuilder.NO_KING);
+
+		try {
+			board.findKing(Color.WHITE);
+			fail("The white king should not be found");
+		} catch (GameException e) {
+
+		}
 	}
 }

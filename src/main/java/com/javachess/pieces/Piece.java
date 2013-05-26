@@ -27,8 +27,12 @@ public abstract class Piece {
 		this.color = color;
 		this.initialPosition = position;
 	}
-	
+
 	public abstract List<Square> availableMoves(Square src, final Board board);
+
+	public boolean canGoTo(Square src, Square dst, Board board) {
+		return availableMoves(src, board).contains(dst);
+	}
 
 	public boolean isSameColor(final Piece piece) {
 		if (piece == null)
@@ -36,7 +40,7 @@ public abstract class Piece {
 
 		return isColor(piece.color);
 	}
-	
+
 	protected List<Square> filterSameColor(List<Square> squares,
 			final Board board) {
 		List<Square> filteredSquares = new ArrayList<Square>();

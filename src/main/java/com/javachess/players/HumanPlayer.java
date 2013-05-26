@@ -1,4 +1,4 @@
-package com.javachess.joueurs;
+package com.javachess.players;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,14 +19,14 @@ import com.javachess.helpers.Move;
  * @author Ouzned
  * 
  */
-public class JoueurHumain implements Joueur {
+public class HumanPlayer implements Player {
 
-	private String nom;
-	private Color couleur;
+	private String name;
+	private Color color;
 
-	public JoueurHumain(String nom, Color couleur) {
-		this.nom = nom;
-		this.couleur = couleur;
+	public HumanPlayer(String nom, Color couleur) {
+		this.name = nom;
+		this.color = couleur;
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class JoueurHumain implements Joueur {
 	@Override
 	public Move jouer() {
 
-		System.out.println(nom + ", colonne-ligne source :");
+		System.out.println(name + ", colonne-ligne source :");
 		BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(System.in));
 
@@ -52,7 +52,7 @@ public class JoueurHumain implements Joueur {
 
 		Square caseSource = new Square(colonne, ligne);
 
-		System.out.println(nom + ", colonne-ligne destination :");
+		System.out.println(name + ", colonne-ligne destination :");
 
 		try {
 			caseInfo = bufferedReader.readLine();
@@ -72,8 +72,8 @@ public class JoueurHumain implements Joueur {
 	 * Renvoie la couleur du joueur.
 	 */
 	@Override
-	public Color getCouleur() {
-		return couleur;
+	public Color getColor() {
+		return color;
 	}
 
 }

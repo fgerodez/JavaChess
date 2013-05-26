@@ -1,9 +1,9 @@
-package com.javachess.joueurs;
+package com.javachess.players;
 
 import com.javachess.board.Color;
 import com.javachess.helpers.Move;
 
-public interface Joueur {
+public interface Player {
 	public Move jouer();
-	public Color getCouleur();
+	public Color getColor();
 }
