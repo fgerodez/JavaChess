@@ -36,7 +36,7 @@ public class Utils {
 
 			checkRow(row);
 
-			square = new Square(letter.ordinal() + 1, row);
+			square = new Square(letter.ordinal(), row - 1);
 		} catch (Exception e) {
 			throw new ConversionException("An error occured while converting "
 					+ code + " " + e.getMessage());
@@ -70,20 +70,10 @@ public class Utils {
 		if (square == null)
 			return "";
 
-		checkSquare(square);
+		if (!square.isValid())
+			throw new ConversionException("Invalid square");
 
-		return Letter.values()[square.getColumn() - 1].toString()
-				+ square.getRow();
-	}
-
-	private static void checkSquare(Square square) throws ConversionException {
-		if (square.getColumn() - 1 >= Letter.values().length
-				|| square.getColumn() - 1 < 0)
-			throw new ConversionException("Invalid square column value: "
-					+ square.getColumn());
-		
-		if (square.getRow() < 1 || square.getRow() > 8)
-			throw new ConversionException("Invalid square row value: "
-					+ square.getRow());
+		return Letter.values()[square.getCol()].toString()
+				+ (square.getRow() + 1);
 	}
 }

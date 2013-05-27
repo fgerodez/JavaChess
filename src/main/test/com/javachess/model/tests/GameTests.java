@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import com.javachess.board.Board;
 import com.javachess.board.Color;
+import com.javachess.board.Game;
 import com.javachess.exceptions.GameException;
-import com.javachess.game.Game;
 import com.javachess.helpers.BoardBuilder;
 import com.javachess.players.HumanPlayer;
 

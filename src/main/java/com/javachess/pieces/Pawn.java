@@ -1,13 +1,15 @@
 package com.javachess.pieces;
 
-import static com.javachess.helpers.Utils.nullSafeAdd;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.javachess.board.Board;
 import com.javachess.board.Color;
 import com.javachess.board.Square;
+import com.javachess.moves.EnPassant;
+import com.javachess.moves.Move;
+import com.javachess.moves.PawnTwoFwd;
+import com.javachess.moves.StandardMove;
 
 public class Pawn extends Piece {
 
@@ -16,46 +18,57 @@ public class Pawn extends Piece {
 	}
 
 	@Override
-	public List<Square> availableMoves(Square src, final Board board) {
-		List<Square> availableMoves = new ArrayList<Square>();
+	public List<Move> availableMoves(Square src, final Board board) {
+		List<Move> moves = new ArrayList<Move>();
 
-		availableMoves.addAll(forward(src, board));
-		availableMoves.addAll(diagonal(src, board));
+		forward(src, moves, board);
+		diagonal(src, moves, board);
+		enPassant(src, moves, board);
 
-		return filterSameColor(availableMoves, board);
+		return moves;
 	}
 
-	private List<Square> diagonal(Square src, Board board) {
-		List<Square> availableMoves = new ArrayList<Square>();
-
-		Square diagLeft = board.atOffset(src, -1, 1 * color.dir());
-		Square diagRight = board.atOffset(src, 1, 1 * color.dir());
+	private void diagonal(Square src, List<Move> moves, Board board) {
+		Square diagLeft = new Square(src, -1, 1 * color.dir());
+		Square diagRight = new Square(src, 1, 1 * color.dir());
 
 		Piece diagLeftPiece = board.getPiece(diagLeft);
 		Piece diagRightPiece = board.getPiece(diagRight);
 
 		if (diagLeftPiece != null && !this.isSameColor(diagLeftPiece))
-			nullSafeAdd(availableMoves, diagLeft);
+			moves.add(new StandardMove(src, diagLeft, board));
 
 		if (diagRightPiece != null && !this.isSameColor(diagRightPiece))
-			nullSafeAdd(availableMoves, diagRight);
-
-		return availableMoves;
+			moves.add(new StandardMove(src, diagRight, board));
 	}
 
-	private List<Square> forward(Square src, final Board board) {
-		List<Square> availableMoves = new ArrayList<Square>();
-		Square fwdSquare = board.atOffset(src, 0, 1 * color.dir());
-		Square fwd2Square = board.atOffset(src, 0, 2 * color.dir());
+	private void forward(Square src, List<Move> moves, final Board board) {
+		Square fwdSquare = new Square(src, 0, 1 * color.dir());
+		Square fwd2Square = new Square(src, 0, 2 * color.dir());
 
 		if (board.getPiece(fwdSquare) != null)
-			return availableMoves;
+			return;
 
-		nullSafeAdd(availableMoves, fwdSquare);
+		moves.add(new StandardMove(src, fwdSquare, board));
 
 		if (src.equals(initialPosition) && board.getPiece(fwd2Square) == null)
-			nullSafeAdd(availableMoves, fwd2Square);
+			moves.add(new PawnTwoFwd(src, fwd2Square, board));
+	}
 
-		return availableMoves;
+	protected void enPassant(Square src, List<Move> moves, final Board board) {
+		if (board.lastMove() instanceof PawnTwoFwd) {
+			PawnTwoFwd lastMove = (PawnTwoFwd) board.lastMove();
+			
+			Square rightEnPassant = new Square(lastMove.getDst(), -1, 0);
+			Square leftEnPassant = new Square(lastMove.getDst(), 1, 0);
+
+			if (rightEnPassant.equals(src))
+				moves.add(new EnPassant(src,
+						new Square(src, 1, 1 * color.dir()), board));
+
+			if (leftEnPassant.equals(src))
+				moves.add(new EnPassant(src, new Square(src, -1, 1 * color
+						.dir()), board));
+		}
 	}
 }

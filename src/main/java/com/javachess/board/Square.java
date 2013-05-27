@@ -1,23 +1,27 @@
 package com.javachess.board;
 
 public class Square {
-	private final int column;
+	private final int col;
 	private final int row;
-		
+
 	public Square(int column, int row) {
-		this.column = column;
+		this.col = column;
 		this.row = row;
 	}
-	
-	public boolean isValid() {
-		return column > 0 && column < 9 && row > 0 && row < 9;
+
+	public Square(Square src, int colOffset, int rowOffset) {
+		this(src.getCol() + colOffset, src.getRow() + rowOffset);
 	}
-	
+
+	public boolean isValid() {
+		return col >= 0 && col < 8 && row >= 0 && row < 8;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + column;
+		result = prime * result + col;
 		result = prime * result + row;
 		return result;
 	}
@@ -31,17 +35,17 @@ public class Square {
 		if (getClass() != obj.getClass())
 			return false;
 		Square other = (Square) obj;
-		if (column != other.column)
+		if (col != other.col)
 			return false;
 		if (row != other.row)
 			return false;
 		return true;
 	}
 
-	public int getColumn() {
-		return column;
+	public int getCol() {
+		return col;
 	}
-	
+
 	public int getRow() {
 		return row;
 	}

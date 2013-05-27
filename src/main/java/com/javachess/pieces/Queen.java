@@ -6,6 +6,7 @@ import java.util.List;
 import com.javachess.board.Board;
 import com.javachess.board.Color;
 import com.javachess.board.Square;
+import com.javachess.moves.Move;
 
 public class Queen extends Piece {
 
@@ -14,8 +15,8 @@ public class Queen extends Piece {
 	}
 
 	@Override
-	public List<Square> availableMoves(Square src, Board board) {
-		List<Square> availableMoves = new ArrayList<Square>();
+	public List<Move> availableMoves(Square src, Board board) {
+		List<Move> availableMoves = new ArrayList<Move>();
 
 		// Diagonal movements
 		availableMoves.addAll(iterateDirection(src, -1, -1, board));

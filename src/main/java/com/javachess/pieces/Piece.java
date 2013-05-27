@@ -1,13 +1,13 @@
 package com.javachess.pieces;
 
-import static com.javachess.helpers.Utils.nullSafeAdd;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.javachess.board.Board;
 import com.javachess.board.Color;
 import com.javachess.board.Square;
+import com.javachess.moves.Move;
+import com.javachess.moves.StandardMove;
 
 /**
  * Cette classe représente le template d'une pièce d'échec. Chaque pièce est
@@ -28,7 +28,7 @@ public abstract class Piece {
 		this.initialPosition = position;
 	}
 
-	public abstract List<Square> availableMoves(Square src, final Board board);
+	protected abstract List<Move> availableMoves(Square src, final Board board);
 
 	public boolean canGoTo(Square src, Square dst, Board board) {
 		return availableMoves(src, board).contains(dst);
@@ -41,35 +41,21 @@ public abstract class Piece {
 		return isColor(piece.color);
 	}
 
-	protected List<Square> filterSameColor(List<Square> squares,
-			final Board board) {
-		List<Square> filteredSquares = new ArrayList<Square>();
-
-		for (Square square : squares) {
-			if (this.isSameColor(board.getPiece(square)))
-				continue;
-
-			filteredSquares.add(square);
-		}
-
-		return filteredSquares;
-	}
-
-	protected List<Square> iterateDirection(final Square src, final int colOff,
+	protected List<Move> iterateDirection(final Square src, final int colOff,
 			final int rowOff, final Board board) {
-		List<Square> availableMoves = new ArrayList<Square>();
+		List<Move> availableMoves = new ArrayList<Move>();
 
 		for (int i = 1;; i++) {
-			Square square = board.atOffset(src, colOff * i, rowOff * i);
+			Square square = new Square(src, colOff * i, rowOff * i);
 			Piece piece = board.getPiece(square);
 
 			if (square != null && piece == null) {
-				nullSafeAdd(availableMoves, square);
+				availableMoves.add(new StandardMove(src, square, board));
 				continue;
 			}
 
 			if (!this.isSameColor(piece))
-				nullSafeAdd(availableMoves, square);
+				availableMoves.add(new StandardMove(src, square, board));
 
 			break;
 		}
@@ -83,6 +69,10 @@ public abstract class Piece {
 
 	public boolean isColor(final Color color) {
 		return this.color.equals(color);
+	}
+	
+	public Color getColor() {
+		return this.color;
 	}
 
 	public Square getInitialPosition() {

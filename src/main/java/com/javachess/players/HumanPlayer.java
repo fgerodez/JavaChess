@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 import com.javachess.board.Color;
 import com.javachess.board.Square;
-import com.javachess.helpers.Move;
+import com.javachess.moves.StandardMove;
 
 /**
  * Joueur en mode manuel (humain). Les d�placements sont r�cup�r�s directement
@@ -33,7 +33,7 @@ public class HumanPlayer implements Player {
 	 * Demande au joueur quel coup effectuer
 	 */
 	@Override
-	public Move jouer() {
+	public StandardMove jouer() {
 
 		System.out.println(name + ", colonne-ligne source :");
 		BufferedReader bufferedReader = new BufferedReader(
@@ -65,7 +65,7 @@ public class HumanPlayer implements Player {
 
 		Square caseDestination = new Square(colonne, ligne);
 
-		return new Move(caseSource, caseDestination);
+		return new StandardMove(caseSource, caseDestination);
 	}
 
 	/**

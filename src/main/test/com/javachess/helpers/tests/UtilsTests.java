@@ -14,13 +14,13 @@ public class UtilsTests {
 	public void chessValidCodeConversion() throws ConversionException {
 		Square square = Utils.toSquare("A8");
 
-		assertEquals(1, square.getColumn());
-		assertEquals(8, square.getRow());
+		assertEquals(0, square.getCol());
+		assertEquals(7, square.getRow());
 
 		square = Utils.toSquare("B6");
 
-		assertEquals(2, square.getColumn());
-		assertEquals(6, square.getRow());
+		assertEquals(1, square.getCol());
+		assertEquals(5, square.getRow());
 	}
 
 	@Test
@@ -53,10 +53,10 @@ public class UtilsTests {
 
 	@Test
 	public void chessValidSquareConversion() throws ConversionException {
-		String code = Utils.toCode(new Square(1, 1));
+		String code = Utils.toCode(new Square(0, 0));
 		assertEquals("A1", code);
 
-		code = Utils.toCode(new Square(6, 5));
+		code = Utils.toCode(new Square(5, 4));
 		assertEquals("F5", code);
 		
 		code = Utils.toCode(null);
@@ -66,23 +66,23 @@ public class UtilsTests {
 	@Test
 	public void chessInvalidSquareConversion() throws ConversionException {
 		try {
-			Utils.toCode(new Square(0, 5));
-			fail("col number smaller than 1 didn't fail");
+			Utils.toCode(new Square(-1, 5));
+			fail("col number smaller than 0 didn't fail");
 		} catch (ConversionException ex) {}
 		
 		try {
-			Utils.toCode(new Square(9, 5));
-			fail("col number greater than 8 didn't fail");
+			Utils.toCode(new Square(8, 5));
+			fail("col number greater than 7 didn't fail");
 		} catch (ConversionException ex) {}
 		
 		try {
-			Utils.toCode(new Square(3, 0));
-			fail("row number smaller than 1 didn't fail");
+			Utils.toCode(new Square(3, -1));
+			fail("row number smaller than 0 didn't fail");
 		} catch (ConversionException ex) {}
 		
 		try {
-			Utils.toCode(new Square(3, 10));
-			fail("row number greater than 8 didn't fail");
+			Utils.toCode(new Square(3, 8));
+			fail("row number greater than 7 didn't fail");
 		} catch (ConversionException ex) {}
 	}
 }

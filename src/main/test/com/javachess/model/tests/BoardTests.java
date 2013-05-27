@@ -17,27 +17,26 @@ import com.javachess.exceptions.GameException;
 import com.javachess.helpers.BoardBuilder;
 import com.javachess.pieces.Piece;
 import com.javachess.pieces.Queen;
-import com.javachess.pieces.Tower;
+import com.javachess.pieces.Rook;
 
 public class BoardTests {
 
 	@Test
 	public void retrieveSquare() throws ConversionException {
-		Board board = new Board();
 		Square initSquare = toSquare("E5");
 
-		assertEquals(toSquare("E5"), board.atOffset(initSquare, 0, 0));
-		assertEquals(toSquare("F6"), board.atOffset(initSquare, 1, 1));
-		assertEquals(toSquare("E4"), board.atOffset(initSquare, 0, -1));
-		assertEquals(toSquare("A7"), board.atOffset(initSquare, -4, 2));
-		assertNull(board.atOffset(initSquare, 10, 10));
+		assertEquals(toSquare("E5"), new Square(initSquare, 0, 0));
+		assertEquals(toSquare("F6"), new Square(initSquare, 1, 1));
+		assertEquals(toSquare("E4"), new Square(initSquare, 0, -1));
+		assertEquals(toSquare("A7"), new Square(initSquare, -4, 2));
+		assertNull(new Square(initSquare, 10, 10));
 	}
 
 	@Test
 	public void retrievePiece() throws ConversionException {
 		Board board = new Board();
 
-		assertTrue(board.getPiece(toSquare("A1")) instanceof Tower);
+		assertTrue(board.getPiece(toSquare("A1")) instanceof Rook);
 		assertTrue(board.getPiece(toSquare("D1")) instanceof Queen);
 		assertTrue(board.getPiece(toSquare("E8")) instanceof Queen);
 		assertNull(board.getPiece(toSquare("E4")));
