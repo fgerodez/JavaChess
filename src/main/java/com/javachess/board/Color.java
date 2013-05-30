@@ -1,11 +1,5 @@
 package com.javachess.board;
 
-
-/**
- * Enumération qui définit la couleur d'une pièce
- * 
- * @author Ouzned
- */
 public enum Color {
 	BLACK(-1), WHITE(1);
 	
@@ -17,5 +11,12 @@ public enum Color {
 	
 	public int dir() {
 		return value;
+	}
+	
+	public Color opponent() {
+		if (this == Color.BLACK)
+			return Color.WHITE;
+		else
+			return Color.BLACK;
 	}
 }

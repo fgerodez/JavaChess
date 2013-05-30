@@ -12,8 +12,8 @@ import com.javachess.moves.StandardMove;
 
 public class King extends Piece {
 
-	public King(Color couleur, Square position) {
-		super(couleur, position);
+	public King(Color couleur) {
+		super(couleur);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class King extends Piece {
 
 		castling(src, moves, board);
 
-		return moves;
+		return filterValid(moves, board);
 	}
 
 	private void castling(Square src, List<Move> moves, Board board) {
@@ -52,8 +52,9 @@ public class King extends Piece {
 			Square rookDst, List<Move> moves, Board board) {
 
 		Piece rook = board.getPiece(rookSrc);
-		
-		if (rook instanceof Rook && board.isRowFree(rookSrc, kingSrc)
+
+		if (rook instanceof Rook
+				&& board.isRowFree(rookSrc, kingSrc, Color.WHITE)
 				&& !board.hasMoved(this) && !board.hasMoved(rook)) {
 			moves.add(new Castling(kingSrc, rookSrc, kingDst, rookDst, board));
 		}

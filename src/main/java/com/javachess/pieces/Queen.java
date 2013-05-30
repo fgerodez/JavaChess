@@ -10,8 +10,8 @@ import com.javachess.moves.Move;
 
 public class Queen extends Piece {
 
-	public Queen(Color couleur, Square position) {
-		super(couleur, position);
+	public Queen(Color couleur) {
+		super(couleur);
 	}
 
 	@Override

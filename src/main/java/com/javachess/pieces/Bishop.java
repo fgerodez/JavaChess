@@ -10,8 +10,8 @@ import com.javachess.moves.Move;
 
 public class Bishop extends Piece {
 
-	public Bishop(Color couleur, Square position) {
-		super(couleur, position);
+	public Bishop(Color couleur) {
+		super(couleur);
 	}
 
 	@Override

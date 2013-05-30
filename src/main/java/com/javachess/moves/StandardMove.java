@@ -15,47 +15,47 @@ public class StandardMove implements Move {
 	private final Square dst;
 	private final Piece srcPiece;
 	private final Piece dstPiece;
-	
-	private StandardMove next;
-	
+
 	public StandardMove(Square srcSquare, Square dstSquare, Board board) {
 		this.src = srcSquare;
 		this.dst = dstSquare;
 		this.srcPiece = board.getPiece(srcSquare);
 		this.dstPiece = board.getPiece(dstSquare);
 	}
-	
+
 	@Override
 	public void execute(Board board) {
-		
-	}
-	
-	@Override
-	public void undo(Board board) {
-		
+		board.move(src, dst);
 	}
 
-	public void setNext(StandardMove next) {
-		this.next = next;
+	@Override
+	public void undo(Board board) {
+		board.move(dst, src);
+		board.setPiece(dst, dstPiece);
 	}
-	
-	public StandardMove getNext() {
-		return next;
-	}
-	
+
+	@Override
 	public Square getSrc() {
 		return src;
 	}
 
+	@Override
 	public Square getDst() {
 		return dst;
 	}
 
+	@Override
 	public Piece getSrcPiece() {
 		return srcPiece;
 	}
 
-	public Piece getDstPiece() {
+	@Override
+	public Piece getCapturedPiece() {
 		return dstPiece;
+	}
+
+	@Override
+	public boolean isAttack() {
+		return dstPiece != null;
 	}
 }

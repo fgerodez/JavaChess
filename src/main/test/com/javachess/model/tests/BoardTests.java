@@ -2,7 +2,7 @@ package com.javachess.model.tests;
 
 import static com.javachess.helpers.Utils.toSquare;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -29,7 +29,6 @@ public class BoardTests {
 		assertEquals(toSquare("F6"), new Square(initSquare, 1, 1));
 		assertEquals(toSquare("E4"), new Square(initSquare, 0, -1));
 		assertEquals(toSquare("A7"), new Square(initSquare, -4, 2));
-		assertNull(new Square(initSquare, 10, 10));
 	}
 
 	@Test
@@ -64,22 +63,18 @@ public class BoardTests {
 	}
 
 	@Test
-	public void findKing() throws GameException {
+	public void availableMoves() {
 		Board board = new Board();
 
-		Square whiteKing = board.findKing(Color.WHITE);
-		Square blackKing = board.findKing(Color.BLACK);
-
-		assertNotNull(whiteKing);
-		assertNotNull(blackKing);
-
-		board = new Board(BoardBuilder.NO_KING);
-
-		try {
-			board.findKing(Color.WHITE);
-			fail("The white king should not be found");
-		} catch (GameException e) {
-
-		}
+		assertEquals(20, board.moveCount(Color.WHITE));
+		assertEquals(20, board.moveCount(Color.BLACK));
+	}
+	
+	@Test
+	public void checkMate() {
+		Board board = new Board(BoardBuilder.CHECKMATE);
+		
+		assertTrue(board.checkMate(Color.BLACK));
+		assertFalse(board.checkMate(Color.WHITE));
 	}
 }

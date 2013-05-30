@@ -9,29 +9,40 @@ import com.javachess.board.Square;
 import com.javachess.moves.Move;
 import com.javachess.moves.StandardMove;
 
-/**
- * Cette classe représente le template d'une pièce d'échec. Chaque pièce est
- * représentée par une couleur et une position.
- * 
- * @author Ouzned
- */
 public abstract class Piece {
 
 	protected final Color color;
-	protected final Square initialPosition;
 
-	public Piece(final Color color, final Square position) {
+	public Piece(final Color color) {
 		assert color != null;
-		assert position != null;
 
 		this.color = color;
-		this.initialPosition = position;
 	}
 
-	protected abstract List<Move> availableMoves(Square src, final Board board);
+	public abstract List<Move> availableMoves(Square src, final Board board);
 
 	public boolean canGoTo(Square src, Square dst, Board board) {
 		return availableMoves(src, board).contains(dst);
+	}
+
+	protected List<Move> filterValid(List<Move> moves, Board board) {
+		List<Move> filteredMoves = new ArrayList<Move>();
+
+		for (Move move : moves) {
+			if (move.getDst().isValid()
+					&& !this.isSameColor(board.getPiece(move.getDst())))
+				filteredMoves.add(move);
+		}
+
+		return filteredMoves;
+	}
+
+	public Color getColor() {
+		return this.color;
+	}
+
+	public boolean isColor(final Color color) {
+		return this.color.equals(color);
 	}
 
 	public boolean isSameColor(final Piece piece) {
@@ -49,33 +60,17 @@ public abstract class Piece {
 			Square square = new Square(src, colOff * i, rowOff * i);
 			Piece piece = board.getPiece(square);
 
-			if (square != null && piece == null) {
+			if (square.isValid() && piece == null) {
 				availableMoves.add(new StandardMove(src, square, board));
 				continue;
 			}
 
-			if (!this.isSameColor(piece))
+			if (square.isValid() && !this.isSameColor(piece))
 				availableMoves.add(new StandardMove(src, square, board));
 
 			break;
 		}
 
 		return availableMoves;
-	}
-
-	/*
-	 * Getters & Setters
-	 */
-
-	public boolean isColor(final Color color) {
-		return this.color.equals(color);
-	}
-	
-	public Color getColor() {
-		return this.color;
-	}
-
-	public Square getInitialPosition() {
-		return initialPosition;
 	}
 }

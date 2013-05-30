@@ -11,23 +11,23 @@ import com.javachess.moves.StandardMove;
 
 public class Knight extends Piece {
 
-	public Knight(Color couleur, Square position) {
-		super(couleur, position);
+	public Knight(Color couleur) {
+		super(couleur);
 	}
 
 	@Override
 	public List<Move> availableMoves(Square src, final Board board) {
-		List<Move> availableMoves = new ArrayList<Move>();
+		List<Move> moves = new ArrayList<Move>();
 
-		availableMoves.add(new StandardMove(src, new Square(src, 1, 2), board));
-		availableMoves.add(new StandardMove(src, new Square(src, 1, -2), board));
-		availableMoves.add(new StandardMove(src, new Square(src, -1, 2), board));
-		availableMoves.add(new StandardMove(src, new Square(src, -1, -2), board));
-		availableMoves.add(new StandardMove(src, new Square(src, 2, 1), board));
-		availableMoves.add(new StandardMove(src, new Square(src, 2, -1), board));
-		availableMoves.add(new StandardMove(src, new Square(src, -2, 1), board));
-		availableMoves.add(new StandardMove(src, new Square(src, -2, -1), board));
+		moves.add(new StandardMove(src, new Square(src, 1, 2), board));
+		moves.add(new StandardMove(src, new Square(src, 1, -2), board));
+		moves.add(new StandardMove(src, new Square(src, -1, 2), board));
+		moves.add(new StandardMove(src, new Square(src, -1, -2), board));
+		moves.add(new StandardMove(src, new Square(src, 2, 1), board));
+		moves.add(new StandardMove(src, new Square(src, 2, -1), board));
+		moves.add(new StandardMove(src, new Square(src, -2, 1), board));
+		moves.add(new StandardMove(src, new Square(src, -2, -1), board));
 
-		return availableMoves;
+		return filterValid(moves, board);
 	}
 }

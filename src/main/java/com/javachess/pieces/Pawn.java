@@ -13,8 +13,8 @@ import com.javachess.moves.StandardMove;
 
 public class Pawn extends Piece {
 
-	public Pawn(Color color, Square position) {
-		super(color, position);
+	public Pawn(Color color) {
+		super(color);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class Pawn extends Piece {
 
 		moves.add(new StandardMove(src, fwdSquare, board));
 
-		if (src.equals(initialPosition) && board.getPiece(fwd2Square) == null)
+		if (!board.hasMoved(this) && board.getPiece(fwd2Square) == null)
 			moves.add(new PawnTwoFwd(src, fwd2Square, board));
 	}
 

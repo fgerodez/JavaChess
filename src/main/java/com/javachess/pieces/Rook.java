@@ -10,8 +10,8 @@ import com.javachess.moves.Move;
 
 public class Rook extends Piece {
 
-	public Rook(Color couleur, Square position) {
-		super(couleur, position);
+	public Rook(Color couleur) {
+		super(couleur);
 	}
 
 	@Override
