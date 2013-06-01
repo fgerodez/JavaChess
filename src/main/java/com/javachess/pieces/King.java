@@ -54,7 +54,7 @@ public class King extends Piece {
 		Piece rook = board.getPiece(rookSrc);
 
 		if (rook instanceof Rook
-				&& board.isRowFree(rookSrc, kingSrc, Color.WHITE)
+				&& board.isRowFree(rookSrc, kingSrc, color.opponent())
 				&& !board.hasMoved(this) && !board.hasMoved(rook)) {
 			moves.add(new Castling(kingSrc, rookSrc, kingDst, rookDst, board));
 		}

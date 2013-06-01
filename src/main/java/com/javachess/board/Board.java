@@ -3,38 +3,68 @@ package com.javachess.board;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.javachess.helpers.BoardBuilder;
 import com.javachess.moves.Move;
+import com.javachess.pieces.Bishop;
 import com.javachess.pieces.King;
+import com.javachess.pieces.Knight;
+import com.javachess.pieces.Pawn;
 import com.javachess.pieces.Piece;
+import com.javachess.pieces.Queen;
+import com.javachess.pieces.Rook;
 
 /**
- * Classe qui modélise un plateau d'echec
+ * Chess board representation
  * 
  * @author Ouzned
  * 
  */
 public class Board {
 
-	private final int width = 8;
-	private final int height = 8;
+	private final int rows = 8;
+	private final int cols = 8;
 
-	private Piece[][] board;
-	private List<Move> moveList;
+	protected Piece[][] board;
+	protected List<Move> moveList;
 
-	public Board(Piece[][] board) {
-		this.moveList = new ArrayList<Move>();
+	public Board() {
+		moveList = new ArrayList<Move>();
+		init();
+	}
+
+	// only used for copying boards
+	private Board(Piece[][] board, List<Move> moveList) {
+		this.moveList = moveList;
 		this.board = new Piece[board.length][board.length];
 
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
+		for (int row = 0; row < rows; row++) {
+			for (int col = 0; col < cols; col++) {
 				this.board[row][col] = board[row][col];
 			}
 		}
 	}
 
-	public Board() {
-		this(BoardBuilder.CLASSIC);
+	// this method can be overridden for testing purposes
+	protected void init() {
+		board = new Piece[rows][cols];
+
+		for (int col = 0; col < cols; col++) {
+			board[1][col] = new Pawn(Color.WHITE);
+			board[6][col] = new Pawn(Color.BLACK);
+		}
+
+		setUpKingRow(0, Color.WHITE);
+		setUpKingRow(7, Color.BLACK);
+	}
+
+	private void setUpKingRow(int row, Color color) {
+		board[row][0] = new Rook(color);
+		board[row][1] = new Knight(color);
+		board[row][2] = new Bishop(color);
+		board[row][3] = new Queen(color);
+		board[row][4] = new King(color);
+		board[row][5] = new Bishop(color);
+		board[row][6] = new Knight(color);
+		board[row][7] = new Rook(color);
 	}
 
 	public boolean check(Color color) {
@@ -53,14 +83,13 @@ public class Board {
 	}
 
 	public Board copy() {
-		return new Board(this.board);
+		return new Board(board, moveList);
 	}
 
 	private Square findKing(Color color) {
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
-				if (board[row][col] instanceof King
-						&& board[row][col].isColor(color))
+		for (int row = 0; row < rows; row++) {
+			for (int col = 0; col < cols; col++) {
+				if (board[row][col] instanceof King && board[row][col].isColor(color))
 					return new Square(col, row);
 			}
 		}
@@ -77,7 +106,7 @@ public class Board {
 
 	public boolean hasMoved(Piece piece) {
 		for (Move move : moveList) {
-			if (move.getSrcPiece().equals(piece))
+			if (move.getSrcPiece() == piece)
 				return true;
 		}
 
@@ -85,8 +114,7 @@ public class Board {
 	}
 
 	private boolean inRange(Square s) {
-		return s.getCol() >= 0 && s.getCol() < 8 && s.getRow() >= 0
-				&& s.getRow() < 8;
+		return s.getCol() >= 0 && s.getCol() < cols && s.getRow() >= 0 && s.getRow() < rows;
 	}
 
 	public boolean isFree(final Square square) {
@@ -100,23 +128,23 @@ public class Board {
 		return !copy.check(move.getSrcPiece().getColor());
 	}
 
-	public boolean isRowFree(final Square row1, final Square row2, Color color) {
+	public boolean isRowFree(final Square row1, final Square row2, Color opponent) {
 		if (row1.getRow() != row2.getRow())
 			return false;
 
 		Square start, end;
 
 		if (row2.getCol() > row1.getCol()) {
-			start = row2;
-			end = row1;
-		} else {
 			start = row1;
 			end = row2;
+		} else {
+			start = row2;
+			end = row1;
 		}
 
 		for (int i = 1; i < end.getCol() - start.getCol(); i++) {
 			Square dst = new Square(start, i, 0);
-			if (!isFree(dst) || isThreatened(dst, color))
+			if (!isFree(dst) || isThreatened(dst, opponent))
 				return false;
 		}
 
@@ -124,8 +152,8 @@ public class Board {
 	}
 
 	private boolean isThreatened(Square s, Color color) {
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
+		for (int row = 0; row < rows; row++) {
+			for (int col = 0; col < cols; col++) {
 				Piece p = board[row][col];
 				Square src = new Square(col, row);
 
@@ -159,8 +187,8 @@ public class Board {
 	private List<Move> moves(Color color) {
 		List<Move> allMoves = new ArrayList<Move>();
 
-		for (int row = 0; row < height; row++) {
-			for (int col = 0; col < width; col++) {
+		for (int row = 0; row < rows; row++) {
+			for (int col = 0; col < cols; col++) {
 				Square src = new Square(col, row);
 				Piece piece = getPiece(src);
 
@@ -198,7 +226,7 @@ public class Board {
 	}
 
 	public void undo() {
-		moveList.remove(lastMove());
 		lastMove().undo(this);
+		moveList.remove(lastMove());
 	}
 }

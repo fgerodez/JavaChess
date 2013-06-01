@@ -20,7 +20,7 @@ public class Rook extends Piece {
 
 		//Vertical movements
 		availableMoves.addAll(iterateDirection(src, 0, -1, board));
-		availableMoves.addAll(iterateDirection(src, 0, -1, board));
+		availableMoves.addAll(iterateDirection(src, 0, 1, board));
 		
 		//Horizontal movements
 		availableMoves.addAll(iterateDirection(src, 1, 0, board));

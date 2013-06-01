@@ -22,7 +22,12 @@ public abstract class Piece {
 	public abstract List<Move> availableMoves(Square src, final Board board);
 
 	public boolean canGoTo(Square src, Square dst, Board board) {
-		return availableMoves(src, board).contains(dst);
+		for (Move move : availableMoves(src, board)) {
+			if (move.getDst().equals(dst))
+				return true;
+		}
+		
+		return false;
 	}
 
 	protected List<Move> filterValid(List<Move> moves, Board board) {

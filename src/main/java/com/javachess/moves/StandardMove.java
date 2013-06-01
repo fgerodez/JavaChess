@@ -11,10 +11,10 @@ import com.javachess.pieces.Piece;
  * 
  */
 public class StandardMove implements Move {
-	private final Square src;
-	private final Square dst;
-	private final Piece srcPiece;
-	private final Piece dstPiece;
+	protected final Square src;
+	protected final Square dst;
+	protected final Piece srcPiece;
+	protected final Piece dstPiece;
 
 	public StandardMove(Square srcSquare, Square dstSquare, Board board) {
 		this.src = srcSquare;

@@ -58,17 +58,15 @@ public class Pawn extends Piece {
 	protected void enPassant(Square src, List<Move> moves, final Board board) {
 		if (board.lastMove() instanceof PawnTwoFwd) {
 			PawnTwoFwd lastMove = (PawnTwoFwd) board.lastMove();
-			
+
 			Square rightEnPassant = new Square(lastMove.getDst(), -1, 0);
 			Square leftEnPassant = new Square(lastMove.getDst(), 1, 0);
 
 			if (rightEnPassant.equals(src))
-				moves.add(new EnPassant(src,
-						new Square(src, 1, 1 * color.dir()), board));
+				moves.add(new EnPassant(src, new Square(src, 1, 1 * color.dir()), rightEnPassant, board));
 
 			if (leftEnPassant.equals(src))
-				moves.add(new EnPassant(src, new Square(src, -1, 1 * color
-						.dir()), board));
+				moves.add(new EnPassant(src, new Square(src, -1, 1 * color.dir()), leftEnPassant, board));
 		}
 	}
 }
