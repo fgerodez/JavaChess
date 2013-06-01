@@ -15,4 +15,5 @@ public interface Move {
 	public Square getDst();
 	
 	public boolean isAttack();
+	public boolean isPromotion();
 }

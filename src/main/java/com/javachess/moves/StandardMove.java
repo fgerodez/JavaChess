@@ -2,6 +2,7 @@ package com.javachess.moves;
 
 import com.javachess.board.Board;
 import com.javachess.board.Square;
+import com.javachess.pieces.Pawn;
 import com.javachess.pieces.Piece;
 
 /**
@@ -25,12 +26,18 @@ public class StandardMove implements Move {
 
 	@Override
 	public void execute(Board board) {
-		board.move(src, dst);
+		board.setPiece(dst, srcPiece);
+		board.setPiece(src, null);
+
+		if (isPromotion() && board.getPromotionDelegate() != null) {
+			Piece promoted = board.getPromotionDelegate().getPromotion().create(srcPiece.getColor());
+			board.setPiece(dst, promoted);
+		}
 	}
 
 	@Override
 	public void undo(Board board) {
-		board.move(dst, src);
+		board.setPiece(src, srcPiece);
 		board.setPiece(dst, dstPiece);
 	}
 
@@ -57,5 +64,10 @@ public class StandardMove implements Move {
 	@Override
 	public boolean isAttack() {
 		return dstPiece != null;
+	}
+
+	@Override
+	public boolean isPromotion() {
+		return srcPiece instanceof Pawn && (dst.getCol() == 7 || dst.getCol() == 0);
 	}
 }

@@ -26,9 +26,16 @@ public class Board {
 	protected Piece[][] board;
 	protected List<Move> moveList;
 
-	public Board() {
+	private PromotionDelegate promotionDelegate;
+	
+	public Board(PromotionDelegate delegate) {
+		promotionDelegate = delegate;
 		moveList = new ArrayList<Move>();
 		init();
+	}
+	
+	public Board() {
+		this(null);
 	}
 
 	// only used for copying boards
@@ -102,6 +109,10 @@ public class Board {
 			return null;
 
 		return board[square.getRow()][square.getCol()];
+	}
+	
+	public PromotionDelegate getPromotionDelegate() {
+		return this.promotionDelegate;
 	}
 
 	public boolean hasMoved(Piece piece) {
@@ -208,6 +219,10 @@ public class Board {
 
 	public void setPiece(Square s, Piece p) {
 		board[s.getRow()][s.getCol()] = p;
+	}
+	
+	public void setPromotionDelegate(PromotionDelegate promotionDelegate) {
+		this.promotionDelegate = promotionDelegate;
 	}
 
 	public boolean staleMate() {

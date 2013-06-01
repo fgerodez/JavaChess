@@ -5,37 +5,29 @@ import com.javachess.exceptions.GameException;
 import com.javachess.moves.Move;
 import com.javachess.pieces.Piece;
 import com.javachess.players.Player;
-// TODO : finish the implementation of a chess game
+
+
 public class Game {
 	private Board board;
 	private Player player1;
 	private Player player2;
 	private Player currentPlayer;
 	private NotationConverter converter;
+	private GameEventListener listener;
 
-	public Game(Player player1, Player player2, NotationConverter converter) {
+	public Game(Player player1, Player player2, NotationConverter converter, GameEventListener listener,
+			PromotionDelegate delegate) {
 		this.player1 = player1;
 		this.player2 = player2;
-
 		this.currentPlayer = player1;
 
-		this.board = new Board();
+		this.board = new Board(delegate);
 
 		this.converter = converter;
-	}
-	
-	public void start() {
-		String action = currentPlayer.takeAction();
-		
-		try {
-			converter.toSquare(action);
-			move(null,null);
-		} catch (GameException e) {
-			
-		}	
+		this.listener = listener;
 	}
 
-	private void move(String src, String dst) throws GameException {
+	public void move(String src, String dst) throws GameException {
 		Square srcSquare = converter.toSquare(src);
 		Square dstSquare = converter.toSquare(dst);
 
@@ -53,8 +45,14 @@ public class Game {
 		board.move(move);
 		switchPlayers();
 
+		if (board.check(currentPlayer.getColor()))
+			listener.fireEvent(GameEvent.CHECK);
+
 		if (board.checkMate(currentPlayer.getColor()))
-			throw new GameException("checkmate");
+			listener.fireEvent(GameEvent.CHECKMATE);
+
+		if (board.staleMate())
+			listener.fireEvent(GameEvent.STALEMATE);
 	}
 
 	private void switchPlayers() {

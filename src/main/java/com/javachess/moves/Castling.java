@@ -60,4 +60,9 @@ public class Castling implements Move {
 		return false;
 	}
 
+	@Override
+	public boolean isPromotion() {
+		return false;
+	}
+
 }
