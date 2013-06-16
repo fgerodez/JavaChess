@@ -1,7 +1,7 @@
 package com.javachess.moves;
 
-import com.javachess.board.Board;
-import com.javachess.board.Square;
+import com.javachess.boards.Board;
+import com.javachess.boards.Square;
 
 public class PawnTwoFwd extends StandardMove {
 

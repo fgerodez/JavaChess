@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.javachess.board.Board;
-import com.javachess.board.Color;
-import com.javachess.converters.ANConverter;
+import com.javachess.boards.Board;
+import com.javachess.boards.Color;
+import com.javachess.converters.StandardConverter;
 import com.javachess.converters.NotationConverter;
 import com.javachess.exceptions.GameException;
 import com.javachess.moves.EnPassant;
@@ -17,7 +17,7 @@ import com.javachess.moves.StandardMove;
 
 public class MoveTests {
 
-	NotationConverter converter = new ANConverter();
+	NotationConverter converter = new StandardConverter();
 	
 	@Test
 	public void standardMove() throws GameException {

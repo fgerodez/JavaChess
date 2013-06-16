@@ -1,9 +1,10 @@
 package com.javachess.moves;
 
-import com.javachess.board.Board;
-import com.javachess.board.Square;
+import com.javachess.boards.Board;
+import com.javachess.boards.Square;
 import com.javachess.pieces.Pawn;
 import com.javachess.pieces.Piece;
+import com.javachess.pieces.Queen;
 
 /**
  * Modélisation d'un coup d'une case source vers une case cible
@@ -29,9 +30,8 @@ public class StandardMove implements Move {
 		board.setPiece(dst, srcPiece);
 		board.setPiece(src, null);
 
-		if (isPromotion() && board.getPromotionDelegate() != null) {
-			Piece promoted = board.getPromotionDelegate().getPromotion().create(srcPiece.getColor());
-			board.setPiece(dst, promoted);
+		if (isPromotion()) {
+			board.setPiece(dst, new Queen(srcPiece.getColor()));
 		}
 	}
 
@@ -68,6 +68,11 @@ public class StandardMove implements Move {
 
 	@Override
 	public boolean isPromotion() {
-		return srcPiece instanceof Pawn && (dst.getCol() == 7 || dst.getCol() == 0);
+		return srcPiece instanceof Pawn && (dst.getRow() == 7 || dst.getRow() == 0);
+	}
+
+	@Override
+	public boolean equals(Square src, Square dst) {
+		return getSrc().equals(src) && getDst().equals(dst);
 	}
 }

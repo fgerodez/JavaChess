@@ -1,7 +1,7 @@
 package com.javachess.model.tests;
 
-import com.javachess.board.Board;
-import com.javachess.board.Color;
+import com.javachess.boards.Board;
+import com.javachess.boards.Color;
 import com.javachess.pieces.Bishop;
 import com.javachess.pieces.King;
 import com.javachess.pieces.Knight;

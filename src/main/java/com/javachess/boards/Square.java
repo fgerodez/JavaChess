@@ -1,4 +1,4 @@
-package com.javachess.board;
+package com.javachess.boards;
 
 public class Square {
 	private final int col;

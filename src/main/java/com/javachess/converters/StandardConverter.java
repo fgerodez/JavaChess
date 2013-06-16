@@ -1,15 +1,25 @@
 package com.javachess.converters;
 
-import com.javachess.board.Square;
+import com.javachess.boards.Square;
 import com.javachess.exceptions.ConversionException;
 
-public class ANConverter implements NotationConverter {
+public class StandardConverter implements NotationConverter {
 
 	private enum Letter {
 		A, B, C, D, E, F, G, H
 	}
 
-	public Square toSquare(String code) throws ConversionException {
+	@Override
+	public Square getSrc(String notation) throws ConversionException {
+		return toSquare(notation.substring(0, 2));
+	}
+
+	@Override
+	public Square getDst(String notation) throws ConversionException {
+		return toSquare(notation.substring(2, 4));
+	}
+	
+	private Square toSquare(String code) throws ConversionException {
 		checkLength(code);
 
 		Square square = null;

@@ -8,10 +8,10 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.javachess.board.Board;
-import com.javachess.board.Color;
-import com.javachess.board.Square;
-import com.javachess.converters.ANConverter;
+import com.javachess.boards.Board;
+import com.javachess.boards.Color;
+import com.javachess.boards.Square;
+import com.javachess.converters.StandardConverter;
 import com.javachess.converters.NotationConverter;
 import com.javachess.exceptions.ConversionException;
 import com.javachess.exceptions.GameException;
@@ -22,7 +22,7 @@ import com.javachess.pieces.Rook;
 
 public class BoardTests {
 
-	NotationConverter converter = new ANConverter();
+	NotationConverter converter = new StandardConverter();
 	
 	@Test
 	public void retrieveSquare() throws ConversionException {

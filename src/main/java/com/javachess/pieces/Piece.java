@@ -3,9 +3,9 @@ package com.javachess.pieces;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.javachess.board.Board;
-import com.javachess.board.Color;
-import com.javachess.board.Square;
+import com.javachess.boards.Board;
+import com.javachess.boards.Color;
+import com.javachess.boards.Square;
 import com.javachess.moves.Move;
 import com.javachess.moves.StandardMove;
 

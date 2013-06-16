@@ -1,6 +1,6 @@
 package com.javachess.converters;
 
-import com.javachess.board.Square;
+import com.javachess.boards.Square;
 import com.javachess.exceptions.ConversionException;
 
 /**
@@ -22,17 +22,7 @@ public interface NotationConverter {
 	 * @throws ConversionException
 	 *             if an error occurs during the conversion
 	 */
-	public Square toSquare(String notation) throws ConversionException;
+	public Square getSrc(String notation) throws ConversionException;
 
-	/**
-	 * Converts a Square object to its associated notation string
-	 * 
-	 * @param square
-	 *            The board square
-	 * @return The corresponding chess notation or an empty string if square is
-	 *         null
-	 * @throws ConversionException
-	 *             if an error occurs during the conversion
-	 */
-	public String toCode(Square square) throws ConversionException;
+	public Square getDst(String notation) throws ConversionException;
 }

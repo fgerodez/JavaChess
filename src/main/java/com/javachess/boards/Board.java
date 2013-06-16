@@ -1,4 +1,4 @@
-package com.javachess.board;
+package com.javachess.boards;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +25,10 @@ public class Board {
 
 	protected Piece[][] board;
 	protected List<Move> moveList;
-
-	private PromotionDelegate promotionDelegate;
-	
-	public Board(PromotionDelegate delegate) {
-		promotionDelegate = delegate;
-		moveList = new ArrayList<Move>();
-		init();
-	}
 	
 	public Board() {
-		this(null);
+		moveList = new ArrayList<Move>();
+		init();
 	}
 
 	// only used for copying boards
@@ -109,10 +102,6 @@ public class Board {
 			return null;
 
 		return board[square.getRow()][square.getCol()];
-	}
-	
-	public PromotionDelegate getPromotionDelegate() {
-		return this.promotionDelegate;
 	}
 
 	public boolean hasMoved(Piece piece) {
@@ -213,16 +202,12 @@ public class Board {
 		return allMoves;
 	}
 
-	public int moveCount(Color color) {
+	private int moveCount(Color color) {
 		return legalMoves(color).size();
 	}
 
 	public void setPiece(Square s, Piece p) {
 		board[s.getRow()][s.getCol()] = p;
-	}
-	
-	public void setPromotionDelegate(PromotionDelegate promotionDelegate) {
-		this.promotionDelegate = promotionDelegate;
 	}
 
 	public boolean staleMate() {
@@ -243,5 +228,13 @@ public class Board {
 	public void undo() {
 		lastMove().undo(this);
 		moveList.remove(lastMove());
+	}
+	
+	public int getRows() {
+		return rows;
+	}
+	
+	public int getCols() {
+		return cols;
 	}
 }

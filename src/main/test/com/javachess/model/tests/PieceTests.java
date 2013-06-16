@@ -7,8 +7,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.javachess.board.Board;
-import com.javachess.converters.ANConverter;
+import com.javachess.boards.Board;
+import com.javachess.converters.StandardConverter;
 import com.javachess.converters.NotationConverter;
 import com.javachess.exceptions.ConversionException;
 import com.javachess.exceptions.GameException;
@@ -21,7 +21,7 @@ public class PieceTests {
 
 	Board board;
 	
-	NotationConverter converter = new ANConverter();
+	NotationConverter converter = new StandardConverter();
 
 	@Before
 	public void setUp() {

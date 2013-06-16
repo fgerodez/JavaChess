@@ -5,14 +5,14 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.javachess.board.Square;
-import com.javachess.converters.ANConverter;
+import com.javachess.boards.Square;
+import com.javachess.converters.StandardConverter;
 import com.javachess.converters.NotationConverter;
 import com.javachess.exceptions.ConversionException;
 
 public class ANConverterTests {
 
-	NotationConverter converter = new ANConverter();
+	NotationConverter converter = new StandardConverter();
 	
 	@Test
 	public void chessValidCodeConversion() throws ConversionException {

@@ -1,7 +1,7 @@
 package com.javachess.moves;
 
-import com.javachess.board.Board;
-import com.javachess.board.Square;
+import com.javachess.boards.Board;
+import com.javachess.boards.Square;
 import com.javachess.pieces.Piece;
 
 public interface Move {
@@ -16,4 +16,5 @@ public interface Move {
 	
 	public boolean isAttack();
 	public boolean isPromotion();
+	public boolean equals(Square src, Square dst);
 }
