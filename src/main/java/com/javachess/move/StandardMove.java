@@ -49,7 +49,7 @@ public class StandardMove implements Move {
 	}
 
 	@Override
-	public Square getDestination() {
+	public Square getDst() {
 		return dstSquare;
 	}
 
@@ -60,6 +60,6 @@ public class StandardMove implements Move {
 
 	@Override
 	public boolean equals(Square source, Square target) {
-		return getSource().equals(source) && getDestination().equals(target);
+		return getSource().equals(source) && getDst().equals(target);
 	}
 }

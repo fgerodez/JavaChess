@@ -9,46 +9,29 @@ import com.javachess.move.Move;
 import com.javachess.piece.Color;
 import com.javachess.piece.Piece;
 import com.javachess.piece.PieceType;
-import com.javachess.state.State;
 
 public class BoardEvaluator {
 
-	private Board board;
-	private State state;
-
-	public BoardEvaluator(Board board, State state) {
-		this.board = board;
-		this.state = state;
+	public boolean isCheck(Color color, Board board) {
+		return isThreatened(findKing(color, board), board);
 	}
 
-	public boolean isCheck(Color color) {
-		Square kingSquare = findKing(color, board);
-
-		List<Move> availableMoves = semiLegalMoves(color.opponent());
-
-		for (Move move : availableMoves) {
-			if (move.getDestination().equals(kingSquare))
-				return true;
-		}
-
-		return false;
+	public boolean isCheckMate(Color color, List<Move> ctxMoves, Board board) {
+		return isCheck(color, board) && legalMoves(color, ctxMoves, board).size() == 0;
 	}
 
-	public boolean isCheckMate(Color color) {	
-		return isCheck(color) && legalMoves(color).size() == 0;
+	public boolean isStaleMate(Color color, List<Move> ctxMoves, Board board) {
+		return !isCheck(color, board) && legalMoves(color, ctxMoves, board).size() == 0;
 	}
 
-	public boolean isStaleMate(Color color) {
-		return !isCheck(color) && legalMoves(color).size() == 0;
-	}
-
-	public List<Move> legalMoves(Color color) {
+	public List<Move> legalMoves(Color color, List<Move> ctxMoves, Board board) {
 		List<Move> legalMoves = new ArrayList<Move>();
-
-		for (Move move : semiLegalMoves(color)) {
+		ctxMoves.addAll(semiLegalMoves(color, board));
+		
+		for (Move move : ctxMoves) {
 			move.execute();
 
-			if (!isCheck(color))
+			if (!isCheck(color, board))
 				legalMoves.add(move);
 
 			move.undo();
@@ -57,20 +40,24 @@ public class BoardEvaluator {
 		return legalMoves;
 	}
 
-	private List<Move> semiLegalMoves(Color color) {
+	public boolean isThreatened(Square square, Board board) {
+		return false;
+	}
+
+	private List<Move> semiLegalMoves(Color color, Board board) {
 		List<Move> moveList = new ArrayList<Move>();
 
 		for (Square square : board.allSquares()) {
 			Piece piece = board.at(square);
 
-			if (piece.isColor(color))
-				moveList.addAll(piece.availableMoves(square, board, state));
+			if (piece.isColor(color));
+				//moveList.addAll(piece.availableMoves(square, board));
 		}
 
 		return moveList;
 	}
 
-	private Square findKing(Color color, Board board) {
+	public Square findKing(Color color, Board board) {
 		for (Square square : board.allSquares()) {
 			Piece piece = board.at(square);
 

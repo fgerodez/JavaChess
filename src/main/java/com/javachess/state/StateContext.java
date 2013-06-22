@@ -1,5 +1,6 @@
 package com.javachess.state;
 
+import java.util.List;
 import java.util.Stack;
 
 import com.javachess.board.Board;
@@ -7,7 +8,7 @@ import com.javachess.move.Move;
 import com.javachess.piece.Color;
 
 public class StateContext {
-	private State currentState;
+	private GameState currentState;
 	private Color currentPlayerColor;
 	
 	private Stack<Move> moveHistory;
@@ -16,40 +17,36 @@ public class StateContext {
 	
 	public StateContext() {
 		this.currentPlayerColor = Color.WHITE;
-		this.currentState = new StandardState();
+		this.currentState = new GameState();
 		
 		this.moveHistory = new Stack<Move>();
 		this.colorHistory = new Stack<Color>();
 		this.stateHistory = new Stack<State>();
 	}
 	
-	public boolean execute(Move move, Board board) {
-		if (!currentState.isValidMove(move, board, this))
-			return false;
-		
+	public void notifyMove(Move move, Board board) {		
 		registerMove(move);
-		move.execute();
 		
 		currentPlayerColor = currentPlayerColor.opponent();
-		currentState.executeTransition(this, board);
-		
-		return true;
+		currentState.executeTransition(move, board, this);
 	}
 	
-	public void undo() {
-		lastMove().undo();
-		
+	public void undo() {	
 		moveHistory.pop();
 		colorHistory.pop();
 		stateHistory.pop();
 	}
 	
-	public boolean isEnded() {
-		return currentState.isEnded();
-	}
-	
 	public Color currentColor() {
 		return currentPlayerColor;
+	}
+	
+	public Move lastMove() {
+		return moveHistory.peek();
+	}
+	
+	public List<Move> getCtxMoves() {
+		return currentState.getCtxMoves(currentPlayerColor);
 	}
 	
 	private void registerMove(Move move) {
@@ -58,11 +55,7 @@ public class StateContext {
 		moveHistory.add(move);
 	}
 	
-	void setCurrentState(State currentState) {
-		this.currentState = currentState;
-	}
-	
-	Move lastMove() {
-		return moveHistory.peek();
+	void setCurrentState(State newBoardState) {
+		currentState.setBoardState(newBoardState);
 	}
 }

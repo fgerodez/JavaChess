@@ -11,6 +11,7 @@ public class Game {
 	public Game(NotationConverter converter) {
 		this.board = new Board(null);
 		this.converter = converter;
+		this.context = new StateContext();
 	}
 
 	public void start() {
@@ -22,11 +23,13 @@ public class Game {
 			
 			srcSquare.equals(dstSquare);
 			
-			context.execute(null, board);
+			// TODO: execute move
+			context.notifyMove(null, board);
 		}
 	}
 
 	public void undo() {
+		context.lastMove().undo();
 		context.undo();
 	}
 }

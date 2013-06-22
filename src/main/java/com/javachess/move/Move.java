@@ -10,7 +10,7 @@ public interface Move {
 	public Piece getCapturedPiece();
 	
 	public Square getSource();
-	public Square getDestination();
+	public Square getDst();
 	
 	public boolean equals(Square src, Square dst);
 }

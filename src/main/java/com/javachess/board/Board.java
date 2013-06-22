@@ -54,4 +54,8 @@ public class Board {
 		removePieceAt(src);
 		setPieceAt(dst, piece);
 	}
+	
+	public boolean isFree(Square square) {
+		return !positions.containsKey(square);
+	}
 }

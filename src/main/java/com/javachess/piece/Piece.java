@@ -13,14 +13,16 @@ public enum Piece {
 	WHITE_QUEEN(PieceType.QUEEN, Color.WHITE),
 	WHITE_BISHOP(PieceType.BISHOP, Color.WHITE),
 	WHITE_KNIGHT(PieceType.KNIGHT, Color.WHITE),
-	WHITE_ROOK(PieceType.ROOK, Color.WHITE),
+	WHITE_KINGSIDE_ROOK(PieceType.ROOK, Color.WHITE),
+	WHITE_QUEENSIDE_ROOK(PieceType.ROOK, Color.WHITE),
 	WHITE_PAWN(PieceType.PAWN, Color.WHITE),
 	
 	BLACK_KING(PieceType.KING, Color.BLACK),
 	BLACK_QUEEN(PieceType.QUEEN, Color.BLACK),
 	BLACK_BISHOP(PieceType.BISHOP, Color.BLACK),
 	BLACK_KNIGHT(PieceType.KNIGHT, Color.BLACK),
-	BLACK_ROOK(PieceType.ROOK, Color.BLACK),
+	BLACK_KINGSIDE_ROOK(PieceType.ROOK, Color.BLACK),
+	BLACK_QUEENSIDE_ROOK(PieceType.ROOK, Color.BLACK),
 	BLACK_PAWN(PieceType.PAWN, Color.BLACK);
 	
 	private PieceType type;
