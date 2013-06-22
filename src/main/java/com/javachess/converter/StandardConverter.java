@@ -29,7 +29,7 @@ public class StandardConverter implements NotationConverter {
 
 			checkRow(row);
 
-			square = Square.getSquare(row - 1, letter.ordinal());
+			square = Square.at(row - 1, letter.ordinal());
 		} catch (Exception e) {
 			throw new IllegalArgumentException("An error occured while converting " + code + " " + e.getMessage());
 		}

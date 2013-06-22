@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.javachess.board.initializer.BoardInitializer;
 import com.javachess.piece.Piece;
 
 /**

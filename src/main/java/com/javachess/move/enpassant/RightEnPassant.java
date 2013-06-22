@@ -1,4 +1,4 @@
-package com.javachess.move;
+package com.javachess.move.enpassant;
 
 import com.javachess.board.Board;
 import com.javachess.board.Square;
@@ -13,11 +13,11 @@ public class RightEnPassant extends EnPassant {
 	@Override
 	protected Square getDstSquare(Square srcSquare) {
 		Piece piece = board.at(srcSquare);
-		return Square.getSquare(srcSquare.getRow() + piece.color().dir(), srcSquare.getCol() + 1);
+		return Square.at(srcSquare.getRow() + piece.color().dir(), srcSquare.getCol() + 1);
 	}
 
 	@Override
 	protected Square getCapturedSquare(Square srcSquare) {
-		return Square.getSquare(srcSquare.getRow(), srcSquare.getCol() + 1);
+		return Square.at(srcSquare.getRow(), srcSquare.getCol() + 1);
 	}
 }

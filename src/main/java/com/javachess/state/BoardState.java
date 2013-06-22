@@ -8,7 +8,7 @@ import com.javachess.move.Move;
  * @author francois
  *
  */
-public interface State {
+public interface BoardState {
 	
 	/**
 	 * 

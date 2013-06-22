@@ -13,7 +13,7 @@ public class StateContext {
 	
 	private Stack<Move> moveHistory;
 	private Stack<Color> colorHistory;
-	private Stack<State> stateHistory;
+	private Stack<BoardState> stateHistory;
 	
 	public StateContext() {
 		this.currentPlayerColor = Color.WHITE;
@@ -21,7 +21,7 @@ public class StateContext {
 		
 		this.moveHistory = new Stack<Move>();
 		this.colorHistory = new Stack<Color>();
-		this.stateHistory = new Stack<State>();
+		this.stateHistory = new Stack<BoardState>();
 	}
 	
 	public void notifyMove(Move move, Board board) {		
@@ -55,7 +55,7 @@ public class StateContext {
 		moveHistory.add(move);
 	}
 	
-	void setCurrentState(State newBoardState) {
+	void setCurrentState(BoardState newBoardState) {
 		currentState.setBoardState(newBoardState);
 	}
 }

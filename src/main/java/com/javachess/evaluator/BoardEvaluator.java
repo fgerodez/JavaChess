@@ -12,19 +12,30 @@ import com.javachess.piece.PieceType;
 
 public class BoardEvaluator {
 
-	public boolean isCheck(Color color, Board board) {
+	public static boolean isCheck(Color color, Board board) {
 		return isThreatened(findKing(color, board), board);
 	}
 
-	public boolean isCheckMate(Color color, List<Move> ctxMoves, Board board) {
+	public static boolean isCheckMate(Color color, List<Move> ctxMoves, Board board) {
 		return isCheck(color, board) && legalMoves(color, ctxMoves, board).size() == 0;
 	}
 
-	public boolean isStaleMate(Color color, List<Move> ctxMoves, Board board) {
+	public static boolean isStaleMate(Color color, List<Move> ctxMoves, Board board) {
 		return !isCheck(color, board) && legalMoves(color, ctxMoves, board).size() == 0;
 	}
+	
+	public static boolean isThreatened(Square square, Board board) {
+		Piece piece = board.at(square);
+		
+		for (Move move : semiLegalMoves(piece.color(), board)) {
+			if (move.getDst().equals(square))
+				return true;
+		}
+		
+		return false;
+	}
 
-	public List<Move> legalMoves(Color color, List<Move> ctxMoves, Board board) {
+	public static List<Move> legalMoves(Color color, List<Move> ctxMoves, Board board) {
 		List<Move> legalMoves = new ArrayList<Move>();
 		ctxMoves.addAll(semiLegalMoves(color, board));
 		
@@ -40,24 +51,7 @@ public class BoardEvaluator {
 		return legalMoves;
 	}
 
-	public boolean isThreatened(Square square, Board board) {
-		return false;
-	}
-
-	private List<Move> semiLegalMoves(Color color, Board board) {
-		List<Move> moveList = new ArrayList<Move>();
-
-		for (Square square : board.allSquares()) {
-			Piece piece = board.at(square);
-
-			if (piece.isColor(color));
-				//moveList.addAll(piece.availableMoves(square, board));
-		}
-
-		return moveList;
-	}
-
-	public Square findKing(Color color, Board board) {
+	public static Square findKing(Color color, Board board) {
 		for (Square square : board.allSquares()) {
 			Piece piece = board.at(square);
 
@@ -67,5 +61,18 @@ public class BoardEvaluator {
 		}
 
 		throw new IllegalStateException("The king is missing!");
+	}
+	
+	private static List<Move> semiLegalMoves(Color color, Board board) {
+		List<Move> moveList = new ArrayList<Move>();
+
+		for (Square square : board.allSquares()) {
+			Piece piece = board.at(square);
+
+			if (piece.isColor(color));
+				moveList.addAll(piece.availableMoves(square, board));
+		}
+
+		return moveList;
 	}
 }

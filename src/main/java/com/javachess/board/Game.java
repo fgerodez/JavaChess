@@ -1,5 +1,6 @@
 package com.javachess.board;
 
+import com.javachess.board.initializer.BoardInitializer;
 import com.javachess.converter.NotationConverter;
 import com.javachess.state.StateContext;
 
@@ -8,8 +9,8 @@ public class Game {
 	private StateContext context;
 	private NotationConverter converter;
 
-	public Game(NotationConverter converter) {
-		this.board = new Board(null);
+	public Game(NotationConverter converter, BoardInitializer initializer) {
+		this.board = new Board(initializer);
 		this.converter = converter;
 		this.context = new StateContext();
 	}

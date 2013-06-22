@@ -4,7 +4,7 @@ public class Square {
 	private final int col;
 	private final int row;
 	
-	public static Square getSquare(int row, int col) {
+	public static Square at(int row, int col) {
 		return new Square(row, col);
 	}
 	

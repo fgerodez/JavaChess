@@ -1,5 +1,8 @@
 package com.javachess.state;
 
+import static com.javachess.evaluator.BoardEvaluator.findKing;
+import static com.javachess.evaluator.BoardEvaluator.isThreatened;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,21 +13,20 @@ import java.util.Map;
 import com.javachess.board.Board;
 import com.javachess.board.Square;
 import com.javachess.evaluator.BoardEvaluator;
-import com.javachess.move.CastlingKingSide;
-import com.javachess.move.CastlingQueenSide;
 import com.javachess.move.Move;
+import com.javachess.move.castling.CastlingKingSide;
+import com.javachess.move.castling.CastlingQueenSide;
 import com.javachess.piece.Color;
 import com.javachess.piece.Piece;
 import com.javachess.piece.PieceType;
 
-public class CastlingState implements State {
+public class CastlingState {
 
 	private enum CastlingType {
 		CASTLING_KING_SIDE, CASTLING_QUEEN_SIDE
 	};
 
 	private Map<Color, List<CastlingType>> semiLegalCastlings;
-	private BoardEvaluator evaluator;
 
 	public CastlingState() {
 		semiLegalCastlings = new HashMap<Color, List<CastlingType>>();
@@ -35,10 +37,9 @@ public class CastlingState implements State {
 		semiLegalCastlings.put(Color.BLACK, Arrays.asList(initialCastlings));
 	}
 
-	@Override
-	public void executeTransition(Move move, Board board, StateContext context) {
+	public void executeTransition(Move move, Board board) {
 		Piece srcPiece = board.at(move.getDst());
-
+		
 		if (srcPiece.isType(PieceType.KING)) {
 			List<CastlingType> noCaslings = Collections.emptyList();
 			semiLegalCastlings.put(srcPiece.color(), noCaslings);
@@ -70,31 +71,31 @@ public class CastlingState implements State {
 	}
 
 	private void kingSideCastling(List<Move> moves, Color color, Board board) {
-		Square kingSquare = evaluator.findKing(color, board);
+		Square kingSquare = BoardEvaluator.findKing(color, board);
 
-		Square fstInterSquare = Square.getSquare(kingSquare.getRow(), kingSquare.getCol() + 1);
-		Square sndInterSquare = Square.getSquare(kingSquare.getRow(), kingSquare.getCol() + 2);
+		Square fstInterSquare = Square.at(kingSquare.getRow(), kingSquare.getCol() + 1);
+		Square sndInterSquare = Square.at(kingSquare.getRow(), kingSquare.getCol() + 2);
 
 		if (!board.isFree(fstInterSquare) || !board.isFree(sndInterSquare))
 			return;
 
-		if (evaluator.isThreatened(fstInterSquare, board))
+		if (isThreatened(fstInterSquare, board))
 			return;
 
 		moves.add(new CastlingKingSide(color));
 	}
 
 	private void queenSideCastling(List<Move> moves, Color color, Board board) {
-		Square kingSquare = evaluator.findKing(color, board);
+		Square kingSquare = findKing(color, board);
 
-		Square fstInterSquare = Square.getSquare(kingSquare.getRow(), kingSquare.getCol() - 1);
-		Square sndInterSquare = Square.getSquare(kingSquare.getRow(), kingSquare.getCol() - 2);
-		Square thdInterSquare = Square.getSquare(kingSquare.getRow(), kingSquare.getCol() - 3);
+		Square fstInterSquare = Square.at(kingSquare.getRow(), kingSquare.getCol() - 1);
+		Square sndInterSquare = Square.at(kingSquare.getRow(), kingSquare.getCol() - 2);
+		Square thdInterSquare = Square.at(kingSquare.getRow(), kingSquare.getCol() - 3);
 
 		if (!board.isFree(fstInterSquare) || !board.isFree(sndInterSquare) || !board.isFree(thdInterSquare))
 			return;
 
-		if (evaluator.isThreatened(fstInterSquare, board) || evaluator.isThreatened(sndInterSquare, board))
+		if (isThreatened(fstInterSquare, board) || isThreatened(sndInterSquare, board))
 			return;
 
 		moves.add(new CastlingQueenSide(color));

@@ -1,7 +1,8 @@
-package com.javachess.move;
+package com.javachess.move.enpassant;
 
 import com.javachess.board.Board;
 import com.javachess.board.Square;
+import com.javachess.move.StandardMove;
 
 public abstract class EnPassant extends StandardMove {
 

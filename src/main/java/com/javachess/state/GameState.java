@@ -7,9 +7,9 @@ import com.javachess.board.Board;
 import com.javachess.move.Move;
 import com.javachess.piece.Color;
 
-public class GameState implements State {
+public class GameState implements BoardState {
 	
-	private State boardState;
+	private BoardState boardState;
 	private EnPassantState enPassantState;
 	private CastlingState castlingState;	
 	
@@ -21,8 +21,8 @@ public class GameState implements State {
 
 	@Override
 	public void executeTransition(Move move, Board board, StateContext context) {
-		enPassantState.executeTransition(move, board, context);
-		castlingState.executeTransition(move, board, context);
+		enPassantState.executeTransition(move, board);
+		castlingState.executeTransition(move, board);
 		boardState.executeTransition(move, board, context);
 	}
 	
@@ -35,7 +35,7 @@ public class GameState implements State {
 		return moves;
 	}
 	
-	public void setBoardState(State boardState) {
+	void setBoardState(BoardState boardState) {
 		this.boardState = boardState;
 	}
 }

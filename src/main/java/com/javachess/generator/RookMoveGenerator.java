@@ -1,18 +1,19 @@
 package com.javachess.generator;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.javachess.board.Board;
 import com.javachess.board.Square;
 import com.javachess.move.Move;
 import com.javachess.piece.Color;
-import com.javachess.state.State;
 
-public class RookMoveGenerator implements MoveGeneratorOld {
+public class RookMoveGenerator implements MoveGenerator {
 
 	@Override
-	public List<Move> generate(Square position, Color color, Board board, State state) {
+	public List<Move> generateMoves(Square square, Color color, Board board) {
 		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptyList();
 	}
+
 }

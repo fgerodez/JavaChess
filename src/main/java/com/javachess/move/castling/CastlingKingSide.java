@@ -1,12 +1,13 @@
-package com.javachess.move;
+package com.javachess.move.castling;
 
 import com.javachess.board.Square;
+import com.javachess.move.Move;
 import com.javachess.piece.Color;
 import com.javachess.piece.Piece;
 
-public class CastlingQueenSide implements Move {
+public class CastlingKingSide implements Move {
 
-	public CastlingQueenSide(Color color) {
+	public CastlingKingSide(Color color) {
 		
 	}
 	
