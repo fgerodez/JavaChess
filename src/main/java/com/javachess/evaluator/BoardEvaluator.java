@@ -13,7 +13,7 @@ import com.javachess.piece.PieceType;
 public class BoardEvaluator {
 
 	public static boolean isCheck(Color color, Board board) {
-		return isThreatened(findKing(color, board), board);
+		return isThreatenedBy(color.opponent(), findKing(color, board), board);
 	}
 
 	public static boolean isCheckMate(Color color, List<Move> ctxMoves, Board board) {
@@ -24,10 +24,8 @@ public class BoardEvaluator {
 		return !isCheck(color, board) && legalMoves(color, ctxMoves, board).size() == 0;
 	}
 	
-	public static boolean isThreatened(Square square, Board board) {
-		Piece piece = board.at(square);
-		
-		for (Move move : semiLegalMoves(piece.color(), board)) {
+	public static boolean isThreatenedBy(Color color, Square square, Board board) {	
+		for (Move move : semiLegalMoves(color, board)) {
 			if (move.getDst().equals(square))
 				return true;
 		}
@@ -37,9 +35,12 @@ public class BoardEvaluator {
 
 	public static List<Move> legalMoves(Color color, List<Move> ctxMoves, Board board) {
 		List<Move> legalMoves = new ArrayList<Move>();
-		ctxMoves.addAll(semiLegalMoves(color, board));
+		List<Move> semiLegalMoves = semiLegalMoves(color, board); 
 		
-		for (Move move : ctxMoves) {
+		if (ctxMoves != null)
+			semiLegalMoves.addAll(ctxMoves);
+		
+		for (Move move : semiLegalMoves) {
 			move.execute();
 
 			if (!isCheck(color, board))
@@ -69,7 +70,7 @@ public class BoardEvaluator {
 		for (Square square : board.allSquares()) {
 			Piece piece = board.at(square);
 
-			if (piece.isColor(color));
+			if (piece.isColor(color))
 				moveList.addAll(piece.availableMoves(square, board));
 		}
 

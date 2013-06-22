@@ -30,8 +30,8 @@ public class StandardInitializer implements BoardInitializer {
 			board.setPieceAt(Square.at(1, col), Piece.WHITE_PAWN);
 		}
 		
-		for (int col = 6; col < 8; col++) {
-			board.setPieceAt(Square.at(1, col), Piece.BLACK_PAWN);
+		for (int col = 0; col < 8; col++) {
+			board.setPieceAt(Square.at(6, col), Piece.BLACK_PAWN);
 		}
 	}
 }

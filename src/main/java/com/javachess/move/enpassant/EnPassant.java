@@ -13,16 +13,11 @@ public abstract class EnPassant extends StandardMove {
 
 		dstSquare = getDstSquare(srcSquare);
 		capturedPieceSquare = getCapturedSquare(srcSquare);
+		capturedPiece = board.at(capturedPieceSquare);
 	}
 	
-	protected abstract Square getDstSquare(Square srcSquare);
-	
-	protected abstract Square getCapturedSquare(Square srcSquare);
-	
 	@Override
-	public void execute() {
-		capturedPiece = board.at(capturedPieceSquare);
-		
+	public void execute() {		
 		board.movePiece(srcSquare, dstSquare);
 		board.removePieceAt(capturedPieceSquare);
 	}
@@ -32,4 +27,8 @@ public abstract class EnPassant extends StandardMove {
 		board.movePiece(dstSquare, srcSquare);
 		board.setPieceAt(capturedPieceSquare, capturedPiece);
 	}
+	
+	protected abstract Square getDstSquare(Square srcSquare);
+	
+	protected abstract Square getCapturedSquare(Square srcSquare);
 }

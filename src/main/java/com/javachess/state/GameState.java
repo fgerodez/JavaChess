@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.javachess.board.Board;
+import com.javachess.game.StateContext;
 import com.javachess.move.Move;
-import com.javachess.piece.Color;
+import com.javachess.state.board.StandardState;
 
-public class GameState implements BoardState {
+public class GameState {
 	
 	private BoardState boardState;
 	private EnPassantState enPassantState;
@@ -19,23 +20,19 @@ public class GameState implements BoardState {
 		castlingState = new CastlingState();
 	}
 
-	@Override
-	public void executeTransition(Move move, Board board, StateContext context) {
-		enPassantState.executeTransition(move, board);
-		castlingState.executeTransition(move, board);
-		boardState.executeTransition(move, board, context);
+	public void notifyMove(Move move, Board board, StateContext context) {
+		enPassantState.notifyMove(move, board);
+		castlingState.notifyMove(move, board);
+		
+		boardState = boardState.executeTransition(move, board, context);
 	}
 	
-	public List<Move> getCtxMoves(Color color) {
+	public List<Move> getCtxMoves() {
 		List<Move> moves = new ArrayList<Move>();
 		
 		moves.addAll(enPassantState.getCtxMoves());
-		moves.addAll(castlingState.getCtxMoves(color, null));
+		moves.addAll(castlingState.getCtxMoves());
 		
 		return moves;
-	}
-	
-	void setBoardState(BoardState boardState) {
-		this.boardState = boardState;
 	}
 }

@@ -1,6 +1,7 @@
 package com.javachess.state;
 
 import com.javachess.board.Board;
+import com.javachess.game.StateContext;
 import com.javachess.move.Move;
 
 /**
@@ -16,5 +17,5 @@ public interface BoardState {
 	 * @param board
 	 * @return
 	 */
-	public void executeTransition(Move move, Board board, StateContext context);
+	public BoardState executeTransition(Move move, Board board, StateContext context);
 }

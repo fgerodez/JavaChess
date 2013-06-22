@@ -1,6 +1,6 @@
 package com.javachess.player;
 
-import com.javachess.board.Game;
+import com.javachess.game.Game;
 import com.javachess.piece.Color;
 
 /**

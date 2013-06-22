@@ -5,9 +5,23 @@ public class Square {
 	private final int row;
 	
 	public static Square at(int row, int col) {
-		return new Square(row, col);
+		Square newSquare = new Square(row, col);
+		
+		if (!newSquare.isValid())
+			return null;
+		
+		return newSquare;
 	}
-	
+
+	public static Square atOffset(Square square, int row, int col) {
+		Square newSquare = new Square(square.getRow() + row, square.getCol() + col);
+		
+		if (!newSquare.isValid())
+			return null;
+		
+		return newSquare;
+	}
+
 	private Square(int row, int column) {
 		this.col = column;
 		this.row = row;
@@ -19,6 +33,10 @@ public class Square {
 
 	public int getRow() {
 		return row;
+	}
+	
+	public boolean isValid() {
+		return col >= 0 && col < 8 && row >= 0 && row < 8;
 	}
 
 	@Override

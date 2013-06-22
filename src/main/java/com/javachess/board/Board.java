@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.javachess.board.initializer.BoardInitializer;
+import com.javachess.piece.Color;
 import com.javachess.piece.Piece;
 
 /**
@@ -57,6 +58,18 @@ public class Board {
 	}
 	
 	public boolean isFree(Square square) {
+		if (square == null)
+			return false;
+		
 		return !positions.containsKey(square);
+	}
+	
+	public boolean isColor(Square square, Color color) {
+		Piece piece = at(square);
+		
+		if (piece != null)
+			return piece.color().equals(color);
+		
+		return false;
 	}
 }

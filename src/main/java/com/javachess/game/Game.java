@@ -1,8 +1,9 @@
-package com.javachess.board;
+package com.javachess.game;
 
+import com.javachess.board.Board;
+import com.javachess.board.Square;
 import com.javachess.board.initializer.BoardInitializer;
 import com.javachess.converter.NotationConverter;
-import com.javachess.state.StateContext;
 
 public class Game {
 	private Board board;

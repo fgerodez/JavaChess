@@ -1,49 +1,27 @@
 package com.javachess.move.castling;
 
+import com.javachess.board.Board;
 import com.javachess.board.Square;
-import com.javachess.move.Move;
 import com.javachess.piece.Color;
-import com.javachess.piece.Piece;
 
-public class CastlingKingSide implements Move {
+public class CastlingKingSide extends Castling {
 
-	public CastlingKingSide(Color color) {
-		
+	public CastlingKingSide(Color color, Board board) {
+		super(color, board);
 	}
 	
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void undo() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Piece getCapturedPiece() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Square getSource() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Square getDst() {
-		// TODO Auto-generated method stub
-		return null;
+		return Square.atOffset(kingSquare, 0, 2);
 	}
 
 	@Override
-	public boolean equals(Square src, Square dst) {
-		// TODO Auto-generated method stub
-		return false;
+	protected Square getRookSrc() {
+		return Square.atOffset(kingSquare, 0, 3);
+	}
+
+	@Override
+	protected Square getRookDst() {
+		return Square.atOffset(kingSquare, 0, 1);
 	}
 }

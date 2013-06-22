@@ -4,12 +4,6 @@ import com.javachess.board.Board;
 import com.javachess.board.Square;
 import com.javachess.piece.Piece;
 
-/**
- * Modélisation d'un coup d'une case source vers une case cible
- * 
- * @author Ouzned
- * 
- */
 public class StandardMove implements Move {
 	protected Board board;
 	protected Square srcSquare;

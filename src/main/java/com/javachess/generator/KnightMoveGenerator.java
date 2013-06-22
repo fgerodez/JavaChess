@@ -1,6 +1,8 @@
 package com.javachess.generator;
 
-import java.util.Collections;
+import static com.javachess.generator.MoveGeneratorHelper.addMoveIfEmptyOrOpponent;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.javachess.board.Board;
@@ -9,10 +11,20 @@ import com.javachess.move.Move;
 import com.javachess.piece.Color;
 
 public class KnightMoveGenerator implements MoveGenerator {
-
+	
 	@Override
 	public List<Move> generateMoves(Square square, Color color, Board board) {
-		// TODO Auto-generated method stub
-		return Collections.emptyList();
+		List<Move> moves = new ArrayList<Move>();
+		
+		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 2, 1), color, moves, board);
+		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 2, -1), color, moves, board);
+		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -2, 1), color, moves, board);
+		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -2, -1), color, moves, board);
+		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 1, 2), color, moves, board);
+		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 1, -2), color, moves, board);
+		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -1, 2), color, moves, board);
+		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -1, -2), color, moves, board);
+				
+		return moves;
 	}
 }

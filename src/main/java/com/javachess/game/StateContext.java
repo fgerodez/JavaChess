@@ -1,4 +1,4 @@
-package com.javachess.state;
+package com.javachess.game;
 
 import java.util.List;
 import java.util.Stack;
@@ -6,6 +6,7 @@ import java.util.Stack;
 import com.javachess.board.Board;
 import com.javachess.move.Move;
 import com.javachess.piece.Color;
+import com.javachess.state.GameState;
 
 public class StateContext {
 	private GameState currentState;
@@ -13,7 +14,7 @@ public class StateContext {
 	
 	private Stack<Move> moveHistory;
 	private Stack<Color> colorHistory;
-	private Stack<BoardState> stateHistory;
+	private Stack<GameState> stateHistory;
 	
 	public StateContext() {
 		this.currentPlayerColor = Color.WHITE;
@@ -21,14 +22,14 @@ public class StateContext {
 		
 		this.moveHistory = new Stack<Move>();
 		this.colorHistory = new Stack<Color>();
-		this.stateHistory = new Stack<BoardState>();
+		this.stateHistory = new Stack<GameState>();
 	}
 	
 	public void notifyMove(Move move, Board board) {		
 		registerMove(move);
 		
 		currentPlayerColor = currentPlayerColor.opponent();
-		currentState.executeTransition(move, board, this);
+		currentState.notifyMove(move, board, this);
 	}
 	
 	public void undo() {	
@@ -46,16 +47,12 @@ public class StateContext {
 	}
 	
 	public List<Move> getCtxMoves() {
-		return currentState.getCtxMoves(currentPlayerColor);
+		return currentState.getCtxMoves();
 	}
 	
 	private void registerMove(Move move) {
 		colorHistory.add(currentPlayerColor);
 		stateHistory.add(currentState);
 		moveHistory.add(move);
-	}
-	
-	void setCurrentState(BoardState newBoardState) {
-		currentState.setBoardState(newBoardState);
 	}
 }

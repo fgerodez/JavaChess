@@ -1,7 +1,8 @@
 package com.javachess.state;
 
 import static com.javachess.evaluator.BoardEvaluator.findKing;
-import static com.javachess.evaluator.BoardEvaluator.isThreatened;
+import static com.javachess.evaluator.BoardEvaluator.isCheck;
+import static com.javachess.evaluator.BoardEvaluator.isThreatenedBy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,48 +27,55 @@ public class CastlingState {
 		CASTLING_KING_SIDE, CASTLING_QUEEN_SIDE
 	};
 
-	private Map<Color, List<CastlingType>> semiLegalCastlings;
+	private Map<Color, List<CastlingType>> generalCastlings;
+	private List<Move> semiLegalCastlings;
 
 	public CastlingState() {
-		semiLegalCastlings = new HashMap<Color, List<CastlingType>>();
+		generalCastlings = new HashMap<Color, List<CastlingType>>();
+		semiLegalCastlings = new ArrayList<Move>();
 
 		CastlingType[] initialCastlings = { CastlingType.CASTLING_KING_SIDE, CastlingType.CASTLING_QUEEN_SIDE };
-
-		semiLegalCastlings.put(Color.WHITE, Arrays.asList(initialCastlings));
-		semiLegalCastlings.put(Color.BLACK, Arrays.asList(initialCastlings));
+		
+		generalCastlings.put(Color.WHITE, new ArrayList<CastlingType>(Arrays.asList(initialCastlings)));
+		generalCastlings.put(Color.BLACK, new ArrayList<CastlingType>(Arrays.asList(initialCastlings)));
 	}
 
-	public void executeTransition(Move move, Board board) {
-		Piece srcPiece = board.at(move.getDst());
+	public void notifyMove(Move move, Board board) {
+		semiLegalCastlings = new ArrayList<Move>();
+
+		updateGeneralCastlings(move, board);
+
+		Color opponent = board.at(move.getDst()).color().opponent();
 		
+		if (isCheck(opponent, board))
+			return;
+
+		if (generalCastlings.get(opponent).contains(CastlingType.CASTLING_KING_SIDE))
+			kingSideCastling(semiLegalCastlings, opponent, board);
+
+		if (generalCastlings.get(opponent).contains(CastlingType.CASTLING_QUEEN_SIDE))
+			queenSideCastling(semiLegalCastlings, opponent, board);
+	}
+
+	private void updateGeneralCastlings(Move move, Board board) {
+		Piece srcPiece = board.at(move.getDst());
+
 		if (srcPiece.isType(PieceType.KING)) {
 			List<CastlingType> noCaslings = Collections.emptyList();
-			semiLegalCastlings.put(srcPiece.color(), noCaslings);
+			generalCastlings.put(srcPiece.color(), noCaslings);
 		}
 
 		if (srcPiece.isType(PieceType.ROOK) && move.getSource().getCol() == 0) {
-			semiLegalCastlings.get(srcPiece.color()).remove(CastlingType.CASTLING_QUEEN_SIDE);
+			generalCastlings.get(srcPiece.color()).remove(CastlingType.CASTLING_QUEEN_SIDE);
 		}
 
 		if (srcPiece.isType(PieceType.ROOK) && move.getSource().getCol() == 7) {
-			semiLegalCastlings.get(srcPiece.color()).remove(CastlingType.CASTLING_KING_SIDE);
+			generalCastlings.get(srcPiece.color()).remove(CastlingType.CASTLING_KING_SIDE);
 		}
 	}
 
-	public List<Move> getCtxMoves(Color color, Board board) {
-		List<CastlingType> legalCastlings = semiLegalCastlings.get(color);
-		List<Move> moves = new ArrayList<Move>();
-
-		for (CastlingType type : legalCastlings) {
-			switch (type) {
-			case CASTLING_KING_SIDE:
-				kingSideCastling(moves, color, board);
-			case CASTLING_QUEEN_SIDE:
-				queenSideCastling(moves, color, board);
-			}
-		}
-
-		return moves;
+	public List<Move> getCtxMoves() {
+		return semiLegalCastlings;
 	}
 
 	private void kingSideCastling(List<Move> moves, Color color, Board board) {
@@ -79,10 +87,10 @@ public class CastlingState {
 		if (!board.isFree(fstInterSquare) || !board.isFree(sndInterSquare))
 			return;
 
-		if (isThreatened(fstInterSquare, board))
+		if (isThreatenedBy(color.opponent(), fstInterSquare, board))
 			return;
 
-		moves.add(new CastlingKingSide(color));
+		moves.add(new CastlingKingSide(color, board));
 	}
 
 	private void queenSideCastling(List<Move> moves, Color color, Board board) {
@@ -95,9 +103,10 @@ public class CastlingState {
 		if (!board.isFree(fstInterSquare) || !board.isFree(sndInterSquare) || !board.isFree(thdInterSquare))
 			return;
 
-		if (isThreatened(fstInterSquare, board) || isThreatened(sndInterSquare, board))
+		if (isThreatenedBy(color.opponent(), fstInterSquare, board)
+				|| isThreatenedBy(color.opponent(), sndInterSquare, board))
 			return;
 
-		moves.add(new CastlingQueenSide(color));
+		moves.add(new CastlingQueenSide(color, board));
 	}
 }

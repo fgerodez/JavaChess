@@ -21,7 +21,7 @@ public class EnPassantState {
 		enPassant = new ArrayList<Move>();
 	}
 
-	public void executeTransition(Move move, Board board) {
+	public void notifyMove(Move move, Board board) {
 		if (!(move instanceof PawnPush)) {
 			enPassant = Collections.emptyList();
 			return;

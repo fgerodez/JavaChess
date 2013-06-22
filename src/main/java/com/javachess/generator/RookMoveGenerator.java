@@ -1,6 +1,8 @@
 package com.javachess.generator;
 
-import java.util.Collections;
+import static com.javachess.generator.MoveGeneratorHelper.addVectorIfEmptyOrOpponent;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.javachess.board.Board;
@@ -12,8 +14,14 @@ public class RookMoveGenerator implements MoveGenerator {
 
 	@Override
 	public List<Move> generateMoves(Square square, Color color, Board board) {
-		// TODO Auto-generated method stub
-		return Collections.emptyList();
-	}
+		List<Move> moves = new ArrayList<Move>();
+		
+		moves.addAll(addVectorIfEmptyOrOpponent(square, 1, 0, color, board));
+		moves.addAll(addVectorIfEmptyOrOpponent(square, -1, 0, color, board));
+		moves.addAll(addVectorIfEmptyOrOpponent(square, 0, 1, color, board));
+		moves.addAll(addVectorIfEmptyOrOpponent(square, 0, -1, color, board));
+		
+		return moves;
+ 	}
 
 }
