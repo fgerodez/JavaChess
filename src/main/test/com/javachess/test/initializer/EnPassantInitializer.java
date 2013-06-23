@@ -5,7 +5,7 @@ import com.javachess.board.Square;
 import com.javachess.board.initializer.BoardInitializer;
 import com.javachess.piece.Piece;
 
-public class EnPassantInitializer implements BoardInitializer{
+public class EnPassantInitializer implements BoardInitializer {
 
 	@Override
 	public void init(Board board) {

@@ -11,9 +11,11 @@ public class Game {
 	private NotationConverter converter;
 
 	public Game(NotationConverter converter, BoardInitializer initializer) {
-		this.board = new Board(initializer);
+		this.board = new Board();
 		this.converter = converter;
 		this.context = new StateContext();
+		
+		initializer.init(board);
 	}
 
 	public void start() {

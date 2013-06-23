@@ -3,11 +3,11 @@ package com.javachess.test.state;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.javachess.board.Board;
 import com.javachess.board.Square;
-import com.javachess.board.initializer.BoardInitializer;
 import com.javachess.move.Move;
 import com.javachess.move.StandardMove;
 import com.javachess.move.castling.CastlingKingSide;
@@ -17,20 +17,25 @@ import com.javachess.test.initializer.CastlingInitializer;
 
 public class CastlingStateTest {
 
+	private Board board;
+	private CastlingState cs;
+	
+	@Before
+	public void setUp() {
+		board = new Board();
+		cs = new CastlingState();
+		
+		new CastlingInitializer().init(board);
+	}
+	
 	@Test
 	public void initialNoCastling() {
-		CastlingState cs = new CastlingState();
-				
+		CastlingState cs = new CastlingState();				
 		assertEquals(0, cs.getCtxMoves().size());
 	}
 	
 	@Test
-	public void regularCastlings() {
-		BoardInitializer castlingInit = new CastlingInitializer();
-		Board board = new Board(castlingInit);
-		
-		CastlingState cs = new CastlingState();
-		
+	public void regularCastlings() {	
 		Move move = new StandardMove(Square.at(1, 0), Square.at(2, 0), board);
 		move.execute();
 		
@@ -40,12 +45,7 @@ public class CastlingStateTest {
 	}
 	
 	@Test
-	public void QueenRookMoveNoQueenSideCastling() {
-		BoardInitializer castlingInit = new CastlingInitializer();
-		Board board = new Board(castlingInit);
-		
-		CastlingState cs = new CastlingState();
-		
+	public void QueenRookMoveNoQueenSideCastling() {			
 		Move move = new StandardMove(Square.at(7, 0), Square.at(6, 0), board);
 		move.execute();
 		
@@ -61,12 +61,7 @@ public class CastlingStateTest {
 	}
 	
 	@Test
-	public void KingRookMoveNoKingSideCastling() {
-		BoardInitializer castlingInit = new CastlingInitializer();
-		Board board = new Board(castlingInit);
-		
-		CastlingState cs = new CastlingState();
-		
+	public void KingRookMoveNoKingSideCastling() {	
 		Move move = new StandardMove(Square.at(7, 7), Square.at(6, 7), board);
 		move.execute();
 		
@@ -82,12 +77,7 @@ public class CastlingStateTest {
 	}
 	
 	@Test
-	public void KingMoveNoCastling() {
-		BoardInitializer castlingInit = new CastlingInitializer();
-		Board board = new Board(castlingInit);
-		
-		CastlingState cs = new CastlingState();
-		
+	public void KingMoveNoCastling() {				
 		Move move = new StandardMove(Square.at(7, 4), Square.at(6, 4), board);
 		move.execute();
 		

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.javachess.board.initializer.BoardInitializer;
 import com.javachess.piece.Color;
 import com.javachess.piece.Piece;
 
@@ -19,9 +18,8 @@ public class Board {
 
 	private final Map<Square, Piece> positions;
 
-	public Board(BoardInitializer bi) {
+	public Board() {
 		positions = new HashMap<Square, Piece>();
-		bi.init(this);
 	}
 
 	/* Used only for copying */

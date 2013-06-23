@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import com.javachess.board.Board;
 import com.javachess.board.Square;
-import com.javachess.board.initializer.BoardInitializer;
 import com.javachess.move.Move;
 import com.javachess.move.PawnPush;
 import com.javachess.state.EnPassantState;
@@ -20,10 +19,10 @@ public class EnPassantStateTest {
 	
 	@Before
 	public void setUp() {
-		BoardInitializer initializer = new EnPassantInitializer();
-		
-		board = new Board(initializer);
+		board = new Board();
 		epState = new EnPassantState();
+		
+		new EnPassantInitializer().init(board);
 	}
 	
 	@Test
