@@ -1,7 +1,7 @@
 package com.javachess.player;
 
 import com.javachess.game.Game;
-import com.javachess.piece.Color;
+
 
 /**
  * Chess player contract
@@ -17,10 +17,5 @@ public interface Player {
 	 * 
 	 * @return the next move encoded in a given chess notation
 	 */
-	public String getNextMove(Game game);
-
-	/**
-	 * @return the player's color
-	 */
-	public Color getColor();
+	public String takeMove(Game game);
 }

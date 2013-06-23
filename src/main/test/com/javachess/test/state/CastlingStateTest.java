@@ -31,7 +31,7 @@ public class CastlingStateTest {
 	@Test
 	public void initialNoCastling() {
 		CastlingState cs = new CastlingState();				
-		assertEquals(0, cs.getCtxMoves().size());
+		assertEquals(0, cs.getSpecialMoves().size());
 	}
 	
 	@Test
@@ -41,7 +41,7 @@ public class CastlingStateTest {
 		
 		cs.notifyMove(move, board);
 		
-		assertEquals(2, cs.getCtxMoves().size());
+		assertEquals(2, cs.getSpecialMoves().size());
 	}
 	
 	@Test
@@ -56,8 +56,8 @@ public class CastlingStateTest {
 		
 		cs.notifyMove(move, board);
 		
-		assertEquals(1, cs.getCtxMoves().size());
-		assertTrue(cs.getCtxMoves().get(0) instanceof CastlingKingSide);
+		assertEquals(1, cs.getSpecialMoves().size());
+		assertTrue(cs.getSpecialMoves().get(0) instanceof CastlingKingSide);
 	}
 	
 	@Test
@@ -72,8 +72,8 @@ public class CastlingStateTest {
 		
 		cs.notifyMove(move, board);
 		
-		assertEquals(1, cs.getCtxMoves().size());
-		assertTrue(cs.getCtxMoves().get(0) instanceof CastlingQueenSide);
+		assertEquals(1, cs.getSpecialMoves().size());
+		assertTrue(cs.getSpecialMoves().get(0) instanceof CastlingQueenSide);
 	}
 	
 	@Test
@@ -88,6 +88,6 @@ public class CastlingStateTest {
 		
 		cs.notifyMove(move, board);
 		
-		assertEquals(0, cs.getCtxMoves().size());
+		assertEquals(0, cs.getSpecialMoves().size());
 	}
 }

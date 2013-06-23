@@ -20,6 +20,14 @@ public class EnPassantState {
 	public EnPassantState() {
 		enPassant = new ArrayList<Move>();
 	}
+	
+	private EnPassantState(List<Move> enPassant) {
+		this.enPassant = new ArrayList<Move>(enPassant);
+	}
+	
+	public EnPassantState copy() {
+		return new EnPassantState(enPassant);
+	}
 
 	public void notifyMove(Move move, Board board) {
 		if (!(move instanceof PawnPush)) {
@@ -27,8 +35,8 @@ public class EnPassantState {
 			return;
 		}
 
-		Square rightSrcSquare = Square.at(move.getDst().getRow(), move.getDst().getCol() - 1);
-		Square leftSrcSquare = Square.at(move.getDst().getRow(), move.getDst().getCol() + 1);
+		Square rightSrcSquare = Square.atOffset(move.getDst(), 0, -1);
+		Square leftSrcSquare = Square.atOffset(move.getDst(), 0, 1);
 
 		Piece srcPiece = board.at(move.getDst());
 		Piece leftSrcPiece = board.at(leftSrcSquare);
@@ -43,7 +51,7 @@ public class EnPassantState {
 			enPassant.add(new RightEnPassant(rightSrcSquare, board));
 	}
 
-	public List<Move> getCtxMoves() {
+	public List<Move> getSpecialMoves() {
 		return enPassant;
 	}
 }

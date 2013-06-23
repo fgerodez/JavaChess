@@ -39,6 +39,15 @@ public class CastlingState {
 		generalCastlings.put(Color.WHITE, new ArrayList<CastlingType>(Arrays.asList(initialCastlings)));
 		generalCastlings.put(Color.BLACK, new ArrayList<CastlingType>(Arrays.asList(initialCastlings)));
 	}
+	
+	private CastlingState(Map<Color, List<CastlingType>> generalCastlings, List<Move> semiLegalCastlings) {
+		generalCastlings = new HashMap<Color, List<CastlingType>>(generalCastlings);
+		semiLegalCastlings = new ArrayList<Move>(semiLegalCastlings);
+	}
+	
+	public CastlingState copy() {
+		return new CastlingState(generalCastlings, semiLegalCastlings);
+	}
 
 	public void notifyMove(Move move, Board board) {
 		semiLegalCastlings = new ArrayList<Move>();
@@ -74,7 +83,7 @@ public class CastlingState {
 		}
 	}
 
-	public List<Move> getCtxMoves() {
+	public List<Move> getSpecialMoves() {
 		return semiLegalCastlings;
 	}
 

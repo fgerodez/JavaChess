@@ -29,7 +29,7 @@ public class EnPassantStateTest {
 	public void noEnPassantInitial() {	
 		EnPassantState epState = new EnPassantState();
 		
-		assertEquals(0, epState.getCtxMoves().size());
+		assertEquals(0, epState.getSpecialMoves().size());
 	}
 	
 	@Test
@@ -39,6 +39,6 @@ public class EnPassantStateTest {
 		
 		epState.notifyMove(pawnPush, board);
 		
-		assertEquals(2, epState.getCtxMoves().size());
+		assertEquals(2, epState.getSpecialMoves().size());
 	}
 }
