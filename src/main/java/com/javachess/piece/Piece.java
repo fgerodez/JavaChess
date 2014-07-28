@@ -21,8 +21,8 @@ public enum Piece {
     BLACK_ROOK(PieceType.ROOK, Color.BLACK),
     BLACK_PAWN(PieceType.PAWN, Color.BLACK);
 
-    private PieceType type;
-    private Color color;
+    private final PieceType type;
+    private final Color color;
 
     Piece(PieceType type, Color color) {
         this.type = type;

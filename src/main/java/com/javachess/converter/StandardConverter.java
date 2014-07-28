@@ -31,7 +31,7 @@ public class StandardConverter implements NotationConverter {
             checkRow(row);
 
             square = Square.at(row - 1, letter.ordinal());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException("An error occured while converting " + code + " " + e.getMessage());
         }
 

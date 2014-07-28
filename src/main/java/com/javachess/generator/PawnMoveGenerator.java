@@ -14,7 +14,7 @@ public class PawnMoveGenerator implements MoveGenerator {
 
     @Override
     public List<Move> generateMoves(Square square, Color color, Board board) {
-        List<Move> moves = new ArrayList<Move>();
+        List<Move> moves = new ArrayList<>();
 
         Square fwd = Square.atOffset(square, 1 * color.dir(), 0);
         Square push = Square.atOffset(square, 2 * color.dir(), 0);

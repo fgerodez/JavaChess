@@ -9,7 +9,7 @@ import com.javachess.piece.Piece;
 
 public abstract class Castling implements Move {
 
-    private Board board;
+    private final Board board;
     protected Square kingSquare;
 
     public Castling(Color color, Board board) {

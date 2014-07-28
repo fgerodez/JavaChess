@@ -32,18 +32,18 @@ public class CastlingState {
     private List<Move> semiLegalCastlings;
 
     public CastlingState() {
-        generalCastlings = new EnumMap<Color, List<CastlingType>>(Color.class);
-        semiLegalCastlings = new ArrayList<Move>();
+        generalCastlings = new EnumMap<>(Color.class);
+        semiLegalCastlings = new ArrayList<>();
 
         CastlingType[] initialCastlings = {CastlingType.CASTLING_KING_SIDE, CastlingType.CASTLING_QUEEN_SIDE};
 
-        generalCastlings.put(Color.WHITE, new ArrayList<CastlingType>(Arrays.asList(initialCastlings)));
-        generalCastlings.put(Color.BLACK, new ArrayList<CastlingType>(Arrays.asList(initialCastlings)));
+        generalCastlings.put(Color.WHITE, new ArrayList<>(Arrays.asList(initialCastlings)));
+        generalCastlings.put(Color.BLACK, new ArrayList<>(Arrays.asList(initialCastlings)));
     }
 
     private CastlingState(Map<Color, List<CastlingType>> generalCastlings, List<Move> semiLegalCastlings) {
-        this.generalCastlings = new EnumMap<Color, List<CastlingType>>(generalCastlings);
-        this.semiLegalCastlings = new ArrayList<Move>(semiLegalCastlings);
+        this.generalCastlings = new EnumMap<>(generalCastlings);
+        this.semiLegalCastlings = new ArrayList<>(semiLegalCastlings);
     }
 
     public CastlingState copy() {
@@ -51,7 +51,7 @@ public class CastlingState {
     }
 
     public void notifyMove(Move move, Board board) {
-        semiLegalCastlings = new ArrayList<Move>();
+        semiLegalCastlings = new ArrayList<>();
 
         updateGeneralCastlings(move, board);
 

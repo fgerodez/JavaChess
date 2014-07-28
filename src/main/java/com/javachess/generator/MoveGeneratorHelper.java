@@ -24,7 +24,7 @@ public class MoveGeneratorHelper {
 
     public static List<Move> addVectorIfEmptyOrOpponent(final Square src, final int rowOffset, final int colOffset,
             final Color color, final Board board) {
-        List<Move> moves = new ArrayList<Move>();
+        List<Move> moves = new ArrayList<>();
 
         Square square = Square.atOffset(src, rowOffset, colOffset);
 

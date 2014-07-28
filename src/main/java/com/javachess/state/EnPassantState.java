@@ -18,11 +18,11 @@ public class EnPassantState {
     private List<Move> enPassant;
 
     public EnPassantState() {
-        enPassant = new ArrayList<Move>();
+        enPassant = new ArrayList<>();
     }
 
     private EnPassantState(List<Move> enPassant) {
-        this.enPassant = new ArrayList<Move>(enPassant);
+        this.enPassant = new ArrayList<>(enPassant);
     }
 
     public EnPassantState copy() {

@@ -31,10 +31,10 @@ public class Game {
         this.converter = converter;
         this.state = new GameState();
 
-        moveHistory = new Stack<Move>();
-        stateHistory = new Stack<GameState>();
+        moveHistory = new Stack<>();
+        stateHistory = new Stack<>();
 
-        players = new HashMap<Color, Player>();
+        players = new HashMap<>();
         players.put(Color.WHITE, player1);
         players.put(Color.BLACK, player2);
 
@@ -49,10 +49,11 @@ public class Game {
             Square dstSquare = converter.getDst(notation);
 
             List<Move> legalMoves = legalMoves(state.currentPlayerColor(), state.specialMoves(), board);
-
+            
             for (Move move : legalMoves) {
                 if (move.equals(srcSquare, dstSquare)) {
                     executeMove(move);
+                    break;
                 }
             }
         }

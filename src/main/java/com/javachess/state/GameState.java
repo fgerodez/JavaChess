@@ -46,11 +46,11 @@ public class GameState {
         enPassantState.notifyMove(move, board);
         castlingState.notifyMove(move, board);
 
-        evalBoardState(board);
+        evaluateBoardState(board);
     }
 
     public List<Move> specialMoves() {
-        List<Move> moves = new ArrayList<Move>();
+        List<Move> moves = new ArrayList<>();
 
         moves.addAll(enPassantState.getSpecialMoves());
         moves.addAll(castlingState.getSpecialMoves());
@@ -62,7 +62,7 @@ public class GameState {
         return playerColor;
     }
 
-    private void evalBoardState(Board board) {
+    private void evaluateBoardState(Board board) {
         if (isCheck(playerColor, board)) {
             boardState = BoardState.CHECK;
         }

@@ -14,7 +14,7 @@ public class RookMoveGenerator implements MoveGenerator {
 
     @Override
     public List<Move> generateMoves(Square square, Color color, Board board) {
-        List<Move> moves = new ArrayList<Move>();
+        List<Move> moves = new ArrayList<>();
 
         moves.addAll(addVectorIfEmptyOrOpponent(square, 1, 0, color, board));
         moves.addAll(addVectorIfEmptyOrOpponent(square, -1, 0, color, board));

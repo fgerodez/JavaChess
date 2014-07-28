@@ -14,7 +14,7 @@ public class KingMoveGenerator implements MoveGenerator {
 
     @Override
     public List<Move> generateMoves(Square square, Color color, Board board) {
-        List<Move> moves = new ArrayList<Move>();
+        List<Move> moves = new ArrayList<>();
 
         addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 1, 0), color, moves, board);
         addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -1, 0), color, moves, board);

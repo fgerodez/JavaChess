@@ -25,17 +25,11 @@ public class BoardEvaluator {
     }
 
     public static boolean isThreatenedBy(Color color, Square square, Board board) {
-        for (Move move : semiLegalMoves(color, board)) {
-            if (move.getDst().equals(square)) {
-                return true;
-            }
-        }
-
-        return false;
+        return semiLegalMoves(color, board).stream().anyMatch((move) -> (move.getDst().equals(square)));
     }
 
     public static List<Move> legalMoves(Color color, List<Move> ctxMoves, Board board) {
-        List<Move> legalMoves = new ArrayList<Move>();
+        List<Move> legalMoves = new ArrayList<>();
         List<Move> semiLegalMoves = semiLegalMoves(color, board);
 
         if (ctxMoves != null) {
@@ -68,15 +62,14 @@ public class BoardEvaluator {
     }
 
     private static List<Move> semiLegalMoves(Color color, Board board) {
-        List<Move> moveList = new ArrayList<Move>();
+        List<Move> moveList = new ArrayList<>();
 
-        for (Square square : board.allSquares()) {
+        board.allSquares().stream().forEach((square) -> {
             Piece piece = board.at(square);
-
             if (piece.isColor(color)) {
                 moveList.addAll(piece.availableMoves(square, board));
             }
-        }
+        });
 
         return moveList;
     }
