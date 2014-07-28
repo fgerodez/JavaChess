@@ -4,46 +4,49 @@ import com.javachess.board.Square;
 
 public class StandardConverter implements NotationConverter {
 
-	private enum Letter {
-		A, B, C, D, E, F, G, H
-	}
+    private enum Letter {
 
-	@Override
-	public Square getSrc(String notation) {
-		return toSquare(notation.substring(0, 2));
-	}
+        A, B, C, D, E, F, G, H
+    }
 
-	@Override
-	public Square getDst(String notation) {
-		return toSquare(notation.substring(2, 4));
-	}
-	
-	private Square toSquare(String code) {
-		checkLength(code);
+    @Override
+    public Square getSrc(String notation) {
+        return toSquare(notation.substring(0, 2));
+    }
 
-		Square square = null;
+    @Override
+    public Square getDst(String notation) {
+        return toSquare(notation.substring(2, 4));
+    }
 
-		try {
-			Letter letter = Letter.valueOf(code.substring(0, 1));
-			int row = Integer.parseInt(code.substring(1, 2));
+    private Square toSquare(String code) {
+        checkLength(code);
 
-			checkRow(row);
+        Square square = null;
 
-			square = Square.at(row - 1, letter.ordinal());
-		} catch (Exception e) {
-			throw new IllegalArgumentException("An error occured while converting " + code + " " + e.getMessage());
-		}
+        try {
+            Letter letter = Letter.valueOf(code.substring(0, 1));
+            int row = Integer.parseInt(code.substring(1, 2));
 
-		return square;
-	}
-	
-	private void checkRow(int row) {
-		if (row < 1 || row > 8)
-			throw new IllegalArgumentException("Row value must be between 1 and 8");
-	}
+            checkRow(row);
 
-	private void checkLength(String code) {
-		if (code == null || code.length() != 2)
-			throw new IllegalArgumentException("Code length must be exactly 2 characters");
-	}
+            square = Square.at(row - 1, letter.ordinal());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("An error occured while converting " + code + " " + e.getMessage());
+        }
+
+        return square;
+    }
+
+    private void checkRow(int row) {
+        if (row < 1 || row > 8) {
+            throw new IllegalArgumentException("Row value must be between 1 and 8");
+        }
+    }
+
+    private void checkLength(String code) {
+        if (code == null || code.length() != 2) {
+            throw new IllegalArgumentException("Code length must be exactly 2 characters");
+        }
+    }
 }

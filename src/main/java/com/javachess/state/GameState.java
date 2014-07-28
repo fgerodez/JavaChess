@@ -13,65 +13,68 @@ import com.javachess.piece.Color;
 
 public class GameState {
 
-	private Color playerColor;
+    private Color playerColor;
 
-	private BoardState boardState;
-	private EnPassantState enPassantState;
-	private CastlingState castlingState;
+    private BoardState boardState;
+    private final EnPassantState enPassantState;
+    private final CastlingState castlingState;
 
-	public GameState() {
-		boardState = BoardState.STANDARD;
-		enPassantState = new EnPassantState();
-		castlingState = new CastlingState();
-	}
-	
-	private GameState(Color playerColor, BoardState state, EnPassantState eps, CastlingState cs) {
-		this.playerColor = playerColor;
-		this.boardState = state;
-		this.enPassantState = eps.copy();
-		this.castlingState = cs.copy();
-	}
-	
-	public GameState copy() {
-		return new GameState(playerColor, boardState, enPassantState, castlingState);
-	}
+    public GameState() {
+        boardState = BoardState.STANDARD;
+        enPassantState = new EnPassantState();
+        castlingState = new CastlingState();
+    }
 
-	public boolean isEnded() {
-		return boardState == BoardState.CHECKMATE || boardState == BoardState.STALEMATE;
-	}
+    private GameState(Color playerColor, BoardState state, EnPassantState eps, CastlingState cs) {
+        this.playerColor = playerColor;
+        this.boardState = state;
+        this.enPassantState = eps.copy();
+        this.castlingState = cs.copy();
+    }
 
-	public void notifyMove(Move move, Board board) {
-		playerColor = playerColor.opponent();
+    public GameState copy() {
+        return new GameState(playerColor, boardState, enPassantState, castlingState);
+    }
 
-		enPassantState.notifyMove(move, board);
-		castlingState.notifyMove(move, board);
+    public boolean isEnded() {
+        return boardState == BoardState.CHECKMATE || boardState == BoardState.STALEMATE;
+    }
 
-		evalBoardState(board);
-	}
+    public void notifyMove(Move move, Board board) {
+        playerColor = playerColor.opponent();
 
-	public List<Move> specialMoves() {
-		List<Move> moves = new ArrayList<Move>();
+        enPassantState.notifyMove(move, board);
+        castlingState.notifyMove(move, board);
 
-		moves.addAll(enPassantState.getSpecialMoves());
-		moves.addAll(castlingState.getSpecialMoves());
+        evalBoardState(board);
+    }
 
-		return moves;
-	}
-	
-	public Color currentPlayerColor() {
-		return playerColor;
-	}
+    public List<Move> specialMoves() {
+        List<Move> moves = new ArrayList<Move>();
 
-	private void evalBoardState(Board board) {
-		if (isCheck(playerColor, board))
-			boardState = BoardState.CHECK;
+        moves.addAll(enPassantState.getSpecialMoves());
+        moves.addAll(castlingState.getSpecialMoves());
 
-		if (isCheckMate(playerColor, specialMoves(), board))
-			boardState = BoardState.CHECKMATE;
+        return moves;
+    }
 
-		if (isStaleMate(playerColor, specialMoves(), board))
-			boardState = BoardState.STALEMATE;
+    public Color currentPlayerColor() {
+        return playerColor;
+    }
 
-		boardState = BoardState.STANDARD;
-	}
+    private void evalBoardState(Board board) {
+        if (isCheck(playerColor, board)) {
+            boardState = BoardState.CHECK;
+        }
+
+        if (isCheckMate(playerColor, specialMoves(), board)) {
+            boardState = BoardState.CHECKMATE;
+        }
+
+        if (isStaleMate(playerColor, specialMoves(), board)) {
+            boardState = BoardState.STALEMATE;
+        }
+
+        boardState = BoardState.STANDARD;
+    }
 }

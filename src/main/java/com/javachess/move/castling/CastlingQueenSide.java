@@ -6,22 +6,22 @@ import com.javachess.piece.Color;
 
 public class CastlingQueenSide extends Castling {
 
-	public CastlingQueenSide(Color color, Board board) {
-		super(color, board);
-	}
+    public CastlingQueenSide(Color color, Board board) {
+        super(color, board);
+    }
 
-	@Override
-	public Square getDst() {
-		return Square.atOffset(kingSquare, 0, -2);
-	}
+    @Override
+    public Square getDst() {
+        return Square.atOffset(kingSquare, 0, -2);
+    }
 
-	@Override
-	protected Square getRookSrc() {
-		return Square.atOffset(kingSquare, 0, -4);
-	}
+    @Override
+    protected Square getRookSrc() {
+        return Square.atOffset(kingSquare, 0, -4);
+    }
 
-	@Override
-	protected Square getRookDst() {
-		return Square.atOffset(kingSquare, 0, -1);
-	}
+    @Override
+    protected Square getRookDst() {
+        return Square.atOffset(kingSquare, 0, -1);
+    }
 }

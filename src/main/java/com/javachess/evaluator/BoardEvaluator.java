@@ -12,68 +12,72 @@ import com.javachess.piece.PieceType;
 
 public class BoardEvaluator {
 
-	public static boolean isCheck(Color color, Board board) {
-		return isThreatenedBy(color.opponent(), findKing(color, board), board);
-	}
+    public static boolean isCheck(Color color, Board board) {
+        return isThreatenedBy(color.opponent(), findKing(color, board), board);
+    }
 
-	public static boolean isCheckMate(Color color, List<Move> ctxMoves, Board board) {
-		return isCheck(color, board) && legalMoves(color, ctxMoves, board).size() == 0;
-	}
+    public static boolean isCheckMate(Color color, List<Move> ctxMoves, Board board) {
+        return isCheck(color, board) && legalMoves(color, ctxMoves, board).isEmpty();
+    }
 
-	public static boolean isStaleMate(Color color, List<Move> ctxMoves, Board board) {
-		return !isCheck(color, board) && legalMoves(color, ctxMoves, board).size() == 0;
-	}
-	
-	public static boolean isThreatenedBy(Color color, Square square, Board board) {	
-		for (Move move : semiLegalMoves(color, board)) {
-			if (move.getDst().equals(square))
-				return true;
-		}
-		
-		return false;
-	}
+    public static boolean isStaleMate(Color color, List<Move> ctxMoves, Board board) {
+        return !isCheck(color, board) && legalMoves(color, ctxMoves, board).isEmpty();
+    }
 
-	public static List<Move> legalMoves(Color color, List<Move> ctxMoves, Board board) {
-		List<Move> legalMoves = new ArrayList<Move>();
-		List<Move> semiLegalMoves = semiLegalMoves(color, board); 
-		
-		if (ctxMoves != null)
-			semiLegalMoves.addAll(ctxMoves);
-		
-		for (Move move : semiLegalMoves) {
-			move.execute();
+    public static boolean isThreatenedBy(Color color, Square square, Board board) {
+        for (Move move : semiLegalMoves(color, board)) {
+            if (move.getDst().equals(square)) {
+                return true;
+            }
+        }
 
-			if (!isCheck(color, board))
-				legalMoves.add(move);
+        return false;
+    }
 
-			move.undo();
-		}
+    public static List<Move> legalMoves(Color color, List<Move> ctxMoves, Board board) {
+        List<Move> legalMoves = new ArrayList<Move>();
+        List<Move> semiLegalMoves = semiLegalMoves(color, board);
 
-		return legalMoves;
-	}
+        if (ctxMoves != null) {
+            semiLegalMoves.addAll(ctxMoves);
+        }
 
-	public static Square findKing(Color color, Board board) {
-		for (Square square : board.allSquares()) {
-			Piece piece = board.at(square);
+        for (Move move : semiLegalMoves) {
+            move.execute();
 
-			if (piece.isType(PieceType.KING) && piece.isColor(color)) {
-				return square;
-			}
-		}
+            if (!isCheck(color, board)) {
+                legalMoves.add(move);
+            }
 
-		throw new IllegalStateException("The king is missing!");
-	}
-	
-	private static List<Move> semiLegalMoves(Color color, Board board) {
-		List<Move> moveList = new ArrayList<Move>();
+            move.undo();
+        }
 
-		for (Square square : board.allSquares()) {
-			Piece piece = board.at(square);
+        return legalMoves;
+    }
 
-			if (piece.isColor(color))
-				moveList.addAll(piece.availableMoves(square, board));
-		}
+    public static Square findKing(Color color, Board board) {
+        for (Square square : board.allSquares()) {
+            Piece piece = board.at(square);
 
-		return moveList;
-	}
+            if (piece.isType(PieceType.KING) && piece.isColor(color)) {
+                return square;
+            }
+        }
+
+        throw new IllegalStateException("The king is missing!");
+    }
+
+    private static List<Move> semiLegalMoves(Color color, Board board) {
+        List<Move> moveList = new ArrayList<Move>();
+
+        for (Square square : board.allSquares()) {
+            Piece piece = board.at(square);
+
+            if (piece.isColor(color)) {
+                moveList.addAll(piece.availableMoves(square, board));
+            }
+        }
+
+        return moveList;
+    }
 }

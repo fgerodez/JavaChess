@@ -6,29 +6,29 @@ import com.javachess.move.StandardMove;
 
 public abstract class EnPassant extends StandardMove {
 
-	protected Square capturedPieceSquare;
-	
-	public EnPassant(Square srcSquare, Board board) {
-		super(srcSquare, null, board);
+    protected Square capturedPieceSquare;
 
-		dstSquare = getDstSquare(srcSquare);
-		capturedPieceSquare = getCapturedSquare(srcSquare);
-		capturedPiece = board.at(capturedPieceSquare);
-	}
-	
-	@Override
-	public void execute() {		
-		board.movePiece(srcSquare, dstSquare);
-		board.removePieceAt(capturedPieceSquare);
-	}
+    public EnPassant(Square srcSquare, Board board) {
+        super(srcSquare, null, board);
 
-	@Override
-	public void undo() {
-		board.movePiece(dstSquare, srcSquare);
-		board.setPieceAt(capturedPieceSquare, capturedPiece);
-	}
-	
-	protected abstract Square getDstSquare(Square srcSquare);
-	
-	protected abstract Square getCapturedSquare(Square srcSquare);
+        dstSquare = getDstSquare(srcSquare);
+        capturedPieceSquare = getCapturedSquare(srcSquare);
+        capturedPiece = board.at(capturedPieceSquare);
+    }
+
+    @Override
+    public void execute() {
+        board.movePiece(srcSquare, dstSquare);
+        board.removePieceAt(capturedPieceSquare);
+    }
+
+    @Override
+    public void undo() {
+        board.movePiece(dstSquare, srcSquare);
+        board.setPieceAt(capturedPieceSquare, capturedPiece);
+    }
+
+    protected abstract Square getDstSquare(Square srcSquare);
+
+    protected abstract Square getCapturedSquare(Square srcSquare);
 }

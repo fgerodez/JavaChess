@@ -11,20 +11,20 @@ import com.javachess.move.Move;
 import com.javachess.piece.Color;
 
 public class KnightMoveGenerator implements MoveGenerator {
-	
-	@Override
-	public List<Move> generateMoves(Square square, Color color, Board board) {
-		List<Move> moves = new ArrayList<Move>();
-		
-		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 2, 1), color, moves, board);
-		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 2, -1), color, moves, board);
-		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -2, 1), color, moves, board);
-		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -2, -1), color, moves, board);
-		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 1, 2), color, moves, board);
-		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 1, -2), color, moves, board);
-		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -1, 2), color, moves, board);
-		addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -1, -2), color, moves, board);
-				
-		return moves;
-	}
+
+    @Override
+    public List<Move> generateMoves(Square square, Color color, Board board) {
+        List<Move> moves = new ArrayList<Move>();
+
+        addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 2, 1), color, moves, board);
+        addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 2, -1), color, moves, board);
+        addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -2, 1), color, moves, board);
+        addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -2, -1), color, moves, board);
+        addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 1, 2), color, moves, board);
+        addMoveIfEmptyOrOpponent(square, Square.atOffset(square, 1, -2), color, moves, board);
+        addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -1, 2), color, moves, board);
+        addMoveIfEmptyOrOpponent(square, Square.atOffset(square, -1, -2), color, moves, board);
+
+        return moves;
+    }
 }

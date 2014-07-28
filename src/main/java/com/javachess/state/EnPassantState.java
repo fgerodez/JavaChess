@@ -15,43 +15,45 @@ import com.javachess.piece.PieceType;
 
 public class EnPassantState {
 
-	private List<Move> enPassant;
+    private List<Move> enPassant;
 
-	public EnPassantState() {
-		enPassant = new ArrayList<Move>();
-	}
-	
-	private EnPassantState(List<Move> enPassant) {
-		this.enPassant = new ArrayList<Move>(enPassant);
-	}
-	
-	public EnPassantState copy() {
-		return new EnPassantState(enPassant);
-	}
+    public EnPassantState() {
+        enPassant = new ArrayList<Move>();
+    }
 
-	public void notifyMove(Move move, Board board) {
-		if (!(move instanceof PawnPush)) {
-			enPassant = Collections.emptyList();
-			return;
-		}
+    private EnPassantState(List<Move> enPassant) {
+        this.enPassant = new ArrayList<Move>(enPassant);
+    }
 
-		Square rightSrcSquare = Square.atOffset(move.getDst(), 0, -1);
-		Square leftSrcSquare = Square.atOffset(move.getDst(), 0, 1);
+    public EnPassantState copy() {
+        return new EnPassantState(enPassant);
+    }
 
-		Piece srcPiece = board.at(move.getDst());
-		Piece leftSrcPiece = board.at(leftSrcSquare);
-		Piece rightSrcPiece = board.at(rightSrcSquare);
+    public void notifyMove(Move move, Board board) {
+        if (!(move instanceof PawnPush)) {
+            enPassant = Collections.emptyList();
+            return;
+        }
 
-		if (leftSrcPiece != null && leftSrcPiece.isColor(srcPiece.color().opponent())
-				&& leftSrcPiece.isType(PieceType.PAWN))
-			enPassant.add(new LeftEnPassant(leftSrcSquare, board));
+        Square rightSrcSquare = Square.atOffset(move.getDst(), 0, -1);
+        Square leftSrcSquare = Square.atOffset(move.getDst(), 0, 1);
 
-		if (rightSrcPiece != null && rightSrcPiece.isColor(srcPiece.color().opponent())
-				&& rightSrcPiece.isType(PieceType.PAWN))
-			enPassant.add(new RightEnPassant(rightSrcSquare, board));
-	}
+        Piece srcPiece = board.at(move.getDst());
+        Piece leftSrcPiece = board.at(leftSrcSquare);
+        Piece rightSrcPiece = board.at(rightSrcSquare);
 
-	public List<Move> getSpecialMoves() {
-		return enPassant;
-	}
+        if (leftSrcPiece != null && leftSrcPiece.isColor(srcPiece.color().opponent())
+                && leftSrcPiece.isType(PieceType.PAWN)) {
+            enPassant.add(new LeftEnPassant(leftSrcSquare, board));
+        }
+
+        if (rightSrcPiece != null && rightSrcPiece.isColor(srcPiece.color().opponent())
+                && rightSrcPiece.isType(PieceType.PAWN)) {
+            enPassant.add(new RightEnPassant(rightSrcSquare, board));
+        }
+    }
+
+    public List<Move> getSpecialMoves() {
+        return enPassant;
+    }
 }

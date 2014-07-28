@@ -9,5 +9,5 @@ import com.javachess.piece.Color;
 
 public interface MoveGenerator {
 
-	public List<Move> generateMoves(Square square, Color color, Board board);
+    public List<Move> generateMoves(Square square, Color color, Board board);
 }

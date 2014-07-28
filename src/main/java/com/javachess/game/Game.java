@@ -17,58 +17,60 @@ import com.javachess.player.Player;
 import com.javachess.state.GameState;
 
 public class Game {
-	private GameState state;
-	private final Board board;
-	private final NotationConverter converter;
 
-	private final Stack<Move> moveHistory;
-	private final Stack<GameState> stateHistory;
-	private final Map<Color, Player> players;
+    private GameState state;
+    private final Board board;
+    private final NotationConverter converter;
 
-	public Game(Player player1, Player player2, NotationConverter converter, BoardInitializer initializer) {
-		this.board = new Board();
-		this.converter = converter;
-		this.state = new GameState();
+    private final Stack<Move> moveHistory;
+    private final Stack<GameState> stateHistory;
+    private final Map<Color, Player> players;
 
-		moveHistory = new Stack<Move>();
-		stateHistory = new Stack<GameState>();
-		
-		players = new HashMap<Color, Player>();
-		players.put(Color.WHITE, player1);
-		players.put(Color.BLACK, player2);
+    public Game(Player player1, Player player2, NotationConverter converter, BoardInitializer initializer) {
+        this.board = new Board();
+        this.converter = converter;
+        this.state = new GameState();
 
-		initializer.init(board);
-	}
+        moveHistory = new Stack<Move>();
+        stateHistory = new Stack<GameState>();
 
-	public void start() {
-		while (!state.isEnded()) {
-			String notation = players.get(state.currentPlayerColor()).takeMove(this);
+        players = new HashMap<Color, Player>();
+        players.put(Color.WHITE, player1);
+        players.put(Color.BLACK, player2);
 
-			Square srcSquare = converter.getSrc(notation);
-			Square dstSquare = converter.getDst(notation);
+        initializer.init(board);
+    }
 
-			List<Move> legalMoves = legalMoves(state.currentPlayerColor(), state.specialMoves(), board);
+    public void start() {
+        while (!state.isEnded()) {
+            String notation = players.get(state.currentPlayerColor()).takeMove(this);
 
-			for (Move move : legalMoves) {
-				if (move.equals(srcSquare, dstSquare))
-					executeMove(move);
-			}
-		}
-	}
+            Square srcSquare = converter.getSrc(notation);
+            Square dstSquare = converter.getDst(notation);
 
-	public void undo() {
-		moveHistory.peek().undo();
-		moveHistory.pop();
-		
-		state = stateHistory.pop();
-	}
+            List<Move> legalMoves = legalMoves(state.currentPlayerColor(), state.specialMoves(), board);
 
-	private void executeMove(Move move) {
-		move.execute();
+            for (Move move : legalMoves) {
+                if (move.equals(srcSquare, dstSquare)) {
+                    executeMove(move);
+                }
+            }
+        }
+    }
 
-		moveHistory.add(move);
-		stateHistory.add(state.copy());
-		
-		state.notifyMove(move, board);
-	}
+    public void undo() {
+        moveHistory.peek().undo();
+        moveHistory.pop();
+
+        state = stateHistory.pop();
+    }
+
+    private void executeMove(Move move) {
+        move.execute();
+
+        moveHistory.add(move);
+        stateHistory.add(state.copy());
+
+        state.notifyMove(move, board);
+    }
 }

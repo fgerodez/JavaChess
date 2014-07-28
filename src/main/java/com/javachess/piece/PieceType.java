@@ -9,16 +9,17 @@ import com.javachess.generator.QueenMoveGenerator;
 import com.javachess.generator.RookMoveGenerator;
 
 public enum PieceType {
-	KING(new KingMoveGenerator()), 
-	QUEEN(new QueenMoveGenerator()), 
-	BISHOP(new BishopMoveGenerator()),
-	KNIGHT(new KnightMoveGenerator()), 
-	ROOK(new RookMoveGenerator()), 
-	PAWN(new PawnMoveGenerator());
-	
-	MoveGenerator generator;
-	
-	private PieceType(MoveGenerator generator) {
-		this.generator = generator;
-	}
-}	
+
+    KING(new KingMoveGenerator()),
+    QUEEN(new QueenMoveGenerator()),
+    BISHOP(new BishopMoveGenerator()),
+    KNIGHT(new KnightMoveGenerator()),
+    ROOK(new RookMoveGenerator()),
+    PAWN(new PawnMoveGenerator());
+
+    MoveGenerator generator;
+
+    private PieceType(MoveGenerator generator) {
+        this.generator = generator;
+    }
+}

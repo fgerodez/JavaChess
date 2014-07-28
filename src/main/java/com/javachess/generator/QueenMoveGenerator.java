@@ -12,20 +12,19 @@ import com.javachess.piece.Color;
 
 public class QueenMoveGenerator implements MoveGenerator {
 
-	@Override
-	public List<Move> generateMoves(Square square, Color color, Board board) {
-		List<Move> moves = new ArrayList<Move>();
-		
-		moves.addAll(addVectorIfEmptyOrOpponent(square, 1, 0, color, board));
-		moves.addAll(addVectorIfEmptyOrOpponent(square, -1, 0, color, board));
-		moves.addAll(addVectorIfEmptyOrOpponent(square, 0, 1, color, board));
-		moves.addAll(addVectorIfEmptyOrOpponent(square, 0, -1, color, board));
-		moves.addAll(addVectorIfEmptyOrOpponent(square, 1, 1, color, board));
-		moves.addAll(addVectorIfEmptyOrOpponent(square, 1, -1, color, board));
-		moves.addAll(addVectorIfEmptyOrOpponent(square, -1, 1, color, board));
-		moves.addAll(addVectorIfEmptyOrOpponent(square, -1, -1, color, board));
-		
-		return moves;
-	}
+    @Override
+    public List<Move> generateMoves(Square square, Color color, Board board) {
+        List<Move> moves = new ArrayList<Move>();
 
+        moves.addAll(addVectorIfEmptyOrOpponent(square, 1, 0, color, board));
+        moves.addAll(addVectorIfEmptyOrOpponent(square, -1, 0, color, board));
+        moves.addAll(addVectorIfEmptyOrOpponent(square, 0, 1, color, board));
+        moves.addAll(addVectorIfEmptyOrOpponent(square, 0, -1, color, board));
+        moves.addAll(addVectorIfEmptyOrOpponent(square, 1, 1, color, board));
+        moves.addAll(addVectorIfEmptyOrOpponent(square, 1, -1, color, board));
+        moves.addAll(addVectorIfEmptyOrOpponent(square, -1, 1, color, board));
+        moves.addAll(addVectorIfEmptyOrOpponent(square, -1, -1, color, board));
+
+        return moves;
+    }
 }
