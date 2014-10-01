@@ -52,9 +52,4 @@ public class StandardMove implements Move {
     public Piece getCapturedPiece() {
         return capturedPiece;
     }
-
-    @Override
-    public boolean equals(Square source, Square target) {
-        return getSource().equals(source) && getDst().equals(target);
-    }
 }

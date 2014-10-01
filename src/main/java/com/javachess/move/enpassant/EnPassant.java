@@ -2,33 +2,48 @@ package com.javachess.move.enpassant;
 
 import com.javachess.board.Board;
 import com.javachess.board.Square;
+import com.javachess.move.Move;
 import com.javachess.move.StandardMove;
+import com.javachess.piece.Color;
+import com.javachess.piece.Piece;
 
-public abstract class EnPassant extends StandardMove {
+class EnPassant implements Move {
 
-    protected Square capturedPieceSquare;
+    private final StandardMove horizontalMove;
+    private final StandardMove forwardMove;
 
-    public EnPassant(Square srcSquare, Board board) {
-        super(srcSquare, null, board);
+    public EnPassant(Square srcSquare, Square opponentSquare, Board board) {
+        Color color = board.at(srcSquare).color();
+        Square dstSquare = opponentSquare.forward(1 * color.dir());
 
-        dstSquare = getDstSquare(srcSquare);
-        capturedPieceSquare = getCapturedSquare(srcSquare);
-        capturedPiece = board.at(capturedPieceSquare);
+        this.horizontalMove = new StandardMove(srcSquare, opponentSquare, board);
+        this.forwardMove = new StandardMove(opponentSquare, dstSquare, board);
     }
 
     @Override
     public void execute() {
-        board.movePiece(srcSquare, dstSquare);
-        board.removePieceAt(capturedPieceSquare);
+        horizontalMove.execute();
+        forwardMove.execute();
     }
 
     @Override
     public void undo() {
-        board.movePiece(dstSquare, srcSquare);
-        board.setPieceAt(capturedPieceSquare, capturedPiece);
+        forwardMove.undo();
+        horizontalMove.undo();
     }
 
-    protected abstract Square getDstSquare(Square srcSquare);
+    @Override
+    public Square getSource() {
+        return horizontalMove.getSource();
+    }
 
-    protected abstract Square getCapturedSquare(Square srcSquare);
+    @Override
+    public Square getDst() {
+        return forwardMove.getDst();
+    }
+
+    @Override
+    public Piece getCapturedPiece() {
+        return horizontalMove.getCapturedPiece();
+    }
 }

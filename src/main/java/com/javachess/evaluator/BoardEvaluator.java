@@ -36,15 +36,11 @@ public class BoardEvaluator {
             semiLegalMoves.addAll(ctxMoves);
         }
 
-        for (Move move : semiLegalMoves) {
-            move.execute();
-
-            if (!isCheck(color, board)) {
-                legalMoves.add(move);
-            }
-
-            move.undo();
-        }
+        semiLegalMoves.stream().filter((move) -> {
+            return isThreatenedBy(color.opponent(), move.getDst(), board);
+        }).forEach((move) -> {
+            legalMoves.add(move);
+        });
 
         return legalMoves;
     }

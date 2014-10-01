@@ -5,15 +5,17 @@ import com.javachess.piece.Piece;
 
 public interface Move {
 
-    public void execute();
+    void execute();
 
-    public void undo();
+    void undo();
 
-    public Piece getCapturedPiece();
+    Piece getCapturedPiece();
 
-    public Square getSource();
+    Square getSource();
 
-    public Square getDst();
+    Square getDst();
 
-    public boolean equals(Square src, Square dst);
+    default boolean equals(Square src, Square dst) {
+        return getSource().equals(src) && getDst().equals(dst);
+    }
 }

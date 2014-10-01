@@ -30,6 +30,36 @@ public class Square {
         this.row = row;
     }
 
+    public Square right(int offset) {
+        Square newSquare = new Square(this.getRow(), this.getCol() + offset);
+
+        if (!newSquare.isValid()) {
+            return null;
+        }
+
+        return newSquare;
+    }
+
+    public Square left(int offset) {
+        Square newSquare = new Square(this.getRow(), this.getCol() - offset);
+
+        if (!newSquare.isValid()) {
+            return null;
+        }
+
+        return newSquare;
+    }
+
+    public Square forward(int offset) {
+        Square newSquare = new Square(this.getRow() + offset, this.getCol());
+
+        if (!newSquare.isValid()) {
+            return null;
+        }
+
+        return newSquare;
+    }
+
     public int getCol() {
         return col;
     }

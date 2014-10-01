@@ -2,31 +2,30 @@ package com.javachess.move.castling;
 
 import com.javachess.board.Board;
 import com.javachess.board.Square;
-import com.javachess.evaluator.BoardEvaluator;
 import com.javachess.move.Move;
-import com.javachess.piece.Color;
+import com.javachess.move.StandardMove;
 import com.javachess.piece.Piece;
 
-public abstract class Castling implements Move {
+class Castling implements Move {
 
-    private final Board board;
-    protected Square kingSquare;
+    private final StandardMove kingMove;
+    private final StandardMove rookMove;
 
-    public Castling(Color color, Board board) {
-        this.board = board;
-        this.kingSquare = BoardEvaluator.findKing(color, board);
+    public Castling(Square kingSrc, Square kingDst, Square rookSrc, Square rookDst, Board board) {
+        kingMove = new StandardMove(kingSrc, kingDst, board);
+        rookMove = new StandardMove(rookSrc, rookDst, board);
     }
 
     @Override
     public void execute() {
-        board.movePiece(kingSquare, getDst());
-        board.movePiece(getRookSrc(), getRookDst());
+        kingMove.execute();
+        rookMove.execute();
     }
 
     @Override
     public void undo() {
-        board.movePiece(getDst(), kingSquare);
-        board.movePiece(getRookDst(), getRookSrc());
+        rookMove.undo();
+        kingMove.undo();
     }
 
     @Override
@@ -36,18 +35,11 @@ public abstract class Castling implements Move {
 
     @Override
     public Square getSource() {
-        return kingSquare;
+        return kingMove.getSource();
     }
 
     @Override
-    public abstract Square getDst();
-
-    @Override
-    public boolean equals(Square src, Square dst) {
-        return getSource().equals(src) && getDst().equals(dst);
+    public Square getDst() {
+        return kingMove.getDst();
     }
-
-    protected abstract Square getRookSrc();
-
-    protected abstract Square getRookDst();
 }

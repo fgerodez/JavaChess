@@ -2,22 +2,41 @@ package com.javachess.move.enpassant;
 
 import com.javachess.board.Board;
 import com.javachess.board.Square;
+import com.javachess.move.Move;
 import com.javachess.piece.Piece;
 
-public class LeftEnPassant extends EnPassant {
+public class LeftEnPassant implements Move {
 
-    public LeftEnPassant(Square srcSquare, Board board) {
-        super(srcSquare, board);
+    private final EnPassant enPassant;
+
+    public LeftEnPassant(Square targetSquare, Board board) {
+        Square srcSquare = targetSquare.right(1);
+
+        enPassant = new EnPassant(srcSquare, targetSquare, board);
     }
 
     @Override
-    protected Square getDstSquare(Square srcSquare) {
-        Piece piece = board.at(srcSquare);
-        return Square.at(srcSquare.getRow() + piece.color().dir(), srcSquare.getCol() - 1);
+    public void execute() {
+        enPassant.execute();
     }
 
     @Override
-    protected Square getCapturedSquare(Square srcSquare) {
-        return Square.at(srcSquare.getRow(), srcSquare.getCol() - 1);
+    public void undo() {
+        enPassant.undo();
+    }
+
+    @Override
+    public Piece getCapturedPiece() {
+        return enPassant.getCapturedPiece();
+    }
+
+    @Override
+    public Square getSource() {
+        return enPassant.getSource();
+    }
+
+    @Override
+    public Square getDst() {
+        return enPassant.getDst();
     }
 }

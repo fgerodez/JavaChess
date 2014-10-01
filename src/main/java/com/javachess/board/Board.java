@@ -19,7 +19,7 @@ public class Board {
     private final Map<Square, Piece> positions;
 
     public Board() {
-        positions = new HashMap<Square, Piece>();
+        positions = new HashMap<>();
     }
 
     /* Used only for copying */
@@ -28,19 +28,19 @@ public class Board {
     }
 
     public Board copy() {
-        return new Board(new HashMap<Square, Piece>(positions));
+        return new Board(new HashMap<>(positions));
     }
 
     public List<Square> allSquares() {
-        return new ArrayList<Square>(positions.keySet());
+        return new ArrayList<>(positions.keySet());
     }
 
     public Piece at(Square square) {
         return positions.get(square);
     }
 
-    public void removePieceAt(Square square) {
-        positions.remove(square);
+    public Piece removePieceAt(Square square) {
+        return positions.remove(square);
     }
 
     public void setPieceAt(Square position, Piece piece) {
